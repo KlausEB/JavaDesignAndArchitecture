@@ -1,6 +1,7 @@
 package com.epam.designAndArchitecture.library;
 
 import com.epam.designAndArchitecture.entities.Author;
+import com.epam.designAndArchitecture.entities.Book;
 import com.epam.designAndArchitecture.util.SearcherInAuthors;
 
 import java.util.ArrayList;
@@ -34,23 +35,23 @@ public class LiteratureManager {
         return searcherInAuthors.searchBookAndDelete(bookISBN);
     }
 
-    public List<String> searchBooksByPartAuthorName(String partName) {
+    public List<Book> searchBooksByPartAuthorName(String partName) {
         return searcherInAuthors.searchBooksByPartAuthorName(partName);
     }
 
-    public List<String> searchBooksByPartName(String partName) {
+    public List<Book> searchBooksByPartName(String partName) {
         return searcherInAuthors.searchBooksByPartName(partName);
     }
 
-    public String searchBookByISBN(String isbn) {
+    public Book searchBookByISBN(String isbn) {
         return searcherInAuthors.searchBookByISBN(isbn);
     }
 
-    public List<String> searchBooksByYearRange(int minYear, int maxYear) {
+    public List<Book> searchBooksByYearRange(int minYear, int maxYear) {
         return searcherInAuthors.searchBooksByYearRange(minYear, maxYear);
     }
 
-    public List<String> searchBooksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
+    public List<Book> searchBooksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
         return searcherInAuthors.searchBookByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
     }
 }

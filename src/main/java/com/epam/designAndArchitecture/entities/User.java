@@ -7,6 +7,7 @@ import java.util.List;
 
 public class User implements IPotentialJSON {
     private final List<Bookmark> bookmarkList = new ArrayList<>();
+    boolean adminRights;
     private String login;
     private String password;
 
@@ -15,8 +16,10 @@ public class User implements IPotentialJSON {
         this.password = password;
     }
 
-    public User(String login) {
+    public User(String login, String password, boolean adminRights) {
         this.login = login;
+        this.password = password;
+        this.adminRights = adminRights;
     }
 
     public void appendBookmark(Bookmark bookmark) {
@@ -30,12 +33,15 @@ public class User implements IPotentialJSON {
 
         User user = (User) o;
 
-        return login.equals(user.login);
+        if (!login.equals(user.login)) return false;
+        return password.equals(user.password);
     }
 
     @Override
     public int hashCode() {
-        return login.hashCode();
+        int result = login.hashCode();
+        result = 31 * result + password.hashCode();
+        return result;
     }
 
     public String getLogin() {
@@ -56,5 +62,13 @@ public class User implements IPotentialJSON {
 
     public List<Bookmark> getBookmarkList() {
         return bookmarkList;
+    }
+
+    public boolean isAdminRights() {
+        return adminRights;
+    }
+
+    public void setAdminRights(boolean adminRights) {
+        this.adminRights = adminRights;
     }
 }

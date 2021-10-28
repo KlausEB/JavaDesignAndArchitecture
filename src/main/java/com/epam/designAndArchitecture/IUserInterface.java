@@ -26,4 +26,14 @@ public interface IUserInterface {
     void searchBooksByYearRange() throws IOException;
 
     void searchBooksByYearPagesPartName() throws IOException;
+
+    void appendBookmark() throws IOException;
+
+    void deleteBookmark() throws IOException;
+
+    void takeBooksWithMyBookmarks() throws IOException;
+
+    void createNewUser() throws IOException;
+
+    void banUser() throws IOException;
 }

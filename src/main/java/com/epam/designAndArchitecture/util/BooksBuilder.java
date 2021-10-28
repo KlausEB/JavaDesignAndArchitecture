@@ -2,7 +2,10 @@ package com.epam.designAndArchitecture.util;
 
 import com.epam.designAndArchitecture.entities.Book;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public class BooksBuilder {
     private final Map<String, Book> ISBNToBooks;
@@ -11,49 +14,42 @@ public class BooksBuilder {
         this.ISBNToBooks = ISBNToBooks;
     }
 
-    public List<String> buildStringBookList() {
-        List<String> bookList = new ArrayList<>();
+    public List<Book> buildBookList() {
         Collection<Book> bookValues = ISBNToBooks.values();
-        for (Book currentBook : bookValues) {
-            bookList.add(currentBook.toString());
-        }
-        return bookList;
+        return new ArrayList<>(bookValues);
     }
 
-    public List<String> buildStringBookList(String partBookName) {
-        List<String> bookList = new ArrayList<>();
+    public List<Book> buildBookList(String partBookName) {
+        List<Book> bookList = new ArrayList<>();
         Collection<Book> bookValues = ISBNToBooks.values();
         for (Book currentBook : bookValues) {
             String currentBookName = currentBook.getBookName();
             if (currentBookName.contains(partBookName)) {
-                bookList.add(currentBook.toString());
+                bookList.add(currentBook);
             }
         }
         return bookList;
     }
 
-    public String buildBookByISBN(String isbn) {
+    public Book buildBookByISBN(String isbn) {
         Book book = ISBNToBooks.get(isbn);
-        if (book == null) {
-            return null;
-        }
-        return book.toString();
+        return book;
     }
 
-    public List<String> buildStringBookList(int minYear, int maxYear) {
-        List<String> bookList = new ArrayList<>();
+    public List<Book> buildBookList(int minYear, int maxYear) {
+        List<Book> bookList = new ArrayList<>();
         Collection<Book> bookValues = ISBNToBooks.values();
         for (Book currentBook : bookValues) {
             int currentBookYearOfPublishing = currentBook.getYearOfPublishing();
-            if (minYear <= currentBookYearOfPublishing && currentBookYearOfPublishing <= maxYear){
-                bookList.add(currentBook.toString());
+            if (minYear <= currentBookYearOfPublishing && currentBookYearOfPublishing <= maxYear) {
+                bookList.add(currentBook);
             }
         }
         return bookList;
     }
 
-    public List<String> buildStringBookList(int yearOfPublishing, int numberOfPages, String partName) {
-        List<String> bookList = new ArrayList<>();
+    public List<Book> buildBookList(int yearOfPublishing, int numberOfPages, String partName) {
+        List<Book> bookList = new ArrayList<>();
         Collection<Book> bookValues = ISBNToBooks.values();
         for (Book currentBook : bookValues) {
             int currentBookYearOfPublishing = currentBook.getYearOfPublishing();
@@ -61,8 +57,8 @@ public class BooksBuilder {
             String currentBookName = currentBook.getBookName();
             if (currentBookYearOfPublishing == yearOfPublishing
                     && currentBookNumberOfPages == numberOfPages
-                    && currentBookName.contains(partName)){
-                bookList.add(currentBook.toString());
+                    && currentBookName.contains(partName)) {
+                bookList.add(currentBook);
             }
         }
         return bookList;

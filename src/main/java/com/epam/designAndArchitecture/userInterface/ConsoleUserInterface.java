@@ -6,26 +6,22 @@ import com.epam.designAndArchitecture.exceptions.LoginStateException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.List;
 
 public class ConsoleUserInterface implements IUserInterface {
     public static final String WELCOME_MESSAGE = "Hello, user. LogIn or SignUp?";
-    public static final String ACCOUNT_REQUEST_MESSAGE = "Input login and password:";
+    public static final String LOGIN_REQUEST_MESSAGE = "Input login:";
+    public static final String PASSWORD_REQUEST_MESSAGE = "Input password:";
     public static final String INVALID_ACCOUNT_DATA = "Invalid username or password";
     public static final String COMMAND_REQUEST_MESSAGE = "Input commands:";
     public static final String AUTHOR_MESSAGE = "Input author name:";
-    public static final String BOOK_MESSAGE = "Input author name, " +
-            "book name, " +
-            "year of publishing, " +
-            "number of pages, " +
-            "ISBN:";
-    public static final String ISBN_MESSAGE = "Input ISBN message:";
+    public static final String BOOK_MESSAGE = "Input book name:";
+    public static final String ISBN_MESSAGE = "Input ISBN:";
+    public static final String YEAR_MESSAGE = "Input year of publishing:";
+    public static final String NUMBER_PAGE_MESSAGE = "Input number of page:";
     public static final String PART_NAME_MESSAGE = "Input part of the name:";
     public static final String NUMBER_RANGE_MESSAGE = "Input min and max numbers:";
-    public static final String YEAR_PAGES_NAME_PART_MESSAGE = "Input year of publishing, " +
-            "number of pages, "+
-            "part of the name of the book";
     public static final String UNDEFINED_COMMAND_MESSAGE = "An undefined command was entered";
+    public static final String DONE_COMMAND_WORKING_MESSAGE = "!!!The command worked out!!!";
 
     public static final String SUCCESSFULLY_APPENDED_MESSAGE = "The addition was successful";
     public static final String UNSUCCESSFULLY_APPENDED_MESSAGE = "The addition was unsuccessful";
@@ -78,6 +74,18 @@ public class ConsoleUserInterface implements IUserInterface {
                 case SEARCH_BOOKS_BY_YEAR_PAGES_PART_NAME:
                     searchBooksByYearPagesPartName();
                     break;
+                case APPEND_BOOKMARK:
+                    appendBookmark();
+                    break;
+                case DELETE_BOOKMARK:
+                    deleteBookmark();
+                    break;
+                case TAKE_BOOKS_WITH_MY_BOOKMARKS:
+                    takeBooksWithMyBookmarks();
+                    break;
+                case CREATE_NEW_USER:
+                    createNewUser();
+                    break;
             }
         }
     }
@@ -85,8 +93,9 @@ public class ConsoleUserInterface implements IUserInterface {
     @Override
     public void loginAccount() throws IOException {
         while (true) {
-            System.out.println(ACCOUNT_REQUEST_MESSAGE);
+            System.out.println(LOGIN_REQUEST_MESSAGE);
             String login = reader.readLine();
+            System.out.println(PASSWORD_REQUEST_MESSAGE);
             String password = reader.readLine();
             if (libraryService.requestLogInAccount(login, password)) {
                 break;
@@ -99,8 +108,9 @@ public class ConsoleUserInterface implements IUserInterface {
     @Override
     public void signUpAccount() throws IOException {
         while (true) {
-            System.out.println(ACCOUNT_REQUEST_MESSAGE);
+            System.out.println(LOGIN_REQUEST_MESSAGE);
             String login = reader.readLine();
+            System.out.println(PASSWORD_REQUEST_MESSAGE);
             String password = reader.readLine();
             if (libraryService.requestSignUpAccount(login, password)) {
                 break;
@@ -112,18 +122,25 @@ public class ConsoleUserInterface implements IUserInterface {
 
     @Override
     public void appendBook() throws IOException {
-        System.out.println(BOOK_MESSAGE);
+        System.out.println(AUTHOR_MESSAGE);
         String authorName = reader.readLine();
+        System.out.println(BOOK_MESSAGE);
         String bookName = reader.readLine();
+        System.out.println(YEAR_MESSAGE);
         int yearOfPublishing = Integer.parseInt(reader.readLine());
+        System.out.println(NUMBER_PAGE_MESSAGE);
         int numberOfPages = Integer.parseInt(reader.readLine());
+        System.out.println(ISBN_MESSAGE);
         String bookISBN = reader.readLine();
+
         if (libraryService.requestAppendBook(authorName,
                 bookName, yearOfPublishing, numberOfPages, bookISBN)) {
             System.out.println(SUCCESSFULLY_APPENDED_MESSAGE);
         } else {
             System.out.println(UNSUCCESSFULLY_APPENDED_MESSAGE);
         }
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
@@ -135,6 +152,8 @@ public class ConsoleUserInterface implements IUserInterface {
         } else {
             System.out.println(UNSUCCESSFULLY_DELETED_MESSAGE);
         }
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
@@ -146,6 +165,8 @@ public class ConsoleUserInterface implements IUserInterface {
         } else {
             System.out.println(UNSUCCESSFULLY_APPENDED_MESSAGE);
         }
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
@@ -157,26 +178,28 @@ public class ConsoleUserInterface implements IUserInterface {
         } else {
             System.out.println(UNSUCCESSFULLY_DELETED_MESSAGE);
         }
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
     public void searchBooksByPartAuthorName() throws IOException {
         System.out.println(PART_NAME_MESSAGE);
         String partName = reader.readLine();
-        List<String> booksByPartAuthorName = libraryService.requestBooksByPartAuthorName(partName);
-        for (String currentBookString : booksByPartAuthorName) {
-            System.out.println(currentBookString);
-        }
+        String booksByPartAuthorName = libraryService.requestBooksByPartAuthorName(partName);
+        System.out.println(booksByPartAuthorName);
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
     public void searchBooksByPartName() throws IOException {
         System.out.println(PART_NAME_MESSAGE);
         String partName = reader.readLine();
-        List<String> booksByPartName = libraryService.requestBooksByPartName(partName);
-        for (String currentBookString : booksByPartName) {
-            System.out.println(currentBookString);
-        }
+        String booksByPartName = libraryService.requestBooksByPartName(partName);
+        System.out.println(booksByPartName);
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
@@ -185,6 +208,8 @@ public class ConsoleUserInterface implements IUserInterface {
         String ISBN = reader.readLine();
         String bookByISBN = libraryService.requestBookByISBN(ISBN);
         System.out.println(bookByISBN);
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
@@ -192,21 +217,72 @@ public class ConsoleUserInterface implements IUserInterface {
         System.out.println(NUMBER_RANGE_MESSAGE);
         int minYear = Integer.parseInt(reader.readLine());
         int maxYear = Integer.parseInt(reader.readLine());
-        List<String> booksByYearRange = libraryService.requestBooksByYearRange(minYear, maxYear);
-        for (String currentBookString : booksByYearRange) {
-            System.out.println(currentBookString);
-        }
+        String booksByYearRange = libraryService.requestBooksByYearRange(minYear, maxYear);
+        System.out.println(booksByYearRange);
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
 
     @Override
     public void searchBooksByYearPagesPartName() throws IOException {
-        System.out.println(YEAR_PAGES_NAME_PART_MESSAGE);
+        System.out.println(YEAR_MESSAGE);
         int yearOfPublishing = Integer.parseInt(reader.readLine());
+        System.out.println(NUMBER_PAGE_MESSAGE);
         int numberOfPages = Integer.parseInt(reader.readLine());
+        System.out.println(PART_NAME_MESSAGE);
         String partName = reader.readLine();
-        List<String> booksByYearPagesPartName = libraryService.requestByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
-        for (String currentBookString : booksByYearPagesPartName) {
-            System.out.println(currentBookString);
-        }
+
+        String booksByYearPagesPartName = libraryService.requestByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
+        System.out.println(booksByYearPagesPartName);
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
+    }
+
+    @Override
+    public void appendBookmark() throws IOException {
+        System.out.println(ISBN_MESSAGE);
+        String isbn = reader.readLine();
+        System.out.println(NUMBER_PAGE_MESSAGE);
+        int pageNumber = Integer.parseInt(reader.readLine());
+        System.out.println(libraryService.requestAppendBookmark(isbn, pageNumber));
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
+    }
+
+    @Override
+    public void deleteBookmark() throws IOException {
+        System.out.println(ISBN_MESSAGE);
+        String isbn = reader.readLine();
+        System.out.println(NUMBER_PAGE_MESSAGE);
+        int pageNumber = Integer.parseInt(reader.readLine());
+        System.out.println(libraryService.requestDeleteBookmark(isbn, pageNumber));
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
+    }
+
+    @Override
+    public void takeBooksWithMyBookmarks() throws IOException {
+        String booksWithMyBookmarks = libraryService.requestBooksWithUserBookmarks();
+        System.out.println(booksWithMyBookmarks);
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
+    }
+
+    @Override
+    public void createNewUser() throws IOException {
+        System.out.println(LOGIN_REQUEST_MESSAGE);
+        String login = reader.readLine();
+        System.out.println(PASSWORD_REQUEST_MESSAGE);
+        String password = reader.readLine();
+        System.out.println(libraryService.requestAppendNewUser(login, password));
+
+        System.out.println(DONE_COMMAND_WORKING_MESSAGE);
+    }
+
+    @Override
+    public void banUser() throws IOException {
+        System.out.println(LOGIN_REQUEST_MESSAGE);
+        String login = reader.readLine();
+        System.out.println(libraryService.requestBanUser(login));
     }
 }

@@ -1,9 +1,13 @@
 package com.epam.designAndArchitecture.userInterface;
 
 import com.epam.designAndArchitecture.account.AccountManager;
+import com.epam.designAndArchitecture.entities.Book;
 import com.epam.designAndArchitecture.library.LiteratureManager;
+import com.epam.designAndArchitecture.util.BookmarkService;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class LibraryService {
     private final AccountManager accountManager = new AccountManager();
@@ -35,23 +39,67 @@ public class LibraryService {
         return literatureManager.deleteAuthor(authorName);
     }
 
-    public List<String> requestBooksByPartAuthorName(String partName) {
-        return literatureManager.searchBooksByPartAuthorName(partName);
+    public String convertCollectionToString(Collection<?> objects) {
+        StringBuilder stringObjects = new StringBuilder();
+        for (Object currentObject : objects) {
+            stringObjects.append(currentObject.toString()).append('\n');
+        }
+        return stringObjects.toString();
     }
 
-    public List<String> requestBooksByPartName(String partName) {
-        return literatureManager.searchBooksByPartName(partName);
+    public String requestBooksByPartAuthorName(String partName) {
+        List<Book> booksByPartAuthorName = literatureManager.searchBooksByPartAuthorName(partName);
+        return convertCollectionToString(booksByPartAuthorName);
+    }
+
+    public String requestBooksByPartName(String partName) {
+        List<Book> booksByPartName = literatureManager.searchBooksByPartName(partName);
+        return convertCollectionToString(booksByPartName);
     }
 
     public String requestBookByISBN(String isbn) {
-        return literatureManager.searchBookByISBN(isbn);
+        return literatureManager.searchBookByISBN(isbn).toString();
     }
 
-    public List<String> requestBooksByYearRange(int minYear, int maxYear) {
-        return literatureManager.searchBooksByYearRange(minYear, maxYear);
+    public String requestBooksByYearRange(int minYear, int maxYear) {
+        List<Book> booksByYearRange = literatureManager.searchBooksByYearRange(minYear, maxYear);
+        return convertCollectionToString(booksByYearRange);
     }
 
-    public List<String> requestByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName){
-        return literatureManager.searchBooksByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
+    public String requestByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
+        List<Book> booksByYearPagesPartName = literatureManager.searchBooksByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
+        return convertCollectionToString(booksByYearPagesPartName);
+    }
+
+    public boolean requestAppendBookmark(String isbn, int pageNumber) {
+        Book bookByISBN = literatureManager.searchBookByISBN(isbn);
+        if (bookByISBN == null) {
+            return false;
+        }
+        BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
+        return bookmarkService.appendBookmark(bookByISBN, pageNumber);
+    }
+
+    public boolean requestDeleteBookmark(String isbn, int pageNumber) {
+        Book bookByISBN = literatureManager.searchBookByISBN(isbn);
+        if (bookByISBN == null) {
+            return false;
+        }
+        BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
+        return bookmarkService.deleteBookmark(bookByISBN, pageNumber);
+    }
+
+    public String requestBooksWithUserBookmarks() {
+        BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
+        Set<Book> booksWithUserBookmarks = bookmarkService.takeBooksWithBookmarks();
+        return convertCollectionToString(booksWithUserBookmarks);
+    }
+
+    public boolean requestAppendNewUser(String login, String password) {
+        return accountManager.adminAppendAccount(login, password);
+    }
+
+    public boolean requestBanUser(String login) {
+        return accountManager.deleteUser(login);
     }
 }

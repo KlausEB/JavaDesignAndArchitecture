@@ -3,7 +3,9 @@ package com.epam.designAndArchitecture.entities;
 import com.epam.designAndArchitecture.IPotentialJSON;
 import com.epam.designAndArchitecture.util.BooksBuilder;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Author implements IPotentialJSON {
     private final Map<String, Book> ISBNToBooks = new HashMap<>();
@@ -20,31 +22,31 @@ public class Author implements IPotentialJSON {
 
     public boolean appendBook(String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
         Book book = createBook(bookName, yearOfPublishing, numberOfPages, bookISBN);
-        return ISBNToBooks.put(bookISBN, book) != null;
+        return ISBNToBooks.put(bookISBN, book) == null;
     }
 
     public boolean deleteBook(String bookISBN) {
         return ISBNToBooks.remove(bookISBN) != null;
     }
 
-    public List<String> takeStringBookList() {
-        return booksBuilder.buildStringBookList();
+    public List<Book> takeBooks() {
+        return booksBuilder.buildBookList();
     }
 
-    public List<String> takeStringBookList(String partName) {
-        return booksBuilder.buildStringBookList(partName);
+    public List<Book> takeBooks(String partName) {
+        return booksBuilder.buildBookList(partName);
     }
 
-    public String takeBookByISBN(String isbn) {
+    public Book takeBookByISBN(String isbn) {
         return booksBuilder.buildBookByISBN(isbn);
     }
 
-    public List<String> takeStringBookList(int minYear, int maxYear) {
-        return booksBuilder.buildStringBookList(minYear, maxYear);
+    public List<Book> takeBooks(int minYear, int maxYear) {
+        return booksBuilder.buildBookList(minYear, maxYear);
     }
 
-    public List<String> takeStringBookList(int yearOfPublishing, int numberOfPages, String partName) {
-        return booksBuilder.buildStringBookList(yearOfPublishing, numberOfPages, partName);
+    public List<Book> takeBooks(int yearOfPublishing, int numberOfPages, String partName) {
+        return booksBuilder.buildBookList(yearOfPublishing, numberOfPages, partName);
     }
 
     public String getAuthorName() {

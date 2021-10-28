@@ -25,6 +25,28 @@ public class Book implements IPotentialJSON {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Book book = (Book) o;
+
+        if (yearOfPublishing != book.yearOfPublishing) return false;
+        if (numberOfPages != book.numberOfPages) return false;
+        if (!bookName.equals(book.bookName)) return false;
+        return bookISBN.equals(book.bookISBN);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = bookName.hashCode();
+        result = 31 * result + yearOfPublishing;
+        result = 31 * result + numberOfPages;
+        result = 31 * result + bookISBN.hashCode();
+        return result;
+    }
+
     public String getBookName() {
         return bookName;
     }
