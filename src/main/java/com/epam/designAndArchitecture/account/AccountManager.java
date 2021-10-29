@@ -53,6 +53,10 @@ public class AccountManager {
         return appendAccount(login, password) != null;
     }
 
+    public boolean deleteUser(String login) {
+        return userMap.remove(login) != null;
+    }
+
     public BookmarkService getCurrentBookmarks() {
         return currentBookmarks;
     }
@@ -61,7 +65,7 @@ public class AccountManager {
         this.currentBookmarks = currentBookmarks;
     }
 
-    public boolean deleteUser(String login) {
-        return userMap.remove(login) != null;
+    public boolean isAdmin() {
+        return currentUser.isAdminRights();
     }
 }

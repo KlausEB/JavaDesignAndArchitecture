@@ -5,11 +5,16 @@ import com.epam.designAndArchitecture.entities.Book;
 import com.epam.designAndArchitecture.library.LiteratureManager;
 import com.epam.designAndArchitecture.util.BookmarkService;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
 public class LibraryService {
+    public static File historyFile = new File("history/ActionHistory.txt");
     private final AccountManager accountManager = new AccountManager();
     private final LiteratureManager literatureManager = new LiteratureManager();
 
@@ -101,5 +106,12 @@ public class LibraryService {
 
     public boolean requestBanUser(String login) {
         return accountManager.deleteUser(login);
+    }
+
+    public String requestTakeHistory() throws IOException {
+        if (historyFile.exists() && accountManager.isAdmin()) {
+            return Files.readString(Paths.get(historyFile.getPath()));
+        }
+        return "You cannot read history";
     }
 }

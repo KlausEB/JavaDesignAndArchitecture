@@ -36,4 +36,6 @@ public interface IUserInterface {
     void createNewUser() throws IOException;
 
     void banUser() throws IOException;
+
+    void takeHistoryOperations() throws IOException;
 }

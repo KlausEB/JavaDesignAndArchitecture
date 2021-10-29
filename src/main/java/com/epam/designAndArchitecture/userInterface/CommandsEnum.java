@@ -17,4 +17,5 @@ public enum CommandsEnum {
     TAKE_BOOKS_WITH_MY_BOOKMARKS,
     CREATE_NEW_USER,
     BAN_USER,
+    TAKE_HISTORY_OPERATIONS,
 }
