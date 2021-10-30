@@ -1,5 +1,6 @@
 package com.epam.designAndArchitecture.userInterface;
 
+import com.epam.designAndArchitecture.DBservices.JSONDatabase;
 import com.epam.designAndArchitecture.account.AccountManager;
 import com.epam.designAndArchitecture.entities.Book;
 import com.epam.designAndArchitecture.library.LiteratureManager;
@@ -17,6 +18,8 @@ public class LibraryService {
     public static File historyFile = new File("history/ActionHistory.txt");
     private final AccountManager accountManager = new AccountManager();
     private final LiteratureManager literatureManager = new LiteratureManager();
+    private final String pathToJSONDB = "DB/";
+    private final JSONDatabase jsonDB = new JSONDatabase(pathToJSONDB);
 
     public boolean requestSignUpAccount(String login, String password) {
         return accountManager.signUpUser(login, password);
@@ -44,14 +47,6 @@ public class LibraryService {
         return literatureManager.deleteAuthor(authorName);
     }
 
-    public String convertCollectionToString(Collection<?> objects) {
-        StringBuilder stringObjects = new StringBuilder();
-        for (Object currentObject : objects) {
-            stringObjects.append(currentObject.toString()).append('\n');
-        }
-        return stringObjects.toString();
-    }
-
     public String requestBooksByPartAuthorName(String partName) {
         List<Book> booksByPartAuthorName = literatureManager.searchBooksByPartAuthorName(partName);
         return convertCollectionToString(booksByPartAuthorName);
@@ -77,27 +72,24 @@ public class LibraryService {
     }
 
     public boolean requestAppendBookmark(String isbn, int pageNumber) {
-        Book bookByISBN = literatureManager.searchBookByISBN(isbn);
-        if (bookByISBN == null) {
-            return false;
-        }
         BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
-        return bookmarkService.appendBookmark(bookByISBN, pageNumber);
+        return bookmarkService.appendBookmark(isbn, pageNumber);
     }
 
     public boolean requestDeleteBookmark(String isbn, int pageNumber) {
-        Book bookByISBN = literatureManager.searchBookByISBN(isbn);
-        if (bookByISBN == null) {
-            return false;
-        }
         BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
-        return bookmarkService.deleteBookmark(bookByISBN, pageNumber);
+        return bookmarkService.deleteBookmark(isbn, pageNumber);
     }
 
     public String requestBooksWithUserBookmarks() {
         BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
-        Set<Book> booksWithUserBookmarks = bookmarkService.takeBooksWithBookmarks();
-        return convertCollectionToString(booksWithUserBookmarks);
+        Set<String> booksISBNWithUserBookmarks = bookmarkService.takeBooksWithBookmarks();
+        StringBuilder booksWithUserBookmarks = new StringBuilder();
+        for (String currentISBN : booksISBNWithUserBookmarks) {
+            Book searchedBook = literatureManager.searchBookByISBN(currentISBN);
+            booksWithUserBookmarks.append(searchedBook.toString()).append('\n');
+        }
+        return booksWithUserBookmarks.toString();
     }
 
     public boolean requestAppendNewUser(String login, String password) {
@@ -113,5 +105,23 @@ public class LibraryService {
             return Files.readString(Paths.get(historyFile.getPath()));
         }
         return "You cannot read history";
+    }
+
+    public void requestSerializeData() throws IOException {
+        accountManager.serializeAccounts();
+        literatureManager.serializeLiteratureData();
+    }
+
+    public void requestDeserializeData() throws IOException {
+        accountManager.deserializeAccounts();
+        literatureManager.deserializeLiteratureData();
+    }
+
+    public String convertCollectionToString(Collection<?> objects) {
+        StringBuilder stringObjects = new StringBuilder();
+        for (Object currentObject : objects) {
+            stringObjects.append(currentObject.toString()).append('\n');
+        }
+        return stringObjects.toString();
     }
 }

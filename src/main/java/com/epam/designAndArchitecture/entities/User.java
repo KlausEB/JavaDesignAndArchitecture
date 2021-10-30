@@ -1,11 +1,11 @@
 package com.epam.designAndArchitecture.entities;
 
-import com.epam.designAndArchitecture.IPotentialJSON;
+import com.epam.designAndArchitecture.SerializableObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class User implements IPotentialJSON {
+public class User implements SerializableObject {
     private final List<Bookmark> bookmarkList = new ArrayList<>();
     boolean adminRights;
     private String login;

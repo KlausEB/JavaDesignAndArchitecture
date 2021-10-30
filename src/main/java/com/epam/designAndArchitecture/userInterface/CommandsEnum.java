@@ -18,4 +18,6 @@ public enum CommandsEnum {
     CREATE_NEW_USER,
     BAN_USER,
     TAKE_HISTORY_OPERATIONS,
+    SAVE_DATA,
+    LOAD_DATA,
 }

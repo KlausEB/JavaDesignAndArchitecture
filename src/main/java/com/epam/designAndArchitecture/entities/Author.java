@@ -1,19 +1,22 @@
 package com.epam.designAndArchitecture.entities;
 
-import com.epam.designAndArchitecture.IPotentialJSON;
+import com.epam.designAndArchitecture.SerializableObject;
 import com.epam.designAndArchitecture.util.BooksBuilder;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Author implements IPotentialJSON {
+public class Author implements SerializableObject {
     private final Map<String, Book> ISBNToBooks = new HashMap<>();
     private final BooksBuilder booksBuilder = new BooksBuilder(ISBNToBooks);
     private String authorName;
 
     public Author(String authorName) {
         this.authorName = authorName;
+    }
+
+    public Author() {
     }
 
     public Book createBook(String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {

@@ -100,6 +100,12 @@ public class ConsoleUserInterface implements IUserInterface {
                 case TAKE_HISTORY_OPERATIONS:
                     takeHistoryOperations();
                     break;
+                case SAVE_DATA:
+                    saveData();
+                    break;
+                case LOAD_DATA:
+                    loadData();
+                    break;
             }
         }
     }
@@ -323,6 +329,16 @@ public class ConsoleUserInterface implements IUserInterface {
         System.out.println(libraryService.requestTakeHistory());
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
+    }
+
+    @Override
+    public void saveData() throws IOException {
+        libraryService.requestSerializeData();
+    }
+
+    @Override
+    public void loadData() throws IOException {
+        libraryService.requestDeserializeData();
     }
 
     private void appendTry(boolean task) {

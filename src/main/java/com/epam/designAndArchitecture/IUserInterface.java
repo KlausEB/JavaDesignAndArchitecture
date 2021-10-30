@@ -38,4 +38,8 @@ public interface IUserInterface {
     void banUser() throws IOException;
 
     void takeHistoryOperations() throws IOException;
+
+    void saveData() throws IOException;
+
+    void loadData() throws IOException;
 }

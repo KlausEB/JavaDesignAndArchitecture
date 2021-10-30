@@ -1,12 +1,15 @@
 package com.epam.designAndArchitecture.entities;
 
 public class Bookmark {
-    private Book book;
+    private String ISBN;
     private int pageNumber;
 
-    public Bookmark(Book book, int pageNumber) {
-        this.book = book;
+    public Bookmark(String ISBN, int pageNumber) {
+        this.ISBN = ISBN;
         this.pageNumber = pageNumber;
+    }
+
+    public Bookmark() {
     }
 
     @Override
@@ -17,22 +20,14 @@ public class Bookmark {
         Bookmark bookmark = (Bookmark) o;
 
         if (pageNumber != bookmark.pageNumber) return false;
-        return book != null ? book.equals(bookmark.book) : bookmark.book == null;
+        return ISBN.equals(bookmark.ISBN);
     }
 
     @Override
     public int hashCode() {
-        int result = book != null ? book.hashCode() : 0;
+        int result = ISBN.hashCode();
         result = 31 * result + pageNumber;
         return result;
-    }
-
-    public Book getBook() {
-        return book;
-    }
-
-    public void setBook(Book book) {
-        this.book = book;
     }
 
     public int getPageNumber() {
@@ -41,5 +36,13 @@ public class Bookmark {
 
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
+    }
+
+    public String getISBN() {
+        return ISBN;
+    }
+
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
     }
 }

@@ -1,4 +1,4 @@
 package com.epam.designAndArchitecture;
 
-public interface IPotentialJSON {
+public interface SerializableObject {
 }

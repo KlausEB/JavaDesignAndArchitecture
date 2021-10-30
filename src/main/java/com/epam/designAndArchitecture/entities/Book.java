@@ -1,8 +1,8 @@
 package com.epam.designAndArchitecture.entities;
 
-import com.epam.designAndArchitecture.IPotentialJSON;
+import com.epam.designAndArchitecture.SerializableObject;
 
-public class Book implements IPotentialJSON {
+public class Book implements SerializableObject {
     private String bookName;
     private int yearOfPublishing;
     private int numberOfPages;
@@ -13,6 +13,9 @@ public class Book implements IPotentialJSON {
         this.yearOfPublishing = yearOfPublishing;
         this.numberOfPages = numberOfPages;
         this.bookISBN = bookISBN;
+    }
+
+    public Book() {
     }
 
     @Override
