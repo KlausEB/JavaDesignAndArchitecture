@@ -1,8 +1,13 @@
 package com.epam.designAndArchitecture.account;
 
-import com.epam.designAndArchitecture.DBservices.DBService;
-import com.epam.designAndArchitecture.DBservices.JSONDatabase;
+import com.epam.designAndArchitecture.DBservices.JSONAccountReader;
+import com.epam.designAndArchitecture.DBservices.JSONReader;
+import com.epam.designAndArchitecture.DBservices.JSONSaver;
 import com.epam.designAndArchitecture.entities.User;
+import com.epam.designAndArchitecture.exceptions.DeserializationException;
+import com.epam.designAndArchitecture.exceptions.SerializationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -10,23 +15,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AccountDBService {
-    private final DBService dbService;
-    public String pathToJSONFile;
+    public static final Logger logger = LogManager.getLogger();
+    private final JSONSaver dbSaver;
+    private final JSONReader dbReader;
+    public final String pathToJSONFile;
 
     public AccountDBService(String pathToJSONFile) {
         this.pathToJSONFile = pathToJSONFile;
-        dbService = new JSONDatabase(pathToJSONFile);
+        this.dbSaver = new JSONSaver(pathToJSONFile);
+        this.dbReader = new JSONAccountReader(pathToJSONFile);
     }
 
-    public void saveAccountsData(Map<String, User> takeAuthorsData) throws IOException {
+    public void saveAccountsData(Map<String, User> takeAuthorsData) {
         Collection<User> users = takeAuthorsData.values();
-        User[] authorsArray = (User[]) users.toArray();
-        dbService.saveData(authorsArray);
+        User[] authorsArray = users.toArray(new User[0]);
+        try {
+            dbSaver.saveObjects(authorsArray);
+        } catch (IOException e) {
+            SerializationException exception = new SerializationException(e);
+            logger.error("Failed to save account data", exception);
+            throw exception;
+        }
     }
 
-    public Map<String, User> takeAccountsData() throws IOException {
+    public Map<String, User> takeAccountsData() {
         Map<String, User> usersMap = new HashMap<>();
-        User[] usersFromDB = (User[]) dbService.restoreData();
+        User[] usersFromDB;
+        try {
+            usersFromDB = (User[]) dbReader.loadObjects();
+        } catch (IOException e) {
+            DeserializationException exception = new DeserializationException(e);
+            logger.error("Failed to take account data", exception);
+            throw exception;
+        }
         for (User currentUser : usersFromDB) {
             usersMap.put(currentUser.getLogin(), currentUser);
         }

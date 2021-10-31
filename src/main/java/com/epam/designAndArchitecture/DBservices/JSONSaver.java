@@ -8,12 +8,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class JSONSaver {
-    private final ObjectMapper mapper;
+    private final ObjectMapper mapper = new ObjectMapper();
     private String pathToSave;
 
-    public JSONSaver(String pathToSave, ObjectMapper mapper) {
+    public JSONSaver(String pathToSave) {
         this.pathToSave = pathToSave;
-        this.mapper = mapper;
     }
 
     public void saveObjects(SerializableObject[] potentialJSON) throws IOException {

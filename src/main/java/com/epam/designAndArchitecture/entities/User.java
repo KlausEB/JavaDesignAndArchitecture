@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User implements SerializableObject {
-    private final List<Bookmark> bookmarkList = new ArrayList<>();
     boolean adminRights;
+    private List<Bookmark> bookmarkList = new ArrayList<>();
     private String login;
     private String password;
 
@@ -21,6 +21,8 @@ public class User implements SerializableObject {
         this.password = password;
         this.adminRights = adminRights;
     }
+
+    public User(){}
 
     public void appendBookmark(Bookmark bookmark) {
         bookmarkList.add(bookmark);
@@ -62,6 +64,10 @@ public class User implements SerializableObject {
 
     public List<Bookmark> getBookmarkList() {
         return bookmarkList;
+    }
+
+    public void setBookmarkList(List<Bookmark> bookmarkList) {
+        this.bookmarkList = bookmarkList;
     }
 
     public boolean isAdminRights() {

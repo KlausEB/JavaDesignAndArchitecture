@@ -1,8 +1,11 @@
 package com.epam.designAndArchitecture.library;
 
-import com.epam.designAndArchitecture.DBservices.DBService;
-import com.epam.designAndArchitecture.DBservices.JSONDatabase;
+import com.epam.designAndArchitecture.DBservices.*;
 import com.epam.designAndArchitecture.entities.Author;
+import com.epam.designAndArchitecture.exceptions.DeserializationException;
+import com.epam.designAndArchitecture.exceptions.SerializationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,20 +13,35 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LiteratureDBService {
-    private final DBService dbService;
-    public String pathToJSONFile;
+    public static final Logger logger = LogManager.getLogger();
+    private final JSONSaver dbSaver;
+    private final JSONReader dbReader;
+    public final String pathToJSONFile;
 
     public LiteratureDBService(String pathToJSONFile) {
         this.pathToJSONFile = pathToJSONFile;
-        this.dbService = new JSONDatabase(pathToJSONFile);
+        this.dbSaver = new JSONSaver(pathToJSONFile);
+        this.dbReader = new JSONLiteratureReader(pathToJSONFile);
     }
 
-    public void saveLiteratureData(List<Author> takeAuthorsData) throws IOException {
-        Author[] authors = (Author[]) takeAuthorsData.toArray();
-        dbService.saveData(authors);
+    public void saveLiteratureData(List<Author> takeAuthorsData) {
+        Author[] authors = takeAuthorsData.toArray(new Author[0]);
+        try {
+            dbSaver.saveObjects(authors);
+        } catch (IOException e) {
+            SerializationException exception = new SerializationException(e);
+            logger.error("Failed to save literature data", exception);
+            throw exception;
+        }
     }
 
-    public List<Author> takeLiteratureData() throws IOException {
-        return new ArrayList<Author>(Arrays.asList((Author[]) dbService.restoreData()));
+    public List<Author> takeLiteratureData() {
+        try {
+            return new ArrayList<Author>(Arrays.asList((Author[]) dbReader.loadObjects()));
+        } catch (IOException e) {
+            DeserializationException exception = new DeserializationException(e);
+            logger.error("Failed to take literature data", exception);
+            throw exception;
+        }
     }
 }

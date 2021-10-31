@@ -4,7 +4,6 @@ package com.epam.designAndArchitecture.account;
 import com.epam.designAndArchitecture.entities.User;
 import com.epam.designAndArchitecture.util.BookmarkService;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +12,7 @@ public class AccountManager {
     private final AccountDBService dbService = new AccountDBService(pathToJSONFile);
     private Map<String, User> userMap = new HashMap<>();
     private User currentUser;
-    private BookmarkService currentBookmarks;
+    private BookmarkService currentBookmarks = new BookmarkService();
 
     public User createUser(String login, String password) {
         return new User(login, password);
@@ -36,6 +35,7 @@ public class AccountManager {
             return false;
         }
         currentUser = newUser;
+        userMap.put(login, currentUser);
         currentBookmarks.setCurrentUserBookmarks(currentUser.getBookmarkList());
         return true;
     }
@@ -60,11 +60,11 @@ public class AccountManager {
         return userMap.remove(login) != null;
     }
 
-    public void serializeAccounts() throws IOException {
+    public void serializeAccounts() {
         dbService.saveAccountsData(userMap);
     }
 
-    public void deserializeAccounts() throws IOException {
+    public void deserializeAccounts() {
         setUserMap(dbService.takeAccountsData());
     }
 

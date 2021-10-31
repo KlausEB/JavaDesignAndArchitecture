@@ -1,10 +1,12 @@
 package com.epam.designAndArchitecture.userInterface;
 
-import com.epam.designAndArchitecture.DBservices.JSONDatabase;
 import com.epam.designAndArchitecture.account.AccountManager;
 import com.epam.designAndArchitecture.entities.Book;
+import com.epam.designAndArchitecture.exceptions.HistoryException;
 import com.epam.designAndArchitecture.library.LiteratureManager;
 import com.epam.designAndArchitecture.util.BookmarkService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,11 +17,10 @@ import java.util.List;
 import java.util.Set;
 
 public class LibraryService {
+    public static final Logger logger = LogManager.getLogger();
     public static File historyFile = new File("history/ActionHistory.txt");
     private final AccountManager accountManager = new AccountManager();
     private final LiteratureManager literatureManager = new LiteratureManager();
-    private final String pathToJSONDB = "DB/";
-    private final JSONDatabase jsonDB = new JSONDatabase(pathToJSONDB);
 
     public boolean requestSignUpAccount(String login, String password) {
         return accountManager.signUpUser(login, password);
@@ -100,19 +101,24 @@ public class LibraryService {
         return accountManager.deleteUser(login);
     }
 
-    public String requestTakeHistory() throws IOException {
-        if (historyFile.exists() && accountManager.isAdmin()) {
-            return Files.readString(Paths.get(historyFile.getPath()));
+    public String requestTakeHistory() {
+        if (accountManager.isAdmin()) {
+            try {
+                return Files.readString(Paths.get(historyFile.getPath()));
+            } catch (IOException e) {
+                HistoryException exception = new HistoryException(e);
+                logger.catching(exception);
+            }
         }
         return "You cannot read history";
     }
 
-    public void requestSerializeData() throws IOException {
+    public void requestSerializeData() {
         accountManager.serializeAccounts();
         literatureManager.serializeLiteratureData();
     }
 
-    public void requestDeserializeData() throws IOException {
+    public void requestDeserializeData() {
         accountManager.deserializeAccounts();
         literatureManager.deserializeLiteratureData();
     }

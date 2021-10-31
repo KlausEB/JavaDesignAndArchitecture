@@ -4,7 +4,6 @@ import com.epam.designAndArchitecture.entities.Author;
 import com.epam.designAndArchitecture.entities.Book;
 import com.epam.designAndArchitecture.util.SearcherInAuthors;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,11 +57,11 @@ public class LiteratureManager {
         return searcherInAuthors.searchBookByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
     }
 
-    public void serializeLiteratureData() throws IOException {
+    public void serializeLiteratureData() {
         dbService.saveLiteratureData(authors);
     }
 
-    public void deserializeLiteratureData() throws IOException {
+    public void deserializeLiteratureData() {
         setAuthors(dbService.takeLiteratureData());
     }
 

@@ -7,28 +7,21 @@ import org.nd4j.shade.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 
-public class JSONReader {
-    private final ObjectMapper mapper;
-    private String fileForRead;
+public abstract class JSONReader {
+    protected final ObjectMapper mapper = new ObjectMapper();
+    protected String pathForRead;
 
-    public JSONReader(String fileForRead, ObjectMapper mapper) {
-        this.fileForRead = fileForRead;
-        this.mapper = mapper;
+    public JSONReader(String pathForRead) {
+        this.pathForRead = pathForRead;
     }
 
-    public SerializableObject[] readObjects() throws IOException {
-        File fileToSave = new File(fileForRead);
-        if (!fileToSave.exists()) {
-            throw new DeserializationException();
-        }
-        return mapper.readValue(fileForRead, SerializableObject[].class);
+    public abstract SerializableObject[] loadObjects() throws IOException;
+
+    public String getPathForRead() {
+        return pathForRead;
     }
 
-    public String getFileForRead() {
-        return fileForRead;
-    }
-
-    public void setFileForRead(String fileForRead) {
-        this.fileForRead = fileForRead;
+    public void setPathForRead(String pathForRead) {
+        this.pathForRead = pathForRead;
     }
 }

@@ -20,4 +20,5 @@ public enum CommandsEnum {
     TAKE_HISTORY_OPERATIONS,
     SAVE_DATA,
     LOAD_DATA,
+    LOG_OUT
 }
