@@ -35,7 +35,6 @@ public class AccountManager {
             return false;
         }
         currentUser = newUser;
-        userMap.put(login, currentUser);
         currentBookmarks.setCurrentUserBookmarks(currentUser.getBookmarkList());
         return true;
     }

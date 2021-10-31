@@ -22,7 +22,8 @@ public class User implements SerializableObject {
         this.adminRights = adminRights;
     }
 
-    public User(){}
+    public User() {
+    }
 
     public void appendBookmark(Bookmark bookmark) {
         bookmarkList.add(bookmark);

@@ -1,10 +1,8 @@
 package com.epam.designAndArchitecture.DBservices;
 
 import com.epam.designAndArchitecture.SerializableObject;
-import com.epam.designAndArchitecture.exceptions.DeserializationException;
 import org.nd4j.shade.jackson.databind.ObjectMapper;
 
-import java.io.File;
 import java.io.IOException;
 
 public abstract class JSONReader {

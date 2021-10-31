@@ -1,6 +1,8 @@
 package com.epam.designAndArchitecture.library;
 
-import com.epam.designAndArchitecture.DBservices.*;
+import com.epam.designAndArchitecture.DBservices.JSONLiteratureReader;
+import com.epam.designAndArchitecture.DBservices.JSONReader;
+import com.epam.designAndArchitecture.DBservices.JSONSaver;
 import com.epam.designAndArchitecture.entities.Author;
 import com.epam.designAndArchitecture.exceptions.DeserializationException;
 import com.epam.designAndArchitecture.exceptions.SerializationException;
@@ -14,9 +16,9 @@ import java.util.List;
 
 public class LiteratureDBService {
     public static final Logger logger = LogManager.getLogger();
+    public final String pathToJSONFile;
     private final JSONSaver dbSaver;
     private final JSONReader dbReader;
-    public final String pathToJSONFile;
 
     public LiteratureDBService(String pathToJSONFile) {
         this.pathToJSONFile = pathToJSONFile;

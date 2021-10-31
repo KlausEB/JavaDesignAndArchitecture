@@ -11,7 +11,7 @@ public class LiteratureManager {
     private static final String pathToJSONFile = "DB/literature.json";
     private final LiteratureDBService dbService = new LiteratureDBService(pathToJSONFile);
     private List<Author> authors = new ArrayList<>();
-    private final SearcherInAuthors searcherInAuthors = new SearcherInAuthors(authors);
+    private SearcherInAuthors searcherInAuthors = new SearcherInAuthors(authors);
 
     public Author createAuthor(String authorName) {
         return new Author(authorName);
@@ -71,5 +71,13 @@ public class LiteratureManager {
 
     public void setAuthors(List<Author> authors) {
         this.authors = authors;
+    }
+
+    public SearcherInAuthors getSearcherInAuthors() {
+        return searcherInAuthors;
+    }
+
+    public void setSearcherInAuthors(SearcherInAuthors searcherInAuthors) {
+        this.searcherInAuthors = searcherInAuthors;
     }
 }

@@ -19,6 +19,5 @@ public enum CommandsEnum {
     BAN_USER,
     TAKE_HISTORY_OPERATIONS,
     SAVE_DATA,
-    LOAD_DATA,
     LOG_OUT
 }

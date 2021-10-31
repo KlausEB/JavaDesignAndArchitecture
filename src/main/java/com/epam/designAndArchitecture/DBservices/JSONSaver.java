@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class JSONSaver {
-    private final ObjectMapper mapper = new ObjectMapper();
+    private ObjectMapper mapper = new ObjectMapper();
     private String pathToSave;
 
     public JSONSaver(String pathToSave) {
@@ -23,6 +23,22 @@ public class JSONSaver {
             }
         }
         mapper.writeValue(fileToSave, potentialJSON);
+    }
+
+    public ObjectMapper getMapper() {
+        return mapper;
+    }
+
+    public void setMapper(ObjectMapper mapper) {
+        this.mapper = mapper;
+    }
+
+    public String getPathToSave() {
+        return pathToSave;
+    }
+
+    public void setPathToSave(String pathToSave) {
+        this.pathToSave = pathToSave;
     }
 
     public String getFileForSave() {

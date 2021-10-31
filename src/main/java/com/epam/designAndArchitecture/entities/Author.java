@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Author implements SerializableObject {
-    private final Map<String, Book> ISBNToBooks = new HashMap<>();
+    private Map<String, Book> ISBNToBooks = new HashMap<>();
     private final BooksBuilder booksBuilder = new BooksBuilder(ISBNToBooks);
     private String authorName;
 
@@ -62,5 +62,9 @@ public class Author implements SerializableObject {
 
     public Map<String, Book> getISBNToBooks() {
         return ISBNToBooks;
+    }
+
+    public void setISBNToBooks(Map<String, Book> ISBNToBooks) {
+        this.ISBNToBooks = ISBNToBooks;
     }
 }

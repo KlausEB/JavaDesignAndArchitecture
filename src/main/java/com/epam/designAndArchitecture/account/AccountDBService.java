@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class AccountDBService {
     public static final Logger logger = LogManager.getLogger();
+    public final String pathToJSONFile;
     private final JSONSaver dbSaver;
     private final JSONReader dbReader;
-    public final String pathToJSONFile;
 
     public AccountDBService(String pathToJSONFile) {
         this.pathToJSONFile = pathToJSONFile;

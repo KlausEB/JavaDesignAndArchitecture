@@ -85,12 +85,7 @@ public class LibraryService {
     public String requestBooksWithUserBookmarks() {
         BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
         Set<String> booksISBNWithUserBookmarks = bookmarkService.takeBooksWithBookmarks();
-        StringBuilder booksWithUserBookmarks = new StringBuilder();
-        for (String currentISBN : booksISBNWithUserBookmarks) {
-            Book searchedBook = literatureManager.searchBookByISBN(currentISBN);
-            booksWithUserBookmarks.append(searchedBook.toString()).append('\n');
-        }
-        return booksWithUserBookmarks.toString();
+        return convertCollectionToString(booksISBNWithUserBookmarks);
     }
 
     public boolean requestAppendNewUser(String login, String password) {

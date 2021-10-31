@@ -1,58 +1,18 @@
-2021-10-31 05:11:12 - 123:  registration request
-2021-10-31 05:11:12 - DONE
-2021-10-31 05:11:18 - Failed to take account data
-com.epam.designAndArchitecture.exceptions.SerializationException: org.nd4j.shade.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.epam.designAndArchitecture.entities.User` (no Creators, like default constructor, exist): cannot deserialize from Object value (no delegate- or property-based Creator)
- at [Source: (File); line: 3, column: 5] (through reference chain: java.lang.Object[][0])
-	at com.epam.designAndArchitecture.account.AccountDBService.takeAccountsData(AccountDBService.java:46) [classes/:?]
-	at com.epam.designAndArchitecture.account.AccountManager.deserializeAccounts(AccountManager.java:68) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.LibraryService.requestDeserializeData(LibraryService.java:122) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.ConsoleUserInterface.loadData(ConsoleUserInterface.java:396) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.ConsoleUserInterface.userCommandExecutor(ConsoleUserInterface.java:474) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.ConsoleUserInterface.startWorking(ConsoleUserInterface.java:61) [classes/:?]
-	at com.epam.designAndArchitecture.App.main(App.java:15) [classes/:?]
-Caused by: org.nd4j.shade.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.epam.designAndArchitecture.entities.User` (no Creators, like default constructor, exist): cannot deserialize from Object value (no delegate- or property-based Creator)
- at [Source: (File); line: 3, column: 5] (through reference chain: java.lang.Object[][0])
-	at org.nd4j.shade.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:67) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.DeserializationContext.reportBadDefinition(DeserializationContext.java:1764) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.DatabindContext.reportBadDefinition(DatabindContext.java:400) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.DeserializationContext.handleMissingInstantiator(DeserializationContext.java:1209) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1415) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:362) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:195) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.std.ObjectArrayDeserializer.deserialize(ObjectArrayDeserializer.java:214) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.std.ObjectArrayDeserializer.deserialize(ObjectArrayDeserializer.java:24) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:322) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4593) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3413) ~[jackson-1.0.0-M1.1.jar:?]
-	at com.epam.designAndArchitecture.DBservices.JSONAccountReader.loadObjects(JSONAccountReader.java:22) ~[classes/:?]
-	at com.epam.designAndArchitecture.account.AccountDBService.takeAccountsData(AccountDBService.java:44) ~[classes/:?]
-	... 6 more
-2021-10-31 05:15:26 - 123:  registration request
-2021-10-31 05:15:26 - DONE
-2021-10-31 05:15:41 - Failed to take account data
-com.epam.designAndArchitecture.exceptions.SerializationException: org.nd4j.shade.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.epam.designAndArchitecture.entities.User` (no Creators, like default constructor, exist): cannot deserialize from Object value (no delegate- or property-based Creator)
- at [Source: (File); line: 3, column: 5] (through reference chain: java.lang.Object[][0])
-	at com.epam.designAndArchitecture.account.AccountDBService.takeAccountsData(AccountDBService.java:46) [classes/:?]
-	at com.epam.designAndArchitecture.account.AccountManager.deserializeAccounts(AccountManager.java:68) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.LibraryService.requestDeserializeData(LibraryService.java:122) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.ConsoleUserInterface.loadData(ConsoleUserInterface.java:396) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.ConsoleUserInterface.userCommandExecutor(ConsoleUserInterface.java:474) [classes/:?]
-	at com.epam.designAndArchitecture.userInterface.ConsoleUserInterface.startWorking(ConsoleUserInterface.java:61) [classes/:?]
-	at com.epam.designAndArchitecture.App.main(App.java:18) [classes/:?]
-Caused by: org.nd4j.shade.jackson.databind.exc.InvalidDefinitionException: Cannot construct instance of `com.epam.designAndArchitecture.entities.User` (no Creators, like default constructor, exist): cannot deserialize from Object value (no delegate- or property-based Creator)
- at [Source: (File); line: 3, column: 5] (through reference chain: java.lang.Object[][0])
-	at org.nd4j.shade.jackson.databind.exc.InvalidDefinitionException.from(InvalidDefinitionException.java:67) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.DeserializationContext.reportBadDefinition(DeserializationContext.java:1764) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.DatabindContext.reportBadDefinition(DatabindContext.java:400) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.DeserializationContext.handleMissingInstantiator(DeserializationContext.java:1209) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.BeanDeserializerBase.deserializeFromObjectUsingNonDefault(BeanDeserializerBase.java:1415) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.BeanDeserializer.deserializeFromObject(BeanDeserializer.java:362) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.BeanDeserializer.deserialize(BeanDeserializer.java:195) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.std.ObjectArrayDeserializer.deserialize(ObjectArrayDeserializer.java:214) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.std.ObjectArrayDeserializer.deserialize(ObjectArrayDeserializer.java:24) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.deser.DefaultDeserializationContext.readRootValue(DefaultDeserializationContext.java:322) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4593) ~[jackson-1.0.0-M1.1.jar:?]
-	at org.nd4j.shade.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3413) ~[jackson-1.0.0-M1.1.jar:?]
-	at com.epam.designAndArchitecture.DBservices.JSONAccountReader.loadObjects(JSONAccountReader.java:23) ~[classes/:?]
-	at com.epam.designAndArchitecture.account.AccountDBService.takeAccountsData(AccountDBService.java:44) ~[classes/:?]
-	... 6 more
+2021-10-31 23:22:42 - ANTON:  registration request
+2021-10-31 23:22:42 - Invalid username or password
+2021-10-31 23:22:57 - ANTON:  registration request
+2021-10-31 23:22:57 - DONE
+2021-10-31 23:27:17 - Nikolai:  registration request
+2021-10-31 23:27:17 - Invalid username or password
+2021-10-31 23:27:54 - Nikolai:  registration request
+2021-10-31 23:27:54 - Invalid username or password
+2021-10-31 23:28:13 - ANTON:  registration request
+2021-10-31 23:28:13 - Invalid username or password
+2021-10-31 23:28:44 - Nikolai:  registration request
+2021-10-31 23:28:44 - DONE
+2021-10-31 23:29:07 - Try to append: new user ANTON
+2021-10-31 23:29:07 - The deletion was successful
+2021-11-01 01:54:16 - Anton:  registration request
+2021-11-01 01:54:16 - DONE
+2021-11-01 01:54:57 - Anton:  registration request
+2021-11-01 01:54:57 - Invalid username or password

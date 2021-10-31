@@ -47,6 +47,7 @@ public class ConsoleUserInterface implements IUserInterface {
 
     @Override
     public void startWorking() throws IOException {
+        loadData();
         while (true) {
             System.out.println(WELCOME_MESSAGE);
             String userInput = reader.readLine();
@@ -469,9 +470,6 @@ public class ConsoleUserInterface implements IUserInterface {
                     break;
                 case SAVE_DATA:
                     saveData();
-                    break;
-                case LOAD_DATA:
-                    loadData();
                     break;
                 case LOG_OUT:
                     saveData();
