@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public class Author implements SerializableObject {
+    private String authorName;
     private Map<String, Book> ISBNToBooks = new HashMap<>();
     private final BooksBuilder booksBuilder = new BooksBuilder(ISBNToBooks);
-    private String authorName;
 
     public Author(String authorName) {
         this.authorName = authorName;
@@ -50,6 +50,29 @@ public class Author implements SerializableObject {
 
     public List<Book> takeBooks(int yearOfPublishing, int numberOfPages, String partName) {
         return booksBuilder.buildBookList(yearOfPublishing, numberOfPages, partName);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Author author = (Author) o;
+
+        return authorName.equals(author.authorName);
+    }
+
+    @Override
+    public int hashCode() {
+        return authorName.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+                "authorName='" + authorName + '\'' +
+                ", ISBNToBooks=" + ISBNToBooks +
+                '}';
     }
 
     public String getAuthorName() {

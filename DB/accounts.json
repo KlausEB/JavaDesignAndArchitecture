@@ -1,1 +1,13 @@
-[null,{"adminRights":true,"bookmarkList":[],"login":"Nikolai","password":"1231"}]
+[
+  {
+    "adminRights": true,
+    "bookmarkList": [
+      {
+        "pageNumber": 256,
+        "isbn": "144235"
+      }
+    ],
+    "login": "Nikolai",
+    "password": "1231"
+  }
+]

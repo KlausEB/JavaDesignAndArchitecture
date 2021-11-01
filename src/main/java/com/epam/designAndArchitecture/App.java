@@ -9,7 +9,7 @@ import java.io.IOException;
 public class App {
     public final static Logger logger = LogManager.getLogger();
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         IUserInterface userInterface = new ConsoleUserInterface();
         try {
             userInterface.startWorking();

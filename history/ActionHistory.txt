@@ -16,3 +16,68 @@
 2021-11-01 01:54:16 - DONE
 2021-11-01 01:54:57 - Anton:  registration request
 2021-11-01 01:54:57 - Invalid username or password
+2021-11-01 23:51:00 - Nikolai:  registration request
+2021-11-01 23:51:00 - DONE
+2021-11-01 23:51:38 - Try to append: new user ANTON
+2021-11-01 23:51:38 - The deletion was successful
+2021-11-01 23:55:42 - Try to append: Fyodor Dostoevsky author
+2021-11-01 23:55:42 - The addition was successful
+2021-11-01 23:58:10 - Try to append: Demons book
+2021-11-01 23:58:10 - The addition was unsuccessful
+2021-11-02 00:02:37 - Nikolai:  registration request
+2021-11-02 00:02:37 - DONE
+2021-11-02 00:04:09 - Try to append: Demons book
+2021-11-02 00:04:09 - The addition was unsuccessful
+2021-11-02 00:05:18 - Nikolai:  registration request
+2021-11-02 00:05:18 - DONE
+2021-11-02 00:06:11 - Try to append: Demons book
+2021-11-02 00:06:11 - The addition was unsuccessful
+2021-11-02 00:07:30 - Nikolai:  registration request
+2021-11-02 00:07:30 - DONE
+2021-11-02 00:08:02 - Nikolai:  registration request
+2021-11-02 00:08:02 - DONE
+2021-11-02 00:08:29 - Try to append: Demons book
+2021-11-02 00:08:29 - The addition was unsuccessful
+2021-11-02 00:09:18 - Nikolai:  registration request
+2021-11-02 00:09:18 - DONE
+2021-11-02 00:09:39 - Try to append: Demons book
+2021-11-02 00:09:39 - The addition was unsuccessful
+2021-11-02 00:12:31 - Nikolai:  registration request
+2021-11-02 00:12:31 - DONE
+2021-11-02 00:13:14 - Try to append: Demons book
+2021-11-02 00:13:14 - The addition was unsuccessful
+2021-11-02 00:14:48 - Try to append: Fyodor Dostoevsky author
+2021-11-02 00:14:48 - The addition was successful
+2021-11-02 00:15:12 - Try to append: Demons book
+2021-11-02 00:15:12 - The addition was unsuccessful
+2021-11-02 00:24:09 - Nikolai:  registration request
+2021-11-02 00:24:09 - DONE
+2021-11-02 00:24:42 - Try to append: Demons book
+2021-11-02 00:24:42 - The addition was unsuccessful
+2021-11-02 00:33:23 - Nikolai:  registration request
+2021-11-02 00:33:23 - DONE
+2021-11-02 00:34:05 - Try to append: Demons book
+2021-11-02 00:34:05 - The addition was unsuccessful
+2021-11-02 00:37:43 - Nikolai:  registration request
+2021-11-02 00:37:43 - Invalid username or password
+2021-11-02 00:38:06 - Nikolai:  registration request
+2021-11-02 00:38:06 - Invalid username or password
+2021-11-02 00:38:42 - Nikolai:  registration request
+2021-11-02 00:38:42 - DONE
+2021-11-02 00:39:11 - Try to append: Demons book
+2021-11-02 00:39:11 - The addition was unsuccessful
+2021-11-02 00:40:41 - Nikolai:  registration request
+2021-11-02 00:40:41 - DONE
+2021-11-02 00:41:04 - Try to append: Demons book
+2021-11-02 00:41:04 - The addition was successful
+2021-11-02 00:42:28 - Nikolai:  registration request
+2021-11-02 00:42:28 - DONE
+2021-11-02 00:43:06 - Try to append: bookmark
+2021-11-02 00:43:06 - The addition was successful
+2021-11-02 00:43:55 - Nikolai:  registration request
+2021-11-02 00:43:55 - DONE
+2021-11-02 00:44:15 - Searching books by: bookmarks
+2021-11-02 00:52:13 - Nikolai:  registration request
+2021-11-02 00:52:13 - DONE
+2021-11-02 00:53:39 - Try to append: The Brothers Karamazov book
+2021-11-02 00:53:39 - The addition was successful

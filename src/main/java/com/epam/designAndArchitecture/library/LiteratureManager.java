@@ -63,6 +63,7 @@ public class LiteratureManager {
 
     public void deserializeLiteratureData() {
         setAuthors(dbService.takeLiteratureData());
+        searcherInAuthors.setAuthors(authors);
     }
 
     public List<Author> getAuthors() {

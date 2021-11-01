@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearcherInAuthors {
-    private final List<Author> authors;
+    private List<Author> authors;
 
     public SearcherInAuthors(List<Author> authors) {
         this.authors = authors;
@@ -80,5 +80,13 @@ public class SearcherInAuthors {
             booksByYearPagesPartName.addAll(currentBooks);
         }
         return booksByYearPagesPartName;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 }
