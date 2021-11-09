@@ -5,7 +5,6 @@ import com.epam.designAndArchitecture.account.AccountManager;
 import com.epam.designAndArchitecture.entities.Book;
 import com.epam.designAndArchitecture.exceptions.HistoryException;
 import com.epam.designAndArchitecture.library.LiteratureManager;
-import com.epam.designAndArchitecture.util.BookmarkService;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -81,8 +80,7 @@ public class LibraryService {
     }
 
     public String booksWithUserBookmarks() {
-        BookmarkService bookmarkService = accountManager.getBookmarkService();
-        Set<String> booksISBNWithUserBookmarks = bookmarkService.takeBooksWithBookmarks();
+        Set<String> booksISBNWithUserBookmarks = accountManager.takeBooksWithCurrentUserBookmarks();
         StringBuilder booksWithUserBookmarks = new StringBuilder();
         for (String currentISBN : booksISBNWithUserBookmarks) {
             booksWithUserBookmarks.append(literatureManager.searchBookByISBN(currentISBN)).append('\n');

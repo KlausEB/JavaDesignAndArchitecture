@@ -38,8 +38,11 @@ public class BookmarkService {
                         && x.getPageNumber() == pageNumber));
     }
 
-    public Set<String> takeBooksWithBookmarks() {
-        return bookmarksList.stream().map(Bookmark::getISBN).collect(Collectors.toSet());
+    public Set<String> takeBooksWithCurrentUserBookmarks(String login) {
+        return bookmarksList.stream()
+                .filter(x -> x.getUserLogin().equals(login))
+                .map(Bookmark::getISBN)
+                .collect(Collectors.toSet());
     }
 
     public void saveBookmarkData() {

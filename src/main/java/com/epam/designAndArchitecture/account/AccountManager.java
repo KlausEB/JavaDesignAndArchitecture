@@ -9,6 +9,7 @@ import com.epam.designAndArchitecture.util.BookmarkService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class AccountManager {
     public static final String pathToJSONFile = App.properties.getProperty("accountDataSource");
@@ -57,6 +58,9 @@ public class AccountManager {
     }
 
     public boolean deleteUser(String login) {
+        if (!currentUser.isAdminRights()) {
+            return false;
+        }
         return userMap.remove(login) != null;
     }
 
@@ -80,6 +84,10 @@ public class AccountManager {
 
     public boolean deleteBookmark(String isbn, int pageNumber) {
         return bookmarkService.deleteBookmark(currentUser.getLogin(), isbn, pageNumber);
+    }
+
+    public Set<String> takeBooksWithCurrentUserBookmarks() {
+        return bookmarkService.takeBooksWithCurrentUserBookmarks(currentUser.getLogin());
     }
 
     public BookmarkService getBookmarkService() {

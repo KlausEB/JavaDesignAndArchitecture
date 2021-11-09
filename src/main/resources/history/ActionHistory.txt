@@ -169,3 +169,17 @@ Caused by: org.nd4j.shade.jackson.databind.exc.MismatchedInputException: No cont
 2021-11-09 06:45:30 - DONE
 2021-11-09 06:46:47 - Try to append: bookmark
 2021-11-09 06:46:47 - The addition was successful
+2021-11-09 06:59:52 - Nikolai:  registration request
+2021-11-09 06:59:52 - DONE
+2021-11-09 07:00:18 - Searching books by: bookmarks
+2021-11-09 07:05:20 - Nikolai:  registration request
+2021-11-09 07:05:20 - DONE
+2021-11-09 07:05:28 - Searching books by: bookmarks
+2021-11-09 07:07:00 - Nikolai:  registration request
+2021-11-09 07:07:00 - DONE
+2021-11-09 07:07:07 - Searching books by: bookmarks
+2021-11-09 07:07:45 - Anton:  registration request
+2021-11-09 07:07:45 - DONE
+2021-11-09 07:07:57 - Searching books by: bookmarks
+2021-11-09 07:08:16 - Try to append: new user Nikolai
+2021-11-09 07:08:16 - The deletion was successful
