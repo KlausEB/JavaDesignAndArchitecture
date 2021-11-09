@@ -7,7 +7,7 @@
     </Properties>
     <ThresholdFilter level="trace"/>
     <Appenders>
-        <File name="History" fileName="history/ActionHistory.txt" append="true">
+        <File name="History" fileName="src/main/resources/history/ActionHistory.txt" append="true">
             <PatternLayout pattern="${pattern_file}"/>
         </File>
     </Appenders>

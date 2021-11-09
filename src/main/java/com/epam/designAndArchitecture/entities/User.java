@@ -1,13 +1,9 @@
 package com.epam.designAndArchitecture.entities;
 
-import com.epam.designAndArchitecture.SerializableObject;
+import com.epam.designAndArchitecture.SavableObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class User implements SerializableObject {
+public class User implements SavableObject {
     boolean adminRights;
-    private List<Bookmark> bookmarkList = new ArrayList<>();
     private String login;
     private String password;
 
@@ -25,8 +21,13 @@ public class User implements SerializableObject {
     public User() {
     }
 
-    public void appendBookmark(Bookmark bookmark) {
-        bookmarkList.add(bookmark);
+    @Override
+    public String toString() {
+        return "User{" +
+                "adminRights=" + adminRights +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     @Override
@@ -61,14 +62,6 @@ public class User implements SerializableObject {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Bookmark> getBookmarkList() {
-        return bookmarkList;
-    }
-
-    public void setBookmarkList(List<Bookmark> bookmarkList) {
-        this.bookmarkList = bookmarkList;
     }
 
     public boolean isAdminRights() {

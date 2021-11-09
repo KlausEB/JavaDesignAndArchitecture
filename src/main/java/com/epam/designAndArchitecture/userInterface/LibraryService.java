@@ -1,11 +1,11 @@
 package com.epam.designAndArchitecture.userInterface;
 
+import com.epam.designAndArchitecture.App;
 import com.epam.designAndArchitecture.account.AccountManager;
 import com.epam.designAndArchitecture.entities.Book;
 import com.epam.designAndArchitecture.exceptions.HistoryException;
 import com.epam.designAndArchitecture.library.LiteratureManager;
 import com.epam.designAndArchitecture.util.BookmarkService;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
@@ -17,73 +17,71 @@ import java.util.List;
 import java.util.Set;
 
 public class LibraryService {
-    public static final Logger logger = LogManager.getLogger();
-    public static File historyFile = new File("history/ActionHistory.txt");
+    public static final Logger logger = App.logger;
+    public static File historyFile = new File(App.properties.getProperty("historyFile"));
     private final AccountManager accountManager = new AccountManager();
     private final LiteratureManager literatureManager = new LiteratureManager();
 
-    public boolean requestSignUpAccount(String login, String password) {
+    public boolean signUpAccount(String login, String password) {
         return accountManager.signUpUser(login, password);
     }
 
-    public boolean requestLogInAccount(String login, String password) {
+    public boolean logInAccount(String login, String password) {
         return accountManager.logInUser(login, password);
     }
 
-    public boolean requestAppendBook(String authorName,
-                                     String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
+    public boolean appendBook(String authorName,
+                              String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
         return literatureManager.appendBook(authorName,
                 bookName, yearOfPublishing, numberOfPages, bookISBN);
     }
 
-    public boolean requestDeleteBook(String bookISBN) {
+    public boolean deleteBook(String bookISBN) {
         return literatureManager.deleteBook(bookISBN);
     }
 
-    public boolean requestAppendAuthor(String authorName) {
+    public boolean appendAuthor(String authorName) {
         return literatureManager.appendAuthor(authorName);
     }
 
-    public boolean requestDeleteAuthor(String authorName) {
+    public boolean deleteAuthor(String authorName) {
         return literatureManager.deleteAuthor(authorName);
     }
 
-    public String requestBooksByPartAuthorName(String partName) {
+    public String booksByPartAuthorName(String partName) {
         List<Book> booksByPartAuthorName = literatureManager.searchBooksByPartAuthorName(partName);
         return convertCollectionToString(booksByPartAuthorName);
     }
 
-    public String requestBooksByPartName(String partName) {
+    public String booksByPartName(String partName) {
         List<Book> booksByPartName = literatureManager.searchBooksByPartName(partName);
         return convertCollectionToString(booksByPartName);
     }
 
-    public String requestBookByISBN(String isbn) {
+    public String bookByISBN(String isbn) {
         return literatureManager.searchBookByISBN(isbn).toString();
     }
 
-    public String requestBooksByYearRange(int minYear, int maxYear) {
+    public String booksByYearRange(int minYear, int maxYear) {
         List<Book> booksByYearRange = literatureManager.searchBooksByYearRange(minYear, maxYear);
         return convertCollectionToString(booksByYearRange);
     }
 
-    public String requestByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
+    public String booksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
         List<Book> booksByYearPagesPartName = literatureManager.searchBooksByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
         return convertCollectionToString(booksByYearPagesPartName);
     }
 
-    public boolean requestAppendBookmark(String isbn, int pageNumber) {
-        BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
-        return bookmarkService.appendBookmark(isbn, pageNumber);
+    public boolean appendBookmark(String isbn, int pageNumber) {
+        return accountManager.appendBookmark(isbn, pageNumber);
     }
 
-    public boolean requestDeleteBookmark(String isbn, int pageNumber) {
-        BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
-        return bookmarkService.deleteBookmark(isbn, pageNumber);
+    public boolean deleteBookmark(String isbn, int pageNumber) {
+        return accountManager.deleteBookmark(isbn, pageNumber);
     }
 
-    public String requestBooksWithUserBookmarks() {
-        BookmarkService bookmarkService = accountManager.getCurrentBookmarks();
+    public String booksWithUserBookmarks() {
+        BookmarkService bookmarkService = accountManager.getBookmarkService();
         Set<String> booksISBNWithUserBookmarks = bookmarkService.takeBooksWithBookmarks();
         StringBuilder booksWithUserBookmarks = new StringBuilder();
         for (String currentISBN : booksISBNWithUserBookmarks) {
@@ -92,15 +90,15 @@ public class LibraryService {
         return booksWithUserBookmarks.toString();
     }
 
-    public boolean requestAppendNewUser(String login, String password) {
-        return accountManager.adminAppendAccount(login, password);
+    public boolean appendNewUser(String login, String password) {
+        return accountManager.appendAdminAccount(login, password);
     }
 
-    public boolean requestBanUser(String login) {
+    public boolean banUser(String login) {
         return accountManager.deleteUser(login);
     }
 
-    public String requestTakeHistory() {
+    public String takeHistory() {
         if (accountManager.isAdmin()) {
             try {
                 return Files.readString(Paths.get(historyFile.getPath()));
@@ -113,13 +111,13 @@ public class LibraryService {
     }
 
     public void requestSerializeData() {
-        accountManager.serializeAccounts();
-        literatureManager.serializeLiteratureData();
+        accountManager.saveAccountData();
+        literatureManager.saveLiteratureData();
     }
 
     public void requestDeserializeData() {
-        accountManager.deserializeAccounts();
-        literatureManager.deserializeLiteratureData();
+        accountManager.loadAccountData();
+        literatureManager.loadLiteratureData();
     }
 
     public String convertCollectionToString(Collection<?> objects) {

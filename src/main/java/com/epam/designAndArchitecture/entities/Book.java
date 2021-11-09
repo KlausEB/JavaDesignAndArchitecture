@@ -1,14 +1,16 @@
 package com.epam.designAndArchitecture.entities;
 
-import com.epam.designAndArchitecture.SerializableObject;
+import com.epam.designAndArchitecture.SavableObject;
 
-public class Book implements SerializableObject {
+public class Book implements SavableObject {
+    private String authorName;
     private String bookName;
     private int yearOfPublishing;
     private int numberOfPages;
     private String bookISBN;
 
-    public Book(String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
+    public Book(String authorName, String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
+        this.authorName = authorName;
         this.bookName = bookName;
         this.yearOfPublishing = yearOfPublishing;
         this.numberOfPages = numberOfPages;
@@ -48,6 +50,14 @@ public class Book implements SerializableObject {
         result = 31 * result + numberOfPages;
         result = 31 * result + bookISBN.hashCode();
         return result;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     public String getBookName() {

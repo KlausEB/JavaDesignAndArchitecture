@@ -9,6 +9,8 @@ public interface IUserInterface {
 
     void signUpAccount() throws IOException;
 
+    void takeCommands();
+
     void appendBook() throws IOException;
 
     void deleteBook() throws IOException;

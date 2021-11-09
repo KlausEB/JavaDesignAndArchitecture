@@ -3,6 +3,7 @@ package com.epam.designAndArchitecture.userInterface;
 public enum CommandsEnum {
     LOGIN,
     SIGNUP,
+    COMMANDS_INFO,
     ADD_BOOK,
     DELETE_BOOK,
     ADD_AUTHOR,

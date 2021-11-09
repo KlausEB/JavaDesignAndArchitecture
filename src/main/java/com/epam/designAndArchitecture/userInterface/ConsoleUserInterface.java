@@ -1,9 +1,7 @@
 package com.epam.designAndArchitecture.userInterface;
 
+import com.epam.designAndArchitecture.App;
 import com.epam.designAndArchitecture.IUserInterface;
-import com.epam.designAndArchitecture.exceptions.InvalidCommandException;
-import com.epam.designAndArchitecture.exceptions.LoginStateException;
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -11,11 +9,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ConsoleUserInterface implements IUserInterface {
-    public static final String WELCOME_MESSAGE = "Hello, user. LogIn or SignUp?";
+    public static final String WELCOME_MESSAGE = "Hello, user. LogIn or SignUp?\n(Input 'LOGIN' or 'SIGNUP')";
     public static final String LOGIN_REQUEST_MESSAGE = "Input login:";
     public static final String PASSWORD_REQUEST_MESSAGE = "Input password:";
     public static final String INVALID_ACCOUNT_DATA = "Invalid username or password";
-    public static final String COMMAND_REQUEST_MESSAGE = "Input commands:";
+    public static final String COMMAND_REQUEST_MESSAGE = "Input commands (Input 'COMMANDS_INFO' to display more information about the commands):";
     public static final String AUTHOR_MESSAGE = "Input author name:";
     public static final String BOOK_MESSAGE = "Input book name:";
     public static final String ISBN_MESSAGE = "Input ISBN:";
@@ -31,7 +29,7 @@ public class ConsoleUserInterface implements IUserInterface {
     public static final String SUCCESSFULLY_DELETED_MESSAGE = "The deletion was successful";
     public static final String UNSUCCESSFULLY_DELETED_MESSAGE = "The deletion was unsuccessful";
 
-    public static final Logger logger = LogManager.getLogger();
+    public static final Logger logger = App.logger;
     public static final String HISTORY_REGISTRATION_ATTEMPT = ":  registration request";
     public static final String HISTORY_APPEND = "Try to append: ";
     public static final String HISTORY_DELETE = "Try to delete: ";
@@ -57,7 +55,7 @@ public class ConsoleUserInterface implements IUserInterface {
             } else if (currentCommand.equals(CommandsEnum.SIGNUP)) {
                 signUpAccount();
             } else {
-                throw new LoginStateException(UNDEFINED_COMMAND_MESSAGE);
+                System.out.println(UNDEFINED_COMMAND_MESSAGE);
             }
             userCommandExecutor();
         }
@@ -78,7 +76,7 @@ public class ConsoleUserInterface implements IUserInterface {
                 throw e;
             }
             logger.info(login + HISTORY_REGISTRATION_ATTEMPT);
-            if (libraryService.requestLogInAccount(login, password)) {
+            if (libraryService.logInAccount(login, password)) {
                 logger.info("DONE");
                 break;
             }
@@ -102,12 +100,21 @@ public class ConsoleUserInterface implements IUserInterface {
                 throw e;
             }
             logger.info(login + HISTORY_REGISTRATION_ATTEMPT);
-            if (libraryService.requestSignUpAccount(login, password)) {
+            if (libraryService.signUpAccount(login, password)) {
                 logger.info("DONE");
                 break;
             }
             logger.info(INVALID_ACCOUNT_DATA);
             System.out.println(INVALID_ACCOUNT_DATA);
+        }
+    }
+
+    @Override
+    public void takeCommands() {
+        for (CommandsEnum currentCommand : CommandsEnum.values()) {
+            if (!currentCommand.equals(CommandsEnum.LOGIN) && !currentCommand.equals(CommandsEnum.SIGNUP) && !currentCommand.equals(CommandsEnum.COMMANDS_INFO)) {
+                System.out.println(currentCommand);
+            }
         }
     }
 
@@ -135,7 +142,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_APPEND + bookName + " book");
-        appendTry(libraryService.requestAppendBook(authorName,
+        appendTry(libraryService.appendBook(authorName,
                 bookName, yearOfPublishing, numberOfPages, bookISBN));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -153,7 +160,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_DELETE + bookISBN + " book");
-        deleteTry(libraryService.requestDeleteBook(bookISBN));
+        deleteTry(libraryService.deleteBook(bookISBN));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -170,7 +177,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_APPEND + authorName + " author");
-        appendTry(libraryService.requestAppendAuthor(authorName));
+        appendTry(libraryService.appendAuthor(authorName));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -187,7 +194,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_DELETE + authorName + " author");
-        deleteTry(libraryService.requestDeleteAuthor(authorName));
+        deleteTry(libraryService.deleteAuthor(authorName));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -204,7 +211,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_SEARCH_BOOKS + '\'' + partName + '\'' + " part author name");
-        String booksByPartAuthorName = libraryService.requestBooksByPartAuthorName(partName);
+        String booksByPartAuthorName = libraryService.booksByPartAuthorName(partName);
 
         System.out.println(booksByPartAuthorName);
 
@@ -223,7 +230,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_SEARCH_BOOKS + '\'' + partName + '\'' + " part book name");
-        String booksByPartName = libraryService.requestBooksByPartName(partName);
+        String booksByPartName = libraryService.booksByPartName(partName);
         System.out.println(booksByPartName);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -241,7 +248,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_SEARCH_BOOKS + '\'' + ISBN + '\'' + " ISBN");
-        String bookByISBN = libraryService.requestBookByISBN(ISBN);
+        String bookByISBN = libraryService.bookByISBN(ISBN);
         System.out.println(bookByISBN);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -261,7 +268,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_SEARCH_BOOKS + "from " + minYear + " to " + maxYear + " years");
-        String booksByYearRange = libraryService.requestBooksByYearRange(minYear, maxYear);
+        String booksByYearRange = libraryService.booksByYearRange(minYear, maxYear);
         System.out.println(booksByYearRange);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -285,7 +292,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_SEARCH_BOOKS + yearOfPublishing + " year, " + numberOfPages + " number of pages " + partBookName + " part book name");
-        String booksByYearPagesPartName = libraryService.requestByYearPagesPartName(yearOfPublishing, numberOfPages, partBookName);
+        String booksByYearPagesPartName = libraryService.booksByYearPagesPartName(yearOfPublishing, numberOfPages, partBookName);
         System.out.println(booksByYearPagesPartName);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -306,7 +313,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_APPEND + "bookmark");
-        appendTry(libraryService.requestAppendBookmark(isbn, pageNumber));
+        appendTry(libraryService.appendBookmark(isbn, pageNumber));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -327,7 +334,7 @@ public class ConsoleUserInterface implements IUserInterface {
 
         logger.info(HISTORY_DELETE + "bookmark by " + isbn + " ISBN " + pageNumber + " page number");
 
-        deleteTry(libraryService.requestDeleteBookmark(isbn, pageNumber));
+        deleteTry(libraryService.deleteBookmark(isbn, pageNumber));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -336,7 +343,7 @@ public class ConsoleUserInterface implements IUserInterface {
     public void takeBooksWithMyBookmarks() {
         logger.info(HISTORY_SEARCH_BOOKS + "bookmarks");
         String booksWithMyBookmarks;
-        booksWithMyBookmarks = libraryService.requestBooksWithUserBookmarks();
+        booksWithMyBookmarks = libraryService.booksWithUserBookmarks();
         System.out.println(booksWithMyBookmarks);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -357,7 +364,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(login + HISTORY_REGISTRATION_ATTEMPT);
-        appendTry(libraryService.requestAppendNewUser(login, password));
+        appendTry(libraryService.appendNewUser(login, password));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -374,7 +381,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_APPEND + "new user " + login);
-        deleteTry(libraryService.requestBanUser(login));
+        deleteTry(libraryService.banUser(login));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -382,7 +389,7 @@ public class ConsoleUserInterface implements IUserInterface {
     @Override
     public void takeHistoryOperations() {
         logger.info(HISTORY_REQUEST);
-        System.out.println(libraryService.requestTakeHistory());
+        System.out.println(libraryService.takeHistory());
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -423,6 +430,9 @@ public class ConsoleUserInterface implements IUserInterface {
             String userInput = reader.readLine();
             CommandsEnum currentCommand = CommandsEnum.valueOf(userInput.toUpperCase());
             switch (currentCommand) {
+                case COMMANDS_INFO:
+                    takeCommands();
+                    break;
                 case ADD_AUTHOR:
                     appendAuthor();
                     break;
@@ -475,9 +485,8 @@ public class ConsoleUserInterface implements IUserInterface {
                     saveData();
                     return;
                 default:
-                    InvalidCommandException e = new InvalidCommandException();
-                    logger.catching(e);
-                    throw e;
+                    System.out.println(UNDEFINED_COMMAND_MESSAGE);
+                    logger.info(UNDEFINED_COMMAND_MESSAGE);
             }
         }
     }

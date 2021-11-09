@@ -12,8 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class AccountManagerTest {
@@ -34,21 +35,7 @@ class AccountManagerTest {
     @BeforeEach
     void setUp() {
         accountManager.setUserMap(userMap);
-        accountManager.setCurrentBookmarks(bookmarkService);
-    }
-
-    @Test
-    void logInUser_True_ExistingUserLoginAttempt() {
-        //GIVEN
-        when(accountManager.createUser(login, password)).thenReturn(user);
-        when(userMap.get(login)).thenReturn(user);
-
-        //WHEN
-        boolean registrationCheck = accountManager.logInUser(login, password);
-
-        //THEN
-        assertTrue(registrationCheck);
-        verify(bookmarkService).setCurrentUserBookmarks(anyList());
+        accountManager.setBookmarkService(bookmarkService);
     }
 
     @Test
@@ -78,33 +65,6 @@ class AccountManagerTest {
 
         //THEN
         assertFalse(registrationCheck);
-        verifyNoInteractions(bookmarkService);
-    }
-
-    @Test
-    void signUpUser_True_NewUserSignUp() {
-        //GIVEN
-        when(accountManager.appendAccount(login, password)).thenReturn(user);
-
-        //WHEN
-        boolean registrationCheck = accountManager.signUpUser(login, password);
-
-        //THEN
-        assertTrue(registrationCheck);
-        verify(bookmarkService).setCurrentUserBookmarks(anyList());
-    }
-
-    @Test
-    void appendAccount_True_NewUserAppend() {
-        //GIVEN
-        when(accountManager.createUser(login, password)).thenReturn(user);
-        when(userMap.containsKey(login)).thenReturn(false);
-
-        //WHEN
-        User appendedAccount = accountManager.appendAccount(login, password);
-
-        //THEN
-        assertEquals(user, appendedAccount);
         verifyNoInteractions(bookmarkService);
     }
 }

@@ -1,10 +1,14 @@
 package com.epam.designAndArchitecture.entities;
 
-public class Bookmark {
+import com.epam.designAndArchitecture.SavableObject;
+
+public class Bookmark implements SavableObject {
+    private String userLogin;
     private String ISBN;
     private int pageNumber;
 
-    public Bookmark(String ISBN, int pageNumber) {
+    public Bookmark(String userLogin, String ISBN, int pageNumber) {
+        this.userLogin = userLogin;
         this.ISBN = ISBN;
         this.pageNumber = pageNumber;
     }
@@ -28,6 +32,14 @@ public class Bookmark {
         int result = ISBN.hashCode();
         result = 31 * result + pageNumber;
         return result;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     public int getPageNumber() {
