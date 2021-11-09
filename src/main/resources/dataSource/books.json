@@ -8,6 +8,13 @@
   },
   {
     "authorName": "Fyodor Dostoevsky",
+    "bookName": "Doppelganger",
+    "yearOfPublishing": 1846,
+    "numberOfPages": 256,
+    "bookISBN": "978-5-91181-336-9"
+  },
+  {
+    "authorName": "Fyodor Dostoevsky",
     "bookName": "The Brothers Karamazov",
     "yearOfPublishing": 1879,
     "numberOfPages": 800,
