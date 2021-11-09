@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Properties>
+        <property name="LOG_DIR">logs</property>
+        <property name="pattern_file">%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+        </property>
+    </Properties>
+    <ThresholdFilter level="trace"/>
+    <Appenders>
+        <File name="History" fileName="src/main/resources/history/ActionHistory.txt" append="true">
+            <PatternLayout pattern="${pattern_file}"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="History"/>
+        </Root>
+    </Loggers>
+</Configuration>
