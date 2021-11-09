@@ -75,7 +75,7 @@ public class ConsoleUserInterface implements IUserInterface {
                 logger.error(EXCEPTION_USER_DATA_MESSAGE);
                 throw e;
             }
-            logger.info("{}{}",login, HISTORY_REGISTRATION_ATTEMPT);
+            logger.info("{}{}", login, HISTORY_REGISTRATION_ATTEMPT);
             if (libraryService.logInAccount(login, password)) {
                 logger.info("DONE");
                 break;
@@ -99,7 +99,7 @@ public class ConsoleUserInterface implements IUserInterface {
                 logger.error(EXCEPTION_USER_DATA_MESSAGE, e);
                 throw e;
             }
-            logger.info("{}{}",login, HISTORY_REGISTRATION_ATTEMPT);
+            logger.info("{}{}", login, HISTORY_REGISTRATION_ATTEMPT);
             if (libraryService.signUpAccount(login, password)) {
                 logger.info("DONE");
                 break;
@@ -141,7 +141,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{}{} book",HISTORY_APPEND, bookName);
+        logger.info("{}{} book", HISTORY_APPEND, bookName);
         appendTry(libraryService.appendBook(authorName,
                 bookName, yearOfPublishing, numberOfPages, bookISBN));
 
@@ -159,7 +159,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{}{} book",HISTORY_DELETE, bookISBN);
+        logger.info("{}{} book", HISTORY_DELETE, bookISBN);
         deleteTry(libraryService.deleteBook(bookISBN));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -177,7 +177,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
 
-        logger.info("{}{} author", HISTORY_APPEND,authorName);
+        logger.info("{}{} author", HISTORY_APPEND, authorName);
         appendTry(libraryService.appendAuthor(authorName));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -211,7 +211,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info(SEARCH_OUTPUT_PATTERN,HISTORY_SEARCH_BOOKS, partName, "part author name");
+        logger.info(SEARCH_OUTPUT_PATTERN, HISTORY_SEARCH_BOOKS, partName, "part author name");
         String booksByPartAuthorName = libraryService.booksByPartAuthorName(partName);
 
         System.out.println(booksByPartAuthorName);
@@ -230,7 +230,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info(SEARCH_OUTPUT_PATTERN,HISTORY_SEARCH_BOOKS, partName, "part book name");
+        logger.info(SEARCH_OUTPUT_PATTERN, HISTORY_SEARCH_BOOKS, partName, "part book name");
         String booksByPartName = libraryService.booksByPartName(partName);
         System.out.println(booksByPartName);
 
@@ -248,7 +248,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info(SEARCH_OUTPUT_PATTERN,HISTORY_SEARCH_BOOKS, isbn, "ISBN");
+        logger.info(SEARCH_OUTPUT_PATTERN, HISTORY_SEARCH_BOOKS, isbn, "ISBN");
         String bookByISBN = libraryService.bookByISBN(isbn);
         System.out.println(bookByISBN);
 
@@ -268,7 +268,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{} from {} to {} + years",HISTORY_SEARCH_BOOKS, minYear, maxYear);
+        logger.info("{} from {} to {} + years", HISTORY_SEARCH_BOOKS, minYear, maxYear);
         String booksByYearRange = libraryService.booksByYearRange(minYear, maxYear);
         System.out.println(booksByYearRange);
 
@@ -292,7 +292,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{}{} year, {} number of pages, {} part book name",HISTORY_SEARCH_BOOKS, yearOfPublishing, numberOfPages, partBookName);
+        logger.info("{}{} year, {} number of pages, {} part book name", HISTORY_SEARCH_BOOKS, yearOfPublishing, numberOfPages, partBookName);
         String booksByYearPagesPartName = libraryService.booksByYearPagesPartName(yearOfPublishing, numberOfPages, partBookName);
         System.out.println(booksByYearPagesPartName);
 
@@ -333,7 +333,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{} bookmark by {} ISBN {} page number",HISTORY_DELETE, isbn, pageNumber);
+        logger.info("{} bookmark by {} ISBN {} page number", HISTORY_DELETE, isbn, pageNumber);
 
         deleteTry(libraryService.deleteBookmark(isbn, pageNumber));
 
@@ -364,7 +364,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{}{}",login, HISTORY_REGISTRATION_ATTEMPT);
+        logger.info("{}{}", login, HISTORY_REGISTRATION_ATTEMPT);
         appendTry(libraryService.appendNewUser(login, password));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -381,7 +381,7 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{} new user {}",HISTORY_APPEND, login);
+        logger.info("{} new user {}", HISTORY_APPEND, login);
         deleteTry(libraryService.banUser(login));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);

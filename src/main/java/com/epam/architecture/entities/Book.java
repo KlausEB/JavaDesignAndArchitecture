@@ -1,8 +1,8 @@
 package com.epam.architecture.entities;
 
-import com.epam.architecture.SavableObject;
+import java.io.Serializable;
 
-public class Book implements SavableObject {
+public class Book implements Serializable {
     private String authorName;
     private String bookName;
     private int yearOfPublishing;

@@ -1,7 +1,6 @@
 package com.epam.architecture.datasource;
 
 import com.epam.architecture.App;
-import com.epam.architecture.SavableObject;
 import com.epam.architecture.entities.Author;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.entities.Bookmark;
@@ -12,8 +11,9 @@ import org.nd4j.shade.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class JSONReader {
+public class JSONReader<T extends Serializable> {
     public static final Logger logger = App.logger;
     protected final ObjectMapper mapper = new ObjectMapper();
     protected String pathForRead;
@@ -22,25 +22,31 @@ public class JSONReader {
         this.pathForRead = pathForRead;
     }
 
-    public SavableObject[] loadObjects(DataSourceType type) throws IOException {
+    public T[] loadObjects(DataSourceType type) throws IOException {
         File fileToRead = new File(pathForRead);
         if (!fileToRead.exists()) {
             throw new RestoreFromDataSourceException();
         }
+        Serializable[] deserializableObjects;
         switch (type) {
             case ACCOUNT:
-                return mapper.readValue(fileToRead, User[].class);
+                deserializableObjects = mapper.readValue(fileToRead, User[].class);
+                break;
             case AUTHOR:
-                return mapper.readValue(fileToRead, Author[].class);
+                deserializableObjects = mapper.readValue(fileToRead, Author[].class);
+                break;
             case BOOK:
-                return mapper.readValue(fileToRead, Book[].class);
+                deserializableObjects = mapper.readValue(fileToRead, Book[].class);
+                break;
             case BOOKMARK:
-                return mapper.readValue(fileToRead, Bookmark[].class);
+                deserializableObjects = mapper.readValue(fileToRead, Bookmark[].class);
+                break;
             default:
                 RestoreFromDataSourceException exception = new RestoreFromDataSourceException();
                 logger.error("Failed to take data", exception);
                 throw exception;
         }
+        return (T[]) deserializableObjects;
     }
 
     public String getPathForRead() {

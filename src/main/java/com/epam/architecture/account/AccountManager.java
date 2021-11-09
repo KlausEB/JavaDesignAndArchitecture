@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class AccountManager {
     public static final String PATH_TO_JSON_FILE = App.properties.getProperty("accountDataSource");
-    private final DataSourceService dataSourceService = new DataSourceService(PATH_TO_JSON_FILE, DataSourceType.ACCOUNT);
+    private final DataSourceService<User> dataSourceService = new DataSourceService<>(PATH_TO_JSON_FILE, DataSourceType.ACCOUNT);
     private Map<String, User> userMap = new HashMap<>();
     private User currentUser;
     private BookmarkService bookmarkService = new BookmarkService();
@@ -71,7 +71,7 @@ public class AccountManager {
     }
 
     public void loadAccountData() {
-        User[] users = (User[]) dataSourceService.restoreData();
+        User[] users = dataSourceService.restoreData();
         for (User element : users) {
             userMap.put(element.getLogin(), element);
         }

@@ -1,8 +1,8 @@
 package com.epam.architecture.entities;
 
-import com.epam.architecture.SavableObject;
+import java.io.Serializable;
 
-public class Author implements SavableObject {
+public class Author implements Serializable {
     private String authorName;
 
     public Author(String authorName) {

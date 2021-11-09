@@ -1,8 +1,8 @@
 package com.epam.architecture.entities;
 
-import com.epam.architecture.SavableObject;
+import java.io.Serializable;
 
-public class User implements SavableObject {
+public class User implements Serializable {
     boolean adminRights;
     private String login;
     private String password;

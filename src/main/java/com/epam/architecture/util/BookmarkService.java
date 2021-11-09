@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class BookmarkService {
     public static final String PATH_TO_JSON_FILE = App.properties.getProperty("bookmarkDataSource");
-    private final DataSourceService dataSourceService = new DataSourceService(PATH_TO_JSON_FILE, DataSourceType.BOOKMARK);
+    private final DataSourceService<Bookmark> dataSourceService = new DataSourceService<>(PATH_TO_JSON_FILE, DataSourceType.BOOKMARK);
     private List<Bookmark> bookmarksList = new ArrayList<>();
 
     public boolean appendBookmark(String userLogin, String isbn, int pageName) {
@@ -52,7 +52,7 @@ public class BookmarkService {
 
     public void loadBookmarkData() {
         bookmarksList = new ArrayList<>();
-        Bookmark[] bookmarks = (Bookmark[]) dataSourceService.restoreData();
+        Bookmark[] bookmarks = dataSourceService.restoreData();
         bookmarksList.addAll(Arrays.asList(bookmarks));
     }
 }

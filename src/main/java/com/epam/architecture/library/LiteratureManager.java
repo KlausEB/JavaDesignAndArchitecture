@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 public class LiteratureManager {
     public static final String PATH_TO_AUTHOR_JSON_FILE = App.properties.getProperty("authorDataSource");
     public static final String PATH_TO_BOOK_JSON_FILE = App.properties.getProperty("bookDataSource");
-    private final DataSourceService authorDataSourceService = new DataSourceService(PATH_TO_AUTHOR_JSON_FILE, DataSourceType.AUTHOR);
-    private final DataSourceService bookDataSourceService = new DataSourceService(PATH_TO_BOOK_JSON_FILE, DataSourceType.BOOK);
+    private final DataSourceService<Author> authorDataSourceService = new DataSourceService<>(PATH_TO_AUTHOR_JSON_FILE, DataSourceType.AUTHOR);
+    private final DataSourceService<Book> bookDataSourceService = new DataSourceService<>(PATH_TO_BOOK_JSON_FILE, DataSourceType.BOOK);
     private final Map<String, Book> isbnToBookMap = new HashMap<>();
     private Set<Author> authorsSet = new HashSet<>();
 
@@ -93,8 +93,8 @@ public class LiteratureManager {
     }
 
     public void loadLiteratureData() {
-        Author[] authors = (Author[]) authorDataSourceService.restoreData();
-        Book[] books = (Book[]) bookDataSourceService.restoreData();
+        Author[] authors = authorDataSourceService.restoreData();
+        Book[] books = bookDataSourceService.restoreData();
         authorsSet.addAll(Arrays.asList(authors));
         for (Book book : books) {
             isbnToBookMap.put(book.getBookISBN(), book);
