@@ -27,26 +27,26 @@ public class JSONReader<T extends Serializable> {
         if (!fileToRead.exists()) {
             throw new RestoreFromDataSourceException();
         }
-        Serializable[] deserializableObjects;
+        T[] deserializableObjects;
         switch (type) {
             case ACCOUNT:
-                deserializableObjects = mapper.readValue(fileToRead, User[].class);
+                deserializableObjects = (T[]) mapper.readValue(fileToRead, User[].class);
                 break;
             case AUTHOR:
-                deserializableObjects = mapper.readValue(fileToRead, Author[].class);
+                deserializableObjects = (T[]) mapper.readValue(fileToRead, Author[].class);
                 break;
             case BOOK:
-                deserializableObjects = mapper.readValue(fileToRead, Book[].class);
+                deserializableObjects = (T[]) mapper.readValue(fileToRead, Book[].class);
                 break;
             case BOOKMARK:
-                deserializableObjects = mapper.readValue(fileToRead, Bookmark[].class);
+                deserializableObjects = (T[]) mapper.readValue(fileToRead, Bookmark[].class);
                 break;
             default:
                 RestoreFromDataSourceException exception = new RestoreFromDataSourceException();
                 logger.error("Failed to take data", exception);
                 throw exception;
         }
-        return (T[]) deserializableObjects;
+        return deserializableObjects;
     }
 
     public String getPathForRead() {

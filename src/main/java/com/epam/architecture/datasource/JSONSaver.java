@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class JSONSaver {
+public class JSONSaver <T extends Serializable>{
     public static final Logger logger = App.logger;
     private ObjectMapper mapper = new ObjectMapper();
     private String pathToSave;
@@ -18,7 +18,7 @@ public class JSONSaver {
         this.pathToSave = pathToSave;
     }
 
-    public void saveObjects(Serializable[] potentialJSON) throws IOException {
+    public void saveObjects(T[] potentialJSON) throws IOException {
         File fileToSave = new File(pathToSave);
         if (!fileToSave.exists() && !fileToSave.createNewFile()) {
             SaveInDataSourceException exception = new SaveInDataSourceException();

@@ -12,17 +12,17 @@ public class DataSourceService<T extends Serializable> {
     public static final Logger logger = LogManager.getLogger();
     public final String pathToJSONFile;
     private final DataSourceType sourceType;
-    private final JSONSaver dbSaver;
+    private final JSONSaver<T> dbSaver;
     private final JSONReader<T> dbReader;
 
     public DataSourceService(String pathToJSONFile, DataSourceType sourceType) {
         this.pathToJSONFile = pathToJSONFile;
         this.sourceType = sourceType;
-        this.dbSaver = new JSONSaver(pathToJSONFile);
+        this.dbSaver = new JSONSaver<>(pathToJSONFile);
         this.dbReader = new JSONReader<>(pathToJSONFile);
     }
 
-    public void saveData(Serializable[] accountsData) {
+    public void saveData(T[] accountsData) {
         try {
             dbSaver.saveObjects(accountsData);
         } catch (IOException e) {
