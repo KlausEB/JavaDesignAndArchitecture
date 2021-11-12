@@ -1,15 +1,15 @@
 package com.epam.architecture.datasource;
 
 import com.epam.architecture.App;
-import com.epam.architecture.SavableObject;
 import com.epam.architecture.exceptions.SaveInDataSourceException;
 import org.apache.logging.log4j.Logger;
 import org.nd4j.shade.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
 
-public class JSONSaver {
+public class JSONSaver <T extends Serializable>{
     public static final Logger logger = App.logger;
     private ObjectMapper mapper = new ObjectMapper();
     private String pathToSave;
@@ -18,7 +18,7 @@ public class JSONSaver {
         this.pathToSave = pathToSave;
     }
 
-    public void saveObjects(SavableObject[] potentialJSON) throws IOException {
+    public void saveObjects(T[] potentialJSON) throws IOException {
         File fileToSave = new File(pathToSave);
         if (!fileToSave.exists() && !fileToSave.createNewFile()) {
             SaveInDataSourceException exception = new SaveInDataSourceException();

@@ -1,8 +1,8 @@
 package com.epam.architecture.entities;
 
-import com.epam.architecture.SavableObject;
+import java.io.Serializable;
 
-public class Bookmark implements SavableObject {
+public class Bookmark implements Serializable {
     private String userLogin;
     private String isbn;
     private int pageNumber;

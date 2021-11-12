@@ -1,28 +1,28 @@
 package com.epam.architecture.datasource;
 
-import com.epam.architecture.SavableObject;
 import com.epam.architecture.exceptions.RestoreFromDataSourceException;
 import com.epam.architecture.exceptions.SaveInDataSourceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 
-public class DataSourceService {
+public class DataSourceService<T extends Serializable> {
     public static final Logger logger = LogManager.getLogger();
     public final String pathToJSONFile;
     private final DataSourceType sourceType;
-    private final JSONSaver dbSaver;
-    private final JSONReader dbReader;
+    private final JSONSaver<T> dbSaver;
+    private final JSONReader<T> dbReader;
 
     public DataSourceService(String pathToJSONFile, DataSourceType sourceType) {
         this.pathToJSONFile = pathToJSONFile;
         this.sourceType = sourceType;
-        this.dbSaver = new JSONSaver(pathToJSONFile);
-        this.dbReader = new JSONReader(pathToJSONFile);
+        this.dbSaver = new JSONSaver<>(pathToJSONFile);
+        this.dbReader = new JSONReader<>(pathToJSONFile);
     }
 
-    public void saveData(SavableObject[] accountsData) {
+    public void saveData(T[] accountsData) {
         try {
             dbSaver.saveObjects(accountsData);
         } catch (IOException e) {
@@ -32,7 +32,7 @@ public class DataSourceService {
         }
     }
 
-    public SavableObject[] restoreData() {
+    public T[] restoreData() {
         try {
             return dbReader.loadObjects(sourceType);
         } catch (IOException e) {

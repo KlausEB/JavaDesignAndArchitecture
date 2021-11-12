@@ -14,7 +14,7 @@ public class App {
     public static final Properties properties = new Properties();
 
     public static void main(String[] args) {
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream("src/main/resources/source.properties"))){
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream("src/main/resources/source.properties"))) {
             properties.load(reader);
             IUserInterface userInterface = new ConsoleUserInterface();
             userInterface.startWorking();
