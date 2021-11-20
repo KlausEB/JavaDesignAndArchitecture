@@ -1,13 +1,21 @@
 package com.epam.architecture.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "BOOK", schema = "HOME_LIBRARY")
 public class Book implements Serializable {
+    @Id
+    @Column(name = "ISBN")
+    private String bookISBN;
     private String authorName;
     private String bookName;
     private int yearOfPublishing;
     private int numberOfPages;
-    private String bookISBN;
 
     public Book(String authorName, String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
         this.authorName = authorName;
@@ -52,6 +60,14 @@ public class Book implements Serializable {
         return result;
     }
 
+    public String getBookISBN() {
+        return bookISBN;
+    }
+
+    public void setBookISBN(String bookISBN) {
+        this.bookISBN = bookISBN;
+    }
+
     public String getAuthorName() {
         return authorName;
     }
@@ -82,13 +98,5 @@ public class Book implements Serializable {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
-    }
-
-    public String getBookISBN() {
-        return bookISBN;
-    }
-
-    public void setBookISBN(String bookISBN) {
-        this.bookISBN = bookISBN;
     }
 }

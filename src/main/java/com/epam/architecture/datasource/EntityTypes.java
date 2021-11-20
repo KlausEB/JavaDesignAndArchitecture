@@ -1,6 +1,6 @@
 package com.epam.architecture.datasource;
 
-public enum DataSourceType {
+public enum EntityTypes {
     ACCOUNT,
     AUTHOR,
     BOOK,

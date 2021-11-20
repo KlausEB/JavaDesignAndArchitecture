@@ -2,18 +2,20 @@ package com.epam.architecture.account;
 
 
 import com.epam.architecture.App;
-import com.epam.architecture.datasource.DataSourceService;
-import com.epam.architecture.datasource.DataSourceType;
+import com.epam.architecture.datasource.EntityTypes;
+import com.epam.architecture.datasource.HTwoDataSourceService;
+import com.epam.architecture.datasource.LibraryDAO;
 import com.epam.architecture.entities.User;
 import com.epam.architecture.util.BookmarkService;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class AccountManager {
     public static final String PATH_TO_JSON_FILE = App.properties.getProperty("accountDataSource");
-    private final DataSourceService<User> dataSourceService = new DataSourceService<>(PATH_TO_JSON_FILE, DataSourceType.ACCOUNT);
+    private final LibraryDAO<User> dataSourceService = new HTwoDataSourceService<>(EntityTypes.ACCOUNT);
     private Map<String, User> userMap = new HashMap<>();
     private User currentUser;
     private BookmarkService bookmarkService = new BookmarkService();
@@ -37,6 +39,7 @@ public class AccountManager {
         if (newUser == null) {
             return false;
         }
+        dataSourceService.saveData(newUser);
         currentUser = newUser;
         return true;
     }
@@ -61,7 +64,13 @@ public class AccountManager {
         if (!currentUser.isAdminRights()) {
             return false;
         }
-        return userMap.remove(login) != null;
+        User deletedUser = userMap.remove(login);
+        if (deletedUser != null) {
+            dataSourceService.deleteData(deletedUser);
+            bookmarkService.deleteAllUserBookmarks(login);
+            return true;
+        }
+        return false;
     }
 
     public void saveAccountData() {
@@ -71,7 +80,7 @@ public class AccountManager {
     }
 
     public void loadAccountData() {
-        User[] users = dataSourceService.restoreData();
+        List<User> users = dataSourceService.restoreData();
         for (User element : users) {
             userMap.put(element.getLogin(), element);
         }
@@ -84,6 +93,10 @@ public class AccountManager {
 
     public boolean deleteBookmark(String isbn, int pageNumber) {
         return bookmarkService.deleteBookmark(currentUser.getLogin(), isbn, pageNumber);
+    }
+
+    public void deleteAllBookBookmarks(String isbn) {
+        bookmarkService.deleteAllBookBookmarks(isbn);
     }
 
     public Set<String> takeBooksWithCurrentUserBookmarks() {

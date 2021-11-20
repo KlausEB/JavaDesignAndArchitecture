@@ -1,8 +1,16 @@
 package com.epam.architecture.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "AUTHOR", schema = "HOME_LIBRARY")
 public class Author implements Serializable {
+    @Id
+    @Column(name = "NAME")
     private String authorName;
 
     public Author(String authorName) {

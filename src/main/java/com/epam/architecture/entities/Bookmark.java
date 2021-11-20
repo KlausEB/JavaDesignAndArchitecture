@@ -1,8 +1,17 @@
 package com.epam.architecture.entities;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "BOOKMARK", schema = "HOME_LIBRARY")
 public class Bookmark implements Serializable {
+    @Id
+    @GeneratedValue(generator = "auto_inc")
+    private int bookmarkId;
     private String userLogin;
     private String isbn;
     private int pageNumber;
