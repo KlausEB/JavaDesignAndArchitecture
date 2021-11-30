@@ -12,6 +12,7 @@ import org.nd4j.shade.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 public class JSONReader<T extends Serializable> {
     public static final Logger logger = App.logger;
@@ -22,20 +23,20 @@ public class JSONReader<T extends Serializable> {
         this.pathForRead = pathForRead;
     }
 
-    public T[] loadObjects(DataSourceType type) throws IOException {
+    public List<T> loadObjects(EntityTypes type) throws IOException {
         File fileToRead = new File(pathForRead);
         if (!fileToRead.exists()) {
             throw new RestoreFromDataSourceException();
         }
         switch (type) {
             case ACCOUNT:
-                return (T[]) mapper.readValue(fileToRead, User[].class);
+                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, User.class));
             case AUTHOR:
-                return  (T[]) mapper.readValue(fileToRead, Author[].class);
+                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, Author.class));
             case BOOK:
-                return  (T[]) mapper.readValue(fileToRead, Book[].class);
+                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, Book.class));
             case BOOKMARK:
-                return  (T[]) mapper.readValue(fileToRead, Bookmark[].class);
+                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, Bookmark.class));
             default:
                 RestoreFromDataSourceException exception = new RestoreFromDataSourceException();
                 logger.error("Failed to take data", exception);

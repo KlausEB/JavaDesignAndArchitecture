@@ -1,8 +1,9 @@
 package com.epam.architecture.library;
 
 import com.epam.architecture.App;
-import com.epam.architecture.datasource.DataSourceService;
-import com.epam.architecture.datasource.DataSourceType;
+import com.epam.architecture.datasource.EntityTypes;
+import com.epam.architecture.datasource.HTwoDataSourceService;
+import com.epam.architecture.datasource.LibraryDAO;
 import com.epam.architecture.entities.Author;
 import com.epam.architecture.entities.Book;
 
@@ -12,8 +13,8 @@ import java.util.stream.Collectors;
 public class LiteratureManager {
     public static final String PATH_TO_AUTHOR_JSON_FILE = App.properties.getProperty("authorDataSource");
     public static final String PATH_TO_BOOK_JSON_FILE = App.properties.getProperty("bookDataSource");
-    private final DataSourceService<Author> authorDataSourceService = new DataSourceService<>(PATH_TO_AUTHOR_JSON_FILE, DataSourceType.AUTHOR);
-    private final DataSourceService<Book> bookDataSourceService = new DataSourceService<>(PATH_TO_BOOK_JSON_FILE, DataSourceType.BOOK);
+    private final LibraryDAO<Author> authorDataSourceService = new HTwoDataSourceService<>(EntityTypes.AUTHOR);
+    private final LibraryDAO<Book> bookDataSourceService = new HTwoDataSourceService<>(EntityTypes.BOOK);
     private final Map<String, Book> isbnToBookMap = new HashMap<>();
     private Set<Author> authorsSet = new HashSet<>();
 
@@ -27,8 +28,19 @@ public class LiteratureManager {
     }
 
     public boolean deleteAuthor(String authorName) {
-        if (authorsSet.removeIf(x -> x.getAuthorName().equals(authorName))) {
-            isbnToBookMap.values().removeIf(x -> x.getAuthorName().equals(authorName));
+        Author deletedAuthor = createAuthor(authorName);
+        if (authorsSet.remove(deletedAuthor)) {
+            authorDataSourceService.deleteData(deletedAuthor);
+            List<Book> deletedBooks = new ArrayList<>();
+            if (isbnToBookMap.values().removeIf(x -> {
+                if (x.getAuthorName().equals(authorName)) {
+                    deletedBooks.add(x);
+                    return true;
+                }
+                return false;
+            })) {
+                bookDataSourceService.deleteData(deletedBooks.toArray(Book[]::new));
+            }
             return true;
         }
         return false;
@@ -47,11 +59,17 @@ public class LiteratureManager {
         }
         Book currentNewBook = createBook(authorName, bookName, yearOfPublishing, numberOfPages, bookISBN);
         isbnToBookMap.put(bookISBN, currentNewBook);
+        bookDataSourceService.saveData(currentNewBook);
         return true;
     }
 
     public boolean deleteBook(String bookISBN) {
-        return isbnToBookMap.remove(bookISBN) != null;
+        Book deletedBook = isbnToBookMap.remove(bookISBN);
+        if (deletedBook != null) {
+            bookDataSourceService.deleteData(deletedBook);
+            return true;
+        }
+        return false;
     }
 
     public List<Book> searchBooksByPartAuthorName(String partName) {
@@ -93,9 +111,9 @@ public class LiteratureManager {
     }
 
     public void loadLiteratureData() {
-        Author[] authors = authorDataSourceService.restoreData();
-        Book[] books = bookDataSourceService.restoreData();
-        authorsSet.addAll(Arrays.asList(authors));
+        List<Author> authors = authorDataSourceService.restoreData();
+        List<Book> books = bookDataSourceService.restoreData();
+        authorsSet.addAll(authors);
         for (Book book : books) {
             isbnToBookMap.put(book.getBookISBN(), book);
         }

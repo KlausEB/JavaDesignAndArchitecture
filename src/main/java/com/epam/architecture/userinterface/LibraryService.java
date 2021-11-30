@@ -36,7 +36,11 @@ public class LibraryService {
     }
 
     public boolean deleteBook(String bookISBN) {
-        return literatureManager.deleteBook(bookISBN);
+        if (literatureManager.deleteBook(bookISBN)) {
+            accountManager.deleteAllBookBookmarks(bookISBN);
+            return true;
+        }
+        return false;
     }
 
     public boolean appendAuthor(String authorName) {

@@ -1,10 +1,20 @@
 package com.epam.architecture.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "USER", schema = "HOME_LIBRARY")
 public class User implements Serializable {
+    @Column(name = "ADMINRIGHTS")
     boolean adminRights;
+    @Id
+    @Column(name = "LOGIN")
     private String login;
+    @Column(name = "PASSWORD")
     private String password;
 
     public User(String login, String password) {

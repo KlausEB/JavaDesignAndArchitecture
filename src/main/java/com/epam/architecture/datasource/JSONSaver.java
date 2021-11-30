@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 
-public class JSONSaver <T extends Serializable>{
+public class JSONSaver<T extends Serializable> {
     public static final Logger logger = App.logger;
     private ObjectMapper mapper = new ObjectMapper();
     private String pathToSave;
