@@ -28,20 +28,7 @@ public class JSONReader<T extends Serializable> {
         if (!fileToRead.exists()) {
             throw new RestoreFromDataSourceException();
         }
-        switch (type) {
-            case ACCOUNT:
-                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, User.class));
-            case AUTHOR:
-                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, Author.class));
-            case BOOK:
-                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, Book.class));
-            case BOOKMARK:
-                return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, Bookmark.class));
-            default:
-                RestoreFromDataSourceException exception = new RestoreFromDataSourceException();
-                logger.error("Failed to take data", exception);
-                throw exception;
-        }
+        return mapper.readValue(fileToRead, mapper.getTypeFactory().constructCollectionType(List.class, type.getType()));
     }
 
     public String getPathForRead() {

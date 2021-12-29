@@ -43,23 +43,7 @@ public class HTwoDataSourceService<T extends Serializable> implements LibraryDAO
     public List<T> restoreData() {
         List<T> resultList = new ArrayList<>();
         try (Session session = sessionFactory.openSession()) {
-            Query<T> query;
-            switch (sourceType) {
-                case AUTHOR:
-                    query = session.createQuery("from Author");
-                    break;
-                case ACCOUNT:
-                    query = session.createQuery("from User");
-                    break;
-                case BOOK:
-                    query = session.createQuery("from Book");
-                    break;
-                case BOOKMARK:
-                    query = session.createQuery("from Bookmark");
-                    break;
-                default:
-                    throw new IllegalStateException("Unexpected value: " + sourceType);
-            }
+            Query<T> query = session.createQuery("from " + sourceType.getType().getSimpleName());
             resultList = query.list();
         }
         return resultList;
