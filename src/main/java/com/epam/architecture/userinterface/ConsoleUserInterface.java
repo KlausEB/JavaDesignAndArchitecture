@@ -2,6 +2,7 @@ package com.epam.architecture.userinterface;
 
 import com.epam.architecture.App;
 import com.epam.architecture.IUserInterface;
+import com.epam.architecture.webapp.commands.CommandsEnum;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -45,6 +46,9 @@ public class ConsoleUserInterface implements IUserInterface {
     private final LibraryService libraryService = new LibraryService();
     private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
+    private String login;
+
+
     @Override
     public void startWorking() throws IOException {
         loadData();
@@ -78,6 +82,7 @@ public class ConsoleUserInterface implements IUserInterface {
             logger.info("{}{}", login, HISTORY_REGISTRATION_ATTEMPT);
             if (libraryService.logInAccount(login, password)) {
                 logger.info("DONE");
+                this.login = login;
                 break;
             }
             logger.info(INVALID_ACCOUNT_DATA);
@@ -102,6 +107,7 @@ public class ConsoleUserInterface implements IUserInterface {
             logger.info("{}{}", login, HISTORY_REGISTRATION_ATTEMPT);
             if (libraryService.signUpAccount(login, password)) {
                 logger.info("DONE");
+                this.login = login;
                 break;
             }
             logger.info(INVALID_ACCOUNT_DATA);
@@ -212,7 +218,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(SEARCH_OUTPUT_PATTERN, HISTORY_SEARCH_BOOKS, partName, "part author name");
-        String booksByPartAuthorName = libraryService.booksByPartAuthorName(partName);
+        String booksByPartAuthorName = LibraryService.convertCollectionToString(libraryService.booksByPartAuthorName(partName));
 
         System.out.println(booksByPartAuthorName);
 
@@ -231,7 +237,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(SEARCH_OUTPUT_PATTERN, HISTORY_SEARCH_BOOKS, partName, "part book name");
-        String booksByPartName = libraryService.booksByPartName(partName);
+        String booksByPartName = LibraryService.convertCollectionToString(libraryService.booksByPartName(partName));
         System.out.println(booksByPartName);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -249,7 +255,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(SEARCH_OUTPUT_PATTERN, HISTORY_SEARCH_BOOKS, isbn, "ISBN");
-        String bookByISBN = libraryService.bookByISBN(isbn);
+        String bookByISBN = libraryService.bookByISBN(isbn).toString();
         System.out.println(bookByISBN);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -269,7 +275,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info("{} from {} to {} + years", HISTORY_SEARCH_BOOKS, minYear, maxYear);
-        String booksByYearRange = libraryService.booksByYearRange(minYear, maxYear);
+        String booksByYearRange = LibraryService.convertCollectionToString(libraryService.booksByYearRange(minYear, maxYear));
         System.out.println(booksByYearRange);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -293,7 +299,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info("{}{} year, {} number of pages, {} part book name", HISTORY_SEARCH_BOOKS, yearOfPublishing, numberOfPages, partBookName);
-        String booksByYearPagesPartName = libraryService.booksByYearPagesPartName(yearOfPublishing, numberOfPages, partBookName);
+        String booksByYearPagesPartName = LibraryService.convertCollectionToString(libraryService.booksByYearPagesPartName(yearOfPublishing, numberOfPages, partBookName));
         System.out.println(booksByYearPagesPartName);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -314,7 +320,7 @@ public class ConsoleUserInterface implements IUserInterface {
         }
 
         logger.info(HISTORY_APPEND + "bookmark");
-        appendTry(libraryService.appendBookmark(isbn, pageNumber));
+        appendTry(libraryService.appendBookmark(login, isbn, pageNumber));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -335,7 +341,7 @@ public class ConsoleUserInterface implements IUserInterface {
 
         logger.info("{} bookmark by {} ISBN {} page number", HISTORY_DELETE, isbn, pageNumber);
 
-        deleteTry(libraryService.deleteBookmark(isbn, pageNumber));
+        deleteTry(libraryService.deleteBookmark(login, isbn, pageNumber));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -344,7 +350,7 @@ public class ConsoleUserInterface implements IUserInterface {
     public void takeBooksWithMyBookmarks() {
         logger.info(HISTORY_SEARCH_BOOKS + "bookmarks");
         String booksWithMyBookmarks;
-        booksWithMyBookmarks = libraryService.booksWithUserBookmarks();
+        booksWithMyBookmarks = LibraryService.convertCollectionToString(libraryService.booksWithUserBookmarks(login));
         System.out.println(booksWithMyBookmarks);
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
@@ -352,11 +358,11 @@ public class ConsoleUserInterface implements IUserInterface {
 
     @Override
     public void createNewUser() throws IOException {
-        String login;
+        String newLogin;
         String password;
         try {
             System.out.println(LOGIN_REQUEST_MESSAGE);
-            login = reader.readLine();
+            newLogin = reader.readLine();
             System.out.println(PASSWORD_REQUEST_MESSAGE);
             password = reader.readLine();
         } catch (IOException e) {
@@ -364,8 +370,8 @@ public class ConsoleUserInterface implements IUserInterface {
             throw e;
         }
 
-        logger.info("{}{}", login, HISTORY_REGISTRATION_ATTEMPT);
-        appendTry(libraryService.appendNewUser(login, password));
+        logger.info("{}{}", newLogin, HISTORY_REGISTRATION_ATTEMPT);
+        appendTry(libraryService.appendNewUser(login, newLogin, password));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -373,16 +379,16 @@ public class ConsoleUserInterface implements IUserInterface {
     @Override
     public void banUser() throws IOException {
         System.out.println(LOGIN_REQUEST_MESSAGE);
-        String login;
+        String deleteLogin;
         try {
-            login = reader.readLine();
+            deleteLogin = reader.readLine();
         } catch (IOException e) {
             logger.error(EXCEPTION_USER_DATA_MESSAGE, e);
             throw e;
         }
 
-        logger.info("{} new user {}", HISTORY_APPEND, login);
-        deleteTry(libraryService.banUser(login));
+        logger.info("{} new user {}", HISTORY_APPEND, deleteLogin);
+        deleteTry(libraryService.banUser(login, deleteLogin));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -390,7 +396,7 @@ public class ConsoleUserInterface implements IUserInterface {
     @Override
     public void takeHistoryOperations() {
         logger.info(HISTORY_REQUEST);
-        System.out.println(libraryService.takeHistory());
+        System.out.println(libraryService.takeHistory(login));
 
         System.out.println(DONE_COMMAND_WORKING_MESSAGE);
     }
@@ -434,13 +440,13 @@ public class ConsoleUserInterface implements IUserInterface {
                 case COMMANDS_INFO:
                     takeCommands();
                     break;
-                case ADD_AUTHOR:
+                case APPEND_AUTHOR:
                     appendAuthor();
                     break;
                 case DELETE_AUTHOR:
                     deleteAuthor();
                     break;
-                case ADD_BOOK:
+                case APPEND_BOOK:
                     appendBook();
                     break;
                 case DELETE_BOOK:

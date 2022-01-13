@@ -1,0 +1,24 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Delete bookmark</title>
+</head>
+<body>
+<c:import url="/jsp/navigation.jsp"/>
+<main class="content-wrapper">
+    <div class="container-fluid">
+        <form method="POST" action="library-servlet">
+            <input type="hidden" name="command" value="DELETE_BOOKMARK"/>
+            <p>Input the ISBN:</p>
+            <input name="bookISBN" required>
+            <p>Input the page number:</p>
+            <input name="pageNumber" required>
+            <button type="submit">Delete</button>
+        </form>
+        <br>
+        ${result}
+    </div>
+</main>
+</body>
+</html>
