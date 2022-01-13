@@ -54,7 +54,7 @@
                             by year of publication, number of pages and part of the book title</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/searchBooksByAuthor.jsp">Search
+                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/searchBooksByYearRange.jsp">Search
                             for books by year range</a>
                     </li>
                     <li class="nav-item">
