@@ -5,21 +5,37 @@ import com.epam.architecture.account.AccountManager;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.exceptions.HistoryException;
 import com.epam.architecture.library.LiteratureManager;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 
 public class LibraryService {
-    public static final Logger logger = App.logger;
-    public static final File historyFile = new File(App.properties.getProperty("historyFile"));
+    public static final Logger logger = LogManager.getLogger();
+    public static final Properties properties = new Properties();
+    public static final File historyFile = new File(properties.getProperty("historyFile"));
     private final AccountManager accountManager = new AccountManager();
     private final LiteratureManager literatureManager = new LiteratureManager();
+    public static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+
+    {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream("src/main/resources/source.properties"))) {
+            properties.load(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean signUpAccount(String login, String password) {
         return accountManager.signUpUser(login, password);
@@ -128,5 +144,9 @@ public class LibraryService {
             stringObjects.append(currentObject.toString()).append('\n');
         }
         return stringObjects.toString();
+    }
+
+    public void closeSourceService(){
+        sessionFactory.close();
     }
 }

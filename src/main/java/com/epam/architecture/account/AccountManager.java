@@ -6,6 +6,7 @@ import com.epam.architecture.datasource.EntityTypes;
 import com.epam.architecture.datasource.HTwoDataSourceService;
 import com.epam.architecture.datasource.LibraryDAO;
 import com.epam.architecture.entities.User;
+import com.epam.architecture.userinterface.LibraryService;
 import com.epam.architecture.util.BookmarkService;
 
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class AccountManager {
-    public static final String PATH_TO_JSON_FILE = App.properties.getProperty("accountDataSource");
+    public static final String PATH_TO_JSON_FILE = LibraryService.properties.getProperty("accountDataSource");
     private final LibraryDAO<User> dataSourceService = new HTwoDataSourceService<>(EntityTypes.ACCOUNT);
     private Map<String, User> userMap = new HashMap<>();
     private User currentUser;

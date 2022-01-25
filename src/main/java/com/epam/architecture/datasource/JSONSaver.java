@@ -2,6 +2,7 @@ package com.epam.architecture.datasource;
 
 import com.epam.architecture.App;
 import com.epam.architecture.exceptions.SaveInDataSourceException;
+import com.epam.architecture.userinterface.LibraryService;
 import org.apache.logging.log4j.Logger;
 import org.nd4j.shade.jackson.databind.ObjectMapper;
 
@@ -10,7 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class JSONSaver<T extends Serializable> {
-    public static final Logger logger = App.logger;
+    public static final Logger logger = LibraryService.logger;
     private ObjectMapper mapper = new ObjectMapper();
     private String pathToSave;
 

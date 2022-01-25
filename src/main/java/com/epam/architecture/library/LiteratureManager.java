@@ -6,13 +6,14 @@ import com.epam.architecture.datasource.HTwoDataSourceService;
 import com.epam.architecture.datasource.LibraryDAO;
 import com.epam.architecture.entities.Author;
 import com.epam.architecture.entities.Book;
+import com.epam.architecture.userinterface.LibraryService;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class LiteratureManager {
-    public static final String PATH_TO_AUTHOR_JSON_FILE = App.properties.getProperty("authorDataSource");
-    public static final String PATH_TO_BOOK_JSON_FILE = App.properties.getProperty("bookDataSource");
+    public static final String PATH_TO_AUTHOR_JSON_FILE = LibraryService.properties.getProperty("authorDataSource");
+    public static final String PATH_TO_BOOK_JSON_FILE = LibraryService.properties.getProperty("bookDataSource");
     private final LibraryDAO<Author> authorDataSourceService = new HTwoDataSourceService<>(EntityTypes.AUTHOR);
     private final LibraryDAO<Book> bookDataSourceService = new HTwoDataSourceService<>(EntityTypes.BOOK);
     private final Map<String, Book> isbnToBookMap = new HashMap<>();

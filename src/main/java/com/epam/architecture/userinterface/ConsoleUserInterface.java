@@ -29,7 +29,7 @@ public class ConsoleUserInterface implements IUserInterface {
     public static final String SUCCESSFULLY_DELETED_MESSAGE = "The deletion was successful";
     public static final String UNSUCCESSFULLY_DELETED_MESSAGE = "The deletion was unsuccessful";
 
-    public static final Logger logger = App.logger;
+    public static final Logger logger = LibraryService.logger;
     public static final String HISTORY_REGISTRATION_ATTEMPT = ":  registration request";
     public static final String HISTORY_APPEND = "Try to append: ";
     public static final String HISTORY_DELETE = "Try to delete: ";
