@@ -1,6 +1,5 @@
 package com.epam.architecture;
 
-import com.epam.architecture.userinterface.ConsoleUserInterface;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -19,8 +18,6 @@ public class App {
     public static void main(String[] args) {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream("src/main/resources/source.properties"))) {
             properties.load(reader);
-            IUserInterface userInterface = new ConsoleUserInterface();
-            userInterface.startWorking();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
