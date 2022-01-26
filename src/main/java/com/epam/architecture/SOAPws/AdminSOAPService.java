@@ -8,7 +8,7 @@ import jakarta.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface AdminSOAPService {
     @WebMethod
-    boolean appendNewUser(String login, String password);
+    boolean addNewUser(String login, String password);
 
     @WebMethod
     boolean banUser(String login);

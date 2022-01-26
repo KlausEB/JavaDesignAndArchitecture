@@ -7,6 +7,13 @@ import jakarta.jws.WebService;
 
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.UserSOAPService")
 public class UserSOAPServiceImpl implements UserSOAPService {
+
+    @Override
+    public boolean logInAccount(String login, String password) {
+        LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+        return libraryService.logInAccount(login, password);
+    }
+
     @Override
     public boolean signUpAccount(String login, String password) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
@@ -14,7 +21,7 @@ public class UserSOAPServiceImpl implements UserSOAPService {
     }
 
     @Override
-    public boolean appendBookmark(String isbn, int pageNumber) {
+    public boolean addBookmark(String isbn, int pageNumber) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
         return libraryService.appendBookmark(isbn, pageNumber);
     }

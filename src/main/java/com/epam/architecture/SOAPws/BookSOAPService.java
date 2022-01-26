@@ -8,14 +8,14 @@ import jakarta.jws.soap.SOAPBinding;
 @SOAPBinding(style = SOAPBinding.Style.RPC)
 public interface BookSOAPService {
     @WebMethod
-    boolean appendBook(String authorName,
-                       String bookName, int yearOfPublishing, int numberOfPages, String bookISBN);
+    boolean addBook(String authorName,
+                    String bookName, int yearOfPublishing, int numberOfPages, String bookISBN);
 
     @WebMethod
     boolean deleteBook(String bookISBN);
 
     @WebMethod
-    boolean appendAuthor(String authorName);
+    boolean addAuthor(String authorName);
 
     @WebMethod
     boolean deleteAuthor(String authorName);

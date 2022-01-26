@@ -8,8 +8,8 @@ import jakarta.jws.WebService;
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.BookSOAPService")
 public class BookSOAPServiceImpl implements BookSOAPService {
     @Override
-    public boolean appendBook(String authorName,
-                              String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
+    public boolean addBook(String authorName,
+                           String bookName, int yearOfPublishing, int numberOfPages, String bookISBN) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
         return libraryService.appendBook(authorName, bookName, yearOfPublishing, numberOfPages, bookISBN);
     }
@@ -21,7 +21,7 @@ public class BookSOAPServiceImpl implements BookSOAPService {
     }
 
     @Override
-    public boolean appendAuthor(String authorName) {
+    public boolean addAuthor(String authorName) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
         return libraryService.deleteBook(authorName);
     }
