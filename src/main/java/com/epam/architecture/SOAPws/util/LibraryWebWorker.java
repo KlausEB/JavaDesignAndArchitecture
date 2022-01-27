@@ -1,4 +1,4 @@
-package com.epam.architecture.util;
+package com.epam.architecture.SOAPws.util;
 
 import com.epam.architecture.userinterface.LibraryService;
 

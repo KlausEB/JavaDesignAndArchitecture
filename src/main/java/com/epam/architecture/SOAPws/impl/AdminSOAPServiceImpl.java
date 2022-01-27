@@ -1,10 +1,12 @@
 package com.epam.architecture.SOAPws.impl;
 
 import com.epam.architecture.SOAPws.AdminSOAPService;
+import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.userinterface.LibraryService;
-import com.epam.architecture.util.LibraryWebWorker;
+import jakarta.jws.HandlerChain;
 import jakarta.jws.WebService;
 
+@HandlerChain(file = "../admin-handler.xml")
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.AdminSOAPService")
 public class AdminSOAPServiceImpl implements AdminSOAPService {
 

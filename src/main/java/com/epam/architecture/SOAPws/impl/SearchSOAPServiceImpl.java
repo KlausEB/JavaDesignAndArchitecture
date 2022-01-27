@@ -1,25 +1,24 @@
 package com.epam.architecture.SOAPws.impl;
 
 import com.epam.architecture.SOAPws.SearchSOAPService;
+import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.userinterface.LibraryService;
-import com.epam.architecture.util.LibraryWebWorker;
 import jakarta.jws.WebService;
 
-import java.util.List;
 
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.SearchSOAPService")
 public class SearchSOAPServiceImpl implements SearchSOAPService {
     @Override
-    public List<Book> booksByPartAuthorName(String partName) {
+    public Book[] booksByPartAuthorName(String partName) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        return libraryService.booksByPartAuthorName(partName);
+        return libraryService.booksByPartAuthorName(partName).toArray(Book[]::new);
     }
 
     @Override
-    public List<Book> booksByPartName(String partName) {
+    public Book[] booksByPartName(String partName) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        return libraryService.booksByPartName(partName);
+        return libraryService.booksByPartName(partName).toArray(Book[]::new);
     }
 
     @Override
@@ -29,14 +28,14 @@ public class SearchSOAPServiceImpl implements SearchSOAPService {
     }
 
     @Override
-    public List<Book> booksByYearRange(int minYear, int maxYear) {
+    public Book[] booksByYearRange(int minYear, int maxYear) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        return libraryService.booksByYearRange(minYear, maxYear);
+        return libraryService.booksByYearRange(minYear, maxYear).toArray(Book[]::new);
     }
 
     @Override
-    public List<Book> booksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
+    public Book[] booksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        return libraryService.booksByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
+        return libraryService.booksByYearPagesPartName(yearOfPublishing, numberOfPages, partName).toArray(Book[]::new);
     }
 }

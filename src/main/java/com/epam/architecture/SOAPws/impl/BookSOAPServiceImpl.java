@@ -1,10 +1,12 @@
 package com.epam.architecture.SOAPws.impl;
 
 import com.epam.architecture.SOAPws.BookSOAPService;
+import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.userinterface.LibraryService;
-import com.epam.architecture.util.LibraryWebWorker;
+import jakarta.jws.HandlerChain;
 import jakarta.jws.WebService;
 
+@HandlerChain(file = "../user-handler.xml")
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.BookSOAPService")
 public class BookSOAPServiceImpl implements BookSOAPService {
     @Override

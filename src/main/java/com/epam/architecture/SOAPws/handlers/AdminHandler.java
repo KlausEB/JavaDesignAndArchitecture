@@ -1,5 +1,9 @@
 package com.epam.architecture.SOAPws.handlers;
 
+import com.epam.architecture.SOAPws.util.LibraryWebWorker;
+import com.epam.architecture.SOAPws.util.UserAuthorizationChecker;
+import com.epam.architecture.userinterface.LibraryService;
+import jakarta.xml.soap.SOAPException;
 import jakarta.xml.ws.handler.MessageContext;
 import jakarta.xml.ws.handler.soap.SOAPHandler;
 import jakarta.xml.ws.handler.soap.SOAPMessageContext;
@@ -15,7 +19,14 @@ public class AdminHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public boolean handleMessage(SOAPMessageContext soapMessageContext) {
-        return false;
+        try {
+            String login = UserAuthorizationChecker.authorizeLogin(soapMessageContext);
+            LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+            return libraryService.userIsAdmin(login);
+        } catch (SOAPException e) {
+            LibraryService.logger.error("Not found header");
+            return false;
+        }
     }
 
     @Override
@@ -25,6 +36,6 @@ public class AdminHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public void close(MessageContext messageContext) {
-
+        LibraryWebWorker.takeLibraryService().closeSourceService();
     }
 }
