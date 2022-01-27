@@ -1,10 +1,5 @@
 package com.epam.architecture.datasource;
 
-import com.epam.architecture.App;
-import com.epam.architecture.entities.Author;
-import com.epam.architecture.entities.Book;
-import com.epam.architecture.entities.Bookmark;
-import com.epam.architecture.entities.User;
 import com.epam.architecture.exceptions.RestoreFromDataSourceException;
 import com.epam.architecture.userinterface.LibraryService;
 import org.apache.logging.log4j.Logger;

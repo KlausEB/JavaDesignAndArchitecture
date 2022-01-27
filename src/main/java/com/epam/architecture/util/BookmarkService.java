@@ -1,6 +1,5 @@
 package com.epam.architecture.util;
 
-import com.epam.architecture.App;
 import com.epam.architecture.datasource.EntityTypes;
 import com.epam.architecture.datasource.HTwoDataSourceService;
 import com.epam.architecture.datasource.LibraryDAO;

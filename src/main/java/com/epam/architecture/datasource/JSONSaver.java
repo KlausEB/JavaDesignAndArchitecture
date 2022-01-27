@@ -1,6 +1,5 @@
 package com.epam.architecture.datasource;
 
-import com.epam.architecture.App;
 import com.epam.architecture.exceptions.SaveInDataSourceException;
 import com.epam.architecture.userinterface.LibraryService;
 import org.apache.logging.log4j.Logger;

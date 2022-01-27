@@ -1,15 +1,5 @@
 package com.epam.architecture;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Properties;
-
 public class App {
 
     public static void main(String[] args) {

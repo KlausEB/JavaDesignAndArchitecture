@@ -1,8 +1,11 @@
 package com.epam.architecture.SOAPws;
 
+import com.epam.architecture.entities.Book;
 import jakarta.jws.WebMethod;
 import jakarta.jws.WebService;
 import jakarta.jws.soap.SOAPBinding;
+
+import java.util.List;
 
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)
@@ -21,7 +24,7 @@ public interface UserSOAPService {
     boolean deleteBookmark(String isbn, int pageNumber);
 
     @WebMethod
-    String booksWithUserBookmarks();
+    List<Book> booksWithUserBookmarks();
 
     @WebMethod
     void save();

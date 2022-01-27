@@ -13,7 +13,7 @@ public enum CommandsEnum {
     SEARCH_BOOK_BY_ISBN("ns2:bookByISBN"),
     SEARCH_BOOKS_BY_YEAR_RANGE("ns2:booksByYearRange"),
     SEARCH_BOOKS_BY_YEAR_PAGES_PART_NAME("ns2:booksByYearPagesPartName"),
-    APPEND_BOOKMARK("ns2:addBookmark"),
+    ADD_BOOKMARK("ns2:addBookmark"),
     DELETE_BOOKMARK("ns2:deleteBookmark"),
     TAKE_BOOKS_WITH_MY_BOOKMARKS("ns2:booksWithUserBookmarks"),
     CREATE_NEW_USER("ns2:addNewUser"),

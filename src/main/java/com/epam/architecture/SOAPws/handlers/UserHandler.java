@@ -1,6 +1,5 @@
 package com.epam.architecture.SOAPws.handlers;
 
-import jakarta.xml.soap.SOAPMessage;
 import jakarta.xml.ws.handler.MessageContext;
 import jakarta.xml.ws.handler.soap.SOAPHandler;
 import jakarta.xml.ws.handler.soap.SOAPMessageContext;
@@ -25,5 +24,6 @@ public class UserHandler implements SOAPHandler<SOAPMessageContext> {
     }
 
     @Override
-    public void close(MessageContext messageContext) {}
+    public void close(MessageContext messageContext) {
+    }
 }

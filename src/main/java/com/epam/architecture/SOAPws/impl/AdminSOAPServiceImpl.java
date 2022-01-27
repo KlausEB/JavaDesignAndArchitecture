@@ -3,15 +3,15 @@ package com.epam.architecture.SOAPws.impl;
 import com.epam.architecture.SOAPws.AdminSOAPService;
 import com.epam.architecture.userinterface.LibraryService;
 import com.epam.architecture.util.LibraryWebWorker;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.jws.WebService;
 
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.AdminSOAPService")
 public class AdminSOAPServiceImpl implements AdminSOAPService {
+
     @Override
     public boolean addNewUser(String login, String password) {
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        return libraryService.appendNewUser(login, password);
+        return libraryService.addNewUser(login, password);
     }
 
     @Override
