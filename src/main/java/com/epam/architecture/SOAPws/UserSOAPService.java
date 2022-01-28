@@ -10,13 +10,13 @@ import jakarta.jws.soap.SOAPBinding;
 public interface UserSOAPService {
 
     @WebMethod
-    boolean addBookmark(String isbn, int pageNumber);
+    boolean addBookmark(String login, String isbn, int pageNumber);
 
     @WebMethod
-    boolean deleteBookmark(String isbn, int pageNumber);
+    boolean deleteBookmark(String login, String isbn, int pageNumber);
 
     @WebMethod
-    Book[] booksWithUserBookmarks();
+    Book[] booksWithUserBookmarks(String login);
 
     @WebMethod
     void save();

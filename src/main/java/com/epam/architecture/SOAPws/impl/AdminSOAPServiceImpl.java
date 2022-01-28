@@ -3,6 +3,7 @@ package com.epam.architecture.SOAPws.impl;
 import com.epam.architecture.SOAPws.AdminSOAPService;
 import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.userinterface.LibraryService;
+import jakarta.annotation.PreDestroy;
 import jakarta.jws.HandlerChain;
 import jakarta.jws.WebService;
 
@@ -30,5 +31,10 @@ public class AdminSOAPServiceImpl implements AdminSOAPService {
     @Override
     public void save() {
         libraryService.requestSerializeData();
+    }
+
+    @PreDestroy
+    private void destroy() {
+        libraryService.closeSourceService();
     }
 }

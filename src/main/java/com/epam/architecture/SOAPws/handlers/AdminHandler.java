@@ -39,6 +39,5 @@ public class AdminHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public void close(MessageContext messageContext) {
-        LibraryWebWorker.takeLibraryService().closeSourceService();
     }
 }

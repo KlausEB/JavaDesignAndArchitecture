@@ -1,6 +1,5 @@
 package com.epam.architecture.SOAPws.handlers;
 
-import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.SOAPws.util.UserAuthorizationChecker;
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.xml.soap.SOAPException;
@@ -39,6 +38,5 @@ public class UserHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public void close(MessageContext messageContext) {
-        LibraryWebWorker.takeLibraryService().closeSourceService();
     }
 }

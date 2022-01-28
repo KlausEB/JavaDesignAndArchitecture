@@ -4,9 +4,11 @@ import com.epam.architecture.SOAPws.SearchSOAPService;
 import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.userinterface.LibraryService;
+import jakarta.annotation.PreDestroy;
+import jakarta.jws.HandlerChain;
 import jakarta.jws.WebService;
 
-
+@HandlerChain(file = "../user-handler.xml")
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.SearchSOAPService")
 public class SearchSOAPServiceImpl implements SearchSOAPService {
 
@@ -35,5 +37,10 @@ public class SearchSOAPServiceImpl implements SearchSOAPService {
     @Override
     public Book[] booksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
         return libraryService.booksByYearPagesPartName(yearOfPublishing, numberOfPages, partName).toArray(Book[]::new);
+    }
+
+    @PreDestroy
+    private void destroy() {
+        libraryService.closeSourceService();
     }
 }
