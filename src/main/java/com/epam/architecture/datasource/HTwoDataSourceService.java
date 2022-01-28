@@ -24,7 +24,7 @@ public class HTwoDataSourceService<T extends Serializable> implements LibraryDAO
     public final void saveData(T... data) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
-            Arrays.stream(data).forEach(session::save);
+            Arrays.stream(data).forEach(session::saveOrUpdate);
             transaction.commit();
         }
     }

@@ -19,14 +19,17 @@ public class AdminHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public boolean handleMessage(SOAPMessageContext soapMessageContext) {
-        try {
-            String login = UserAuthorizationChecker.authorizeLogin(soapMessageContext);
-            LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-            return libraryService.userIsAdmin(login);
-        } catch (SOAPException e) {
-            LibraryService.logger.error("Not found header");
-            return false;
+        if (!(boolean) soapMessageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY)) {
+            try {
+                String login = UserAuthorizationChecker.authorizeLogin(soapMessageContext);
+                LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+                return libraryService.userIsAdmin(login);
+            } catch (SOAPException e) {
+                LibraryService.logger.error("Not found header");
+                return false;
+            }
         }
+        return true;
     }
 
     @Override

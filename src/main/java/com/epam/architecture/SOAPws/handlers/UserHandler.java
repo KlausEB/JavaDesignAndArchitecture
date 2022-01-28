@@ -20,13 +20,16 @@ public class UserHandler implements SOAPHandler<SOAPMessageContext> {
 
     @Override
     public boolean handleMessage(SOAPMessageContext soapMessageContext) {
-        try {
-            UserAuthorizationChecker.authorizeLogin(soapMessageContext);
-            return true;
-        } catch (SOAPException e) {
-            LibraryService.logger.error("Not found header");
-            return false;
+        if (!(boolean) soapMessageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY)) {
+            try {
+                UserAuthorizationChecker.authorizeLogin(soapMessageContext);
+                return true;
+            } catch (SOAPException e) {
+                LibraryService.logger.error("Not found header");
+                return false;
+            }
         }
+        return true;
     }
 
     @Override

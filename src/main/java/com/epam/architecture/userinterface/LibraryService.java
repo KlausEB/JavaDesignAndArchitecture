@@ -20,18 +20,20 @@ import java.util.*;
 public class LibraryService {
     public static final Logger logger = LogManager.getLogger();
     public static final Properties properties = new Properties();
-    public static final File historyFile = new File(properties.getProperty("historyFile"));
     public static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-    private final AccountManager accountManager = new AccountManager();
-    private final LiteratureManager literatureManager = new LiteratureManager();
+    public static File historyFile;
 
-    {
+    static {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream("src/main/resources/source.properties"))) {
             properties.load(reader);
+            historyFile = new File(properties.getProperty("historyFile"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    private final AccountManager accountManager = new AccountManager();
+    private final LiteratureManager literatureManager = new LiteratureManager();
 
     public static String convertCollectionToString(Collection<?> objects) {
         StringBuilder stringObjects = new StringBuilder();
