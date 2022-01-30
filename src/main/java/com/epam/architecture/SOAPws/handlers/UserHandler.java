@@ -1,6 +1,6 @@
 package com.epam.architecture.SOAPws.handlers;
 
-import com.epam.architecture.SOAPws.util.UserAuthorizationChecker;
+import com.epam.architecture.SOAPws.util.AuthorizationUtil;
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.ws.handler.MessageContext;
@@ -21,7 +21,7 @@ public class UserHandler implements SOAPHandler<SOAPMessageContext> {
     public boolean handleMessage(SOAPMessageContext soapMessageContext) {
         if (!(boolean) soapMessageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY)) {
             try {
-                UserAuthorizationChecker.authorizeLogin(soapMessageContext);
+                AuthorizationUtil.isAuthorized(soapMessageContext);
                 return true;
             } catch (SOAPException e) {
                 LibraryService.logger.error("Not found header");

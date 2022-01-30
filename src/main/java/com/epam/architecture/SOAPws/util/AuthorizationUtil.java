@@ -1,14 +1,15 @@
 package com.epam.architecture.SOAPws.util;
 
-import com.epam.architecture.SOAPws.webExceptions.NotAuthorizedException;
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.xml.soap.*;
 import jakarta.xml.ws.handler.soap.SOAPMessageContext;
+import jakarta.xml.ws.soap.SOAPFaultException;
 
+import javax.xml.namespace.QName;
 import java.util.Iterator;
 
-public class UserAuthorizationChecker {
-    public static String authorizeLogin(SOAPMessageContext messageContext) throws SOAPException {
+public class AuthorizationUtil {
+    public static String isAuthorized(SOAPMessageContext messageContext) throws SOAPException {
         SOAPHeader soapHeader = messageContext.getMessage().getSOAPHeader();
         Iterator<SOAPHeaderElement> iterator = soapHeader.extractHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
         String login = null;
@@ -28,6 +29,11 @@ public class UserAuthorizationChecker {
                 return login;
             }
         }
-        throw new NotAuthorizedException("User is not authorized");
+
+        SOAPFactory soapFactory = SOAPFactory.newInstance();
+        SOAPFault soapFault = soapFactory.createFault(
+                "Not correct login or password",
+                new QName("http://schemas.xmlsoap.org/soap/envelope/", "Client"));
+        throw new SOAPFaultException(soapFault);
     }
 }

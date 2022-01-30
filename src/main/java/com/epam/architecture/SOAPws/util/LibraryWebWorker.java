@@ -7,9 +7,12 @@ public class LibraryWebWorker {
 
     public static LibraryService takeLibraryService() {
         if (libraryService == null) {
-            startWorking();
+            synchronized (LibraryService.class) {
+                if (libraryService == null) {
+                    startWorking();
+                }
+            }
         }
-        System.out.println(libraryService);
         return libraryService;
     }
 
