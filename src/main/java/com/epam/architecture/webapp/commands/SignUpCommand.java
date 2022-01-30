@@ -1,7 +1,7 @@
 package com.epam.architecture.webapp.commands;
 
 import com.epam.architecture.userinterface.LibraryService;
-import com.epam.architecture.webapp.util.CookieService;
+import com.epam.architecture.webapp.util.AuthorizeUtil;
 import com.epam.architecture.webapp.util.LibraryWebWorker;
 
 import javax.servlet.ServletException;
@@ -18,10 +18,7 @@ public class SignUpCommand implements WebCommand {
         String password = request.getParameter("password");
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
         if (libraryService.signUpAccount(login, password)) {
-            request.getSession().setAttribute(CookieCommand.LOGIN_NAME, login);
-            CookieService.appendCookieResponse(response, CookieCommand.LOGIN_NAME, login);
-            CookieService.appendCookieResponse(response, CookieCommand.PASSWORD_NAME, password);
-            request.getRequestDispatcher(LoginCommand.MAIN_PAGE).forward(request, response);
+            AuthorizeUtil.authorizeUser(request, response, login, password);
         } else {
             request.setAttribute("incorrectLoginPassword", LoginCommand.INCORRECT_LOGIN_PASSWORD_MESSAGE);
             request.getRequestDispatcher(SIGNUP_PAGE).forward(request, response);

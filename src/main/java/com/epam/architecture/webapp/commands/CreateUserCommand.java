@@ -9,15 +9,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CreateUserCommand implements WebCommand {
-    public static String CREATE_USER_PAGE = "jsp/createUser.jsp";
+    public static String CREATE_USER_PAGE = "jsp/adminRights/createUser.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String adminLogin = (String) request.getSession().getAttribute(CookieCommand.LOGIN_NAME);
         String newLogin = request.getParameter("newLogin");
         String password = request.getParameter("password");
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        if (libraryService.appendNewUser(adminLogin, newLogin, password)) {
+        if (libraryService.appendNewUser(newLogin, password)) {
             request.setAttribute("result", "The creation was successful");
         }
         request.getRequestDispatcher(CREATE_USER_PAGE).forward(request, response);

@@ -9,14 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class BanUserCommand implements WebCommand {
-    public static String BAN_USER_PAGE = "jsp/banUser.jsp";
+    public static String BAN_USER_PAGE = "jsp/adminRights/banUser.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String adminLogin = (String) request.getSession().getAttribute(CookieCommand.LOGIN_NAME);
         String deleteLogin = request.getParameter("deleteLogin");
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        if (libraryService.banUser(adminLogin, deleteLogin)) {
+        if (libraryService.banUser(deleteLogin)) {
             request.setAttribute("result", "The blocking was successful");
         }
         request.getRequestDispatcher(BAN_USER_PAGE).forward(request, response);

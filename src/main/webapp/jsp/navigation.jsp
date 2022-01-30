@@ -63,24 +63,25 @@
                             Search for books with my bookmarks</a>
                     </li>
                 </ul>
-            <li class="nav-item">
+            <li class="nav-item" id="for-admin">
                 <a class="nav-link nav-link-collapse"
                    href="#"
                    data-toggle="collapse"
                    data-target="#adminCommands">For administrator</a>
                 <ul class="nav-second-level collapse" id="adminCommands">
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/createUser.jsp">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/adminRights/createUser.jsp">
                             Create a new user
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/banUser.jsp">
+                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/adminRights/banUser.jsp">
                             Ban a user
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/jsp/showHistoryOperations.jsp">
+                        <a class="nav-link"
+                           href="${pageContext.request.contextPath}/jsp/adminRights/showHistoryOperations.jsp">
                             Take a history
                         </a>
                     </li>
@@ -100,5 +101,7 @@
     </div>
 </nav>
 
+<input id="role" value="${sessionScope.rights}"/>
+<script src="${pageContext.request.contextPath}/JS/admin-user-handler.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/js/bootstrap.min.js"></script>

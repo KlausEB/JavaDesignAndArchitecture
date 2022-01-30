@@ -8,7 +8,7 @@
 <c:import url="/jsp/navigation.jsp"/>
 <main class="content-wrapper">
     <div class="container-fluid">
-        <form method="POST" action="library-servlet">
+        <form method="POST" action="${pageContext.request.contextPath}/library-servlet">
             <input type="hidden" name="command" value="DELETE_AUTHOR"/>
             <p>Input the author's name:</p>
             <input name="authorName" required>

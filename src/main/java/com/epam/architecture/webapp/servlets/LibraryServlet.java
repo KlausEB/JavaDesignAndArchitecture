@@ -1,6 +1,7 @@
 package com.epam.architecture.webapp.servlets;
 
 import com.epam.architecture.webapp.commands.WebCommandFactory;
+import com.epam.architecture.webapp.util.LibraryWebWorker;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -29,5 +30,11 @@ public class LibraryServlet extends HttpServlet {
     private void runCommands(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         WebCommandFactory.takeCommand(request).execute(request, response);
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        LibraryWebWorker.takeLibraryService().closeResources();
     }
 }

@@ -1,11 +1,13 @@
 package com.epam.architecture.userinterface;
 
-import com.epam.architecture.App;
 import com.epam.architecture.account.AccountManager;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.exceptions.HistoryException;
 import com.epam.architecture.library.LiteratureManager;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,8 +18,9 @@ import java.nio.file.Paths;
 import java.util.*;
 
 public class LibraryService {
-    public static final Logger logger = App.logger;
+    public static final Logger logger = LogManager.getLogger();
     public static final Properties properties = new Properties();
+    public static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
     public static File historyFile;
 
     static {
@@ -111,24 +114,26 @@ public class LibraryService {
         return booksWithUserBookmarks;
     }
 
-    public boolean appendNewUser(String adminLogin, String newLogin, String password) {
-        return accountManager.appendAdminAccount(adminLogin, newLogin, password);
+    public boolean appendNewUser(String newLogin, String password) {
+        return accountManager.appendAdminAccount(newLogin, password);
     }
 
-    public boolean banUser(String adminLogin, String deleteLogin) {
-        return accountManager.deleteUser(adminLogin, deleteLogin);
+    public boolean banUser(String deleteLogin) {
+        return accountManager.deleteUser(deleteLogin);
     }
 
-    public String takeHistory(String login) {
-        if (accountManager.userIsAdmin(login)) {
-            try {
-                return Files.readString(Paths.get(historyFile.getPath()));
-            } catch (IOException e) {
-                HistoryException exception = new HistoryException(e);
-                logger.catching(exception);
-            }
+    public String takeHistory() {
+        try {
+            return Files.readString(Paths.get(historyFile.getPath()));
+        } catch (IOException e) {
+            HistoryException exception = new HistoryException(e);
+            logger.catching(exception);
         }
         return "You cannot read history";
+    }
+
+    public boolean userIsAdmin(String login) {
+        return accountManager.userIsAdmin(login);
     }
 
     public void requestSerializeData() {
@@ -139,5 +144,9 @@ public class LibraryService {
     public void requestDeserializeData() {
         accountManager.loadAccountData();
         literatureManager.loadLiteratureData();
+    }
+
+    public void closeResources() {
+        sessionFactory.close();
     }
 }

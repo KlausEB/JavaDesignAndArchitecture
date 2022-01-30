@@ -1,6 +1,6 @@
 package com.epam.architecture.datasource;
 
-import com.epam.architecture.App;
+import com.epam.architecture.userinterface.LibraryService;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class HTwoDataSourceService<T extends Serializable> implements LibraryDAO<T> {
     private final EntityTypes sourceType;
-    SessionFactory sessionFactory = App.sessionFactory;
+    SessionFactory sessionFactory = LibraryService.sessionFactory;
 
     public HTwoDataSourceService(EntityTypes sourceType) {
         this.sourceType = sourceType;

@@ -17,7 +17,7 @@ public class DeleteBookmarkCommand implements WebCommand {
         String bookISBN = request.getParameter("bookISBN");
         int pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        if (libraryService.appendBookmark(login, bookISBN, pageNumber)) {
+        if (libraryService.deleteBookmark(login, bookISBN, pageNumber)) {
             request.setAttribute("result", "The deletion was successful");
         }
         request.getRequestDispatcher(DELETE_AUTHOR_PAGE).forward(request, response);

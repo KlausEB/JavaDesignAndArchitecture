@@ -47,17 +47,11 @@ public class AccountManager {
         return newUser;
     }
 
-    public boolean appendAdminAccount(String adminLogin, String newLogin, String password) {
-        if (userIsAdmin(adminLogin)) {
-            return false;
-        }
+    public boolean appendAdminAccount(String newLogin, String password) {
         return appendAccount(newLogin, password) != null;
     }
 
-    public boolean deleteUser(String adminLogin, String deleteLogin) {
-        if (userIsAdmin(adminLogin)) {
-            return false;
-        }
+    public boolean deleteUser(String deleteLogin) {
         User deletedUser = userMap.remove(deleteLogin);
         if (deletedUser != null) {
             dataSourceService.deleteData(deletedUser);

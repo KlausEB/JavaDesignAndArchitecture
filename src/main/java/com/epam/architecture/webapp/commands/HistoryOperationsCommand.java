@@ -9,13 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class HistoryOperationsCommand implements WebCommand {
-    public static String SHOW_HISTORY_OPERATIONS_PAGE = "jsp/showHistoryOperations.jsp";
+    public static String SHOW_HISTORY_OPERATIONS_PAGE = "jsp/adminRights/showHistoryOperations.jsp";
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String login = (String) request.getSession().getAttribute(CookieCommand.LOGIN_NAME);
         LibraryService libraryService = LibraryWebWorker.takeLibraryService();
-        String history = libraryService.takeHistory(login);
+        String history = libraryService.takeHistory();
         request.setAttribute("history", history);
         request.getRequestDispatcher(SHOW_HISTORY_OPERATIONS_PAGE).forward(request, response);
     }
