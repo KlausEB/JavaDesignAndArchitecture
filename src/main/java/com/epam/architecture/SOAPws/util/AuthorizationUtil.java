@@ -5,13 +5,12 @@ import jakarta.xml.soap.*;
 import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 import jakarta.xml.ws.soap.SOAPFaultException;
 
-import javax.xml.namespace.QName;
 import java.util.Iterator;
 
 public class AuthorizationUtil {
     public static String isAuthorized(SOAPMessageContext messageContext) throws SOAPException {
         SOAPHeader soapHeader = messageContext.getMessage().getSOAPHeader();
-        Iterator<SOAPHeaderElement> iterator = soapHeader.extractHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
+        Iterator<SOAPHeaderElement> iterator = soapHeader.examineHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
         String login = null;
         String password = null;
         while (iterator.hasNext()) {
@@ -29,11 +28,9 @@ public class AuthorizationUtil {
                 return login;
             }
         }
-
-        SOAPFactory soapFactory = SOAPFactory.newInstance();
-        SOAPFault soapFault = soapFactory.createFault(
-                "Not correct login or password",
-                new QName("http://schemas.xmlsoap.org/soap/envelope/", "Client"));
+        SOAPBody soapBody = messageContext.getMessage().getSOAPPart().getEnvelope().getBody();
+        SOAPFault soapFault = soapBody.addFault();
+        soapFault.setFaultString("Not correct login or password");
         throw new SOAPFaultException(soapFault);
     }
 }
