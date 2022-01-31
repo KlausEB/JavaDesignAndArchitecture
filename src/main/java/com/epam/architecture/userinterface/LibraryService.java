@@ -1,25 +1,47 @@
 package com.epam.architecture.userinterface;
 
-import com.epam.architecture.App;
 import com.epam.architecture.account.AccountManager;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.exceptions.HistoryException;
 import com.epam.architecture.library.LiteratureManager;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class LibraryService {
-    public static final Logger logger = App.logger;
-    public static final File historyFile = new File(App.properties.getProperty("historyFile"));
+    public static final Logger logger = LogManager.getLogger();
+    public static final Properties properties = new Properties();
+    public static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+    public static File historyFile;
+
+    static {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream("src/main/resources/source.properties"))) {
+            properties.load(reader);
+            historyFile = new File(properties.getProperty("historyFile"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private final AccountManager accountManager = new AccountManager();
     private final LiteratureManager literatureManager = new LiteratureManager();
+
+    public static String convertCollectionToString(Collection<?> objects) {
+        StringBuilder stringObjects = new StringBuilder();
+        for (Object currentObject : objects) {
+            stringObjects.append(currentObject.toString()).append('\n');
+        }
+        return stringObjects.toString();
+    }
 
     public boolean signUpAccount(String login, String password) {
         return accountManager.signUpUser(login, password);
@@ -51,65 +73,67 @@ public class LibraryService {
         return literatureManager.deleteAuthor(authorName);
     }
 
-    public String booksByPartAuthorName(String partName) {
+    public List<Book> booksByPartAuthorName(String partName) {
         List<Book> booksByPartAuthorName = literatureManager.searchBooksByPartAuthorName(partName);
-        return convertCollectionToString(booksByPartAuthorName);
+        return booksByPartAuthorName;
     }
 
-    public String booksByPartName(String partName) {
+    public List<Book> booksByPartName(String partName) {
         List<Book> booksByPartName = literatureManager.searchBooksByPartName(partName);
-        return convertCollectionToString(booksByPartName);
+        return booksByPartName;
     }
 
-    public String bookByISBN(String isbn) {
-        return literatureManager.searchBookByISBN(isbn).toString();
+    public Book bookByISBN(String isbn) {
+        return literatureManager.searchBookByISBN(isbn);
     }
 
-    public String booksByYearRange(int minYear, int maxYear) {
+    public List<Book> booksByYearRange(int minYear, int maxYear) {
         List<Book> booksByYearRange = literatureManager.searchBooksByYearRange(minYear, maxYear);
-        return convertCollectionToString(booksByYearRange);
+        return booksByYearRange;
     }
 
-    public String booksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
+    public List<Book> booksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
         List<Book> booksByYearPagesPartName = literatureManager.searchBooksByYearPagesPartName(yearOfPublishing, numberOfPages, partName);
-        return convertCollectionToString(booksByYearPagesPartName);
+        return booksByYearPagesPartName;
     }
 
-    public boolean appendBookmark(String isbn, int pageNumber) {
-        return accountManager.appendBookmark(isbn, pageNumber);
+    public boolean appendBookmark(String login, String isbn, int pageNumber) {
+        return accountManager.appendBookmark(login, isbn, pageNumber);
     }
 
-    public boolean deleteBookmark(String isbn, int pageNumber) {
-        return accountManager.deleteBookmark(isbn, pageNumber);
+    public boolean deleteBookmark(String login, String isbn, int pageNumber) {
+        return accountManager.deleteBookmark(login, isbn, pageNumber);
     }
 
-    public String booksWithUserBookmarks() {
-        Set<String> booksISBNWithUserBookmarks = accountManager.takeBooksWithCurrentUserBookmarks();
-        StringBuilder booksWithUserBookmarks = new StringBuilder();
+    public List<Book> booksWithUserBookmarks(String login) {
+        Set<String> booksISBNWithUserBookmarks = accountManager.takeBooksWithUserBookmarks(login);
+        List<Book> booksWithUserBookmarks = new ArrayList<>();
         for (String currentISBN : booksISBNWithUserBookmarks) {
-            booksWithUserBookmarks.append(literatureManager.searchBookByISBN(currentISBN)).append('\n');
+            booksWithUserBookmarks.add(literatureManager.searchBookByISBN(currentISBN));
         }
-        return booksWithUserBookmarks.toString();
+        return booksWithUserBookmarks;
     }
 
-    public boolean appendNewUser(String login, String password) {
-        return accountManager.appendAdminAccount(login, password);
+    public boolean appendNewUser(String newLogin, String password) {
+        return accountManager.appendAdminAccount(newLogin, password);
     }
 
-    public boolean banUser(String login) {
-        return accountManager.deleteUser(login);
+    public boolean banUser(String deleteLogin) {
+        return accountManager.deleteUser(deleteLogin);
     }
 
     public String takeHistory() {
-        if (accountManager.isAdmin()) {
-            try {
-                return Files.readString(Paths.get(historyFile.getPath()));
-            } catch (IOException e) {
-                HistoryException exception = new HistoryException(e);
-                logger.catching(exception);
-            }
+        try {
+            return Files.readString(Paths.get(historyFile.getPath()));
+        } catch (IOException e) {
+            HistoryException exception = new HistoryException(e);
+            logger.catching(exception);
         }
         return "You cannot read history";
+    }
+
+    public boolean userIsAdmin(String login) {
+        return accountManager.userIsAdmin(login);
     }
 
     public void requestSerializeData() {
@@ -122,11 +146,7 @@ public class LibraryService {
         literatureManager.loadLiteratureData();
     }
 
-    public String convertCollectionToString(Collection<?> objects) {
-        StringBuilder stringObjects = new StringBuilder();
-        for (Object currentObject : objects) {
-            stringObjects.append(currentObject.toString()).append('\n');
-        }
-        return stringObjects.toString();
+    public void closeResources() {
+        sessionFactory.close();
     }
 }

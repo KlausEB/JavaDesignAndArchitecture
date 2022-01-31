@@ -1,11 +1,11 @@
 package com.epam.architecture.account;
 
 
-import com.epam.architecture.App;
 import com.epam.architecture.datasource.EntityTypes;
 import com.epam.architecture.datasource.HTwoDataSourceService;
 import com.epam.architecture.datasource.LibraryDAO;
 import com.epam.architecture.entities.User;
+import com.epam.architecture.userinterface.LibraryService;
 import com.epam.architecture.util.BookmarkService;
 
 import java.util.HashMap;
@@ -14,10 +14,9 @@ import java.util.Map;
 import java.util.Set;
 
 public class AccountManager {
-    public static final String PATH_TO_JSON_FILE = App.properties.getProperty("accountDataSource");
+    public static final String PATH_TO_JSON_FILE = LibraryService.properties.getProperty("accountDataSource");
     private final LibraryDAO<User> dataSourceService = new HTwoDataSourceService<>(EntityTypes.ACCOUNT);
     private Map<String, User> userMap = new HashMap<>();
-    private User currentUser;
     private BookmarkService bookmarkService = new BookmarkService();
 
     public User createUser(String login, String password) {
@@ -27,11 +26,7 @@ public class AccountManager {
     public boolean logInUser(String login, String password) {
         User userForSearch = createUser(login, password);
         User searchedUser = userMap.get(login);
-        if (userForSearch.equals(searchedUser)) {
-            currentUser = searchedUser;
-            return true;
-        }
-        return false;
+        return userForSearch.equals(searchedUser);
     }
 
     public boolean signUpUser(String login, String password) {
@@ -40,7 +35,6 @@ public class AccountManager {
             return false;
         }
         dataSourceService.saveData(newUser);
-        currentUser = newUser;
         return true;
     }
 
@@ -53,21 +47,15 @@ public class AccountManager {
         return newUser;
     }
 
-    public boolean appendAdminAccount(String login, String password) {
-        if (!currentUser.isAdminRights()) {
-            return false;
-        }
-        return appendAccount(login, password) != null;
+    public boolean appendAdminAccount(String newLogin, String password) {
+        return appendAccount(newLogin, password) != null;
     }
 
-    public boolean deleteUser(String login) {
-        if (!currentUser.isAdminRights()) {
-            return false;
-        }
-        User deletedUser = userMap.remove(login);
+    public boolean deleteUser(String deleteLogin) {
+        User deletedUser = userMap.remove(deleteLogin);
         if (deletedUser != null) {
             dataSourceService.deleteData(deletedUser);
-            bookmarkService.deleteAllUserBookmarks(login);
+            bookmarkService.deleteAllUserBookmarks(deleteLogin);
             return true;
         }
         return false;
@@ -87,20 +75,20 @@ public class AccountManager {
         bookmarkService.loadBookmarkData();
     }
 
-    public boolean appendBookmark(String isbn, int pageNumber) {
-        return bookmarkService.appendBookmark(currentUser.getLogin(), isbn, pageNumber);
+    public boolean appendBookmark(String login, String isbn, int pageNumber) {
+        return bookmarkService.appendBookmark(login, isbn, pageNumber);
     }
 
-    public boolean deleteBookmark(String isbn, int pageNumber) {
-        return bookmarkService.deleteBookmark(currentUser.getLogin(), isbn, pageNumber);
+    public boolean deleteBookmark(String login, String isbn, int pageNumber) {
+        return bookmarkService.deleteBookmark(login, isbn, pageNumber);
     }
 
     public void deleteAllBookBookmarks(String isbn) {
         bookmarkService.deleteAllBookBookmarks(isbn);
     }
 
-    public Set<String> takeBooksWithCurrentUserBookmarks() {
-        return bookmarkService.takeBooksWithCurrentUserBookmarks(currentUser.getLogin());
+    public Set<String> takeBooksWithUserBookmarks(String login) {
+        return bookmarkService.takeBooksWithCurrentUserBookmarks(login);
     }
 
     public BookmarkService getBookmarkService() {
@@ -111,8 +99,8 @@ public class AccountManager {
         this.bookmarkService = bookmarkService;
     }
 
-    public boolean isAdmin() {
-        return currentUser.isAdminRights();
+    public boolean userIsAdmin(String login) {
+        return userMap.get(login).isAdminRights();
     }
 
     public Map<String, User> getUserMap() {
