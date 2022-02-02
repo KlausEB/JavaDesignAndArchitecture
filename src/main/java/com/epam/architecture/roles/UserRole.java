@@ -1,4 +1,4 @@
-package com.epam.architecture.SOAPws.util;
+package com.epam.architecture.roles;
 
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.xml.soap.*;
@@ -7,8 +7,14 @@ import jakarta.xml.ws.soap.SOAPFaultException;
 
 import java.util.Iterator;
 
-public class AuthorizationUtil {
-    public static String isAuthorized(SOAPMessageContext messageContext) throws SOAPException {
+public class UserRole implements LibraryRole {
+    @Override
+    public boolean isUserInRole(SOAPMessageContext messageContext) throws SOAPException {
+        return getAuthorizedUserRole(messageContext) != null;
+    }
+
+    @Override
+    public String getAuthorizedUserRole(SOAPMessageContext messageContext) throws SOAPException {
         SOAPHeader soapHeader = messageContext.getMessage().getSOAPHeader();
         Iterator<SOAPHeaderElement> iterator = soapHeader.examineHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
         String login = null;
@@ -23,7 +29,7 @@ public class AuthorizationUtil {
             }
         }
         if (login != null && password != null) {
-            LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+            LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
             if (libraryService.logInAccount(login, password)) {
                 return login;
             }
