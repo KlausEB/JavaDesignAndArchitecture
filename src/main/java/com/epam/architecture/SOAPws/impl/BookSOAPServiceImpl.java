@@ -1,7 +1,6 @@
 package com.epam.architecture.SOAPws.impl;
 
 import com.epam.architecture.SOAPws.BookSOAPService;
-import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.annotation.PreDestroy;
 import jakarta.jws.HandlerChain;
@@ -11,7 +10,7 @@ import jakarta.jws.WebService;
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.BookSOAPService")
 public class BookSOAPServiceImpl implements BookSOAPService {
 
-    private LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+    private LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
 
     @Override
     public boolean addBook(String authorName,

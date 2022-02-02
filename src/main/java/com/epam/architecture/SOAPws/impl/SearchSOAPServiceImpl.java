@@ -1,7 +1,6 @@
 package com.epam.architecture.SOAPws.impl;
 
 import com.epam.architecture.SOAPws.SearchSOAPService;
-import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.annotation.PreDestroy;
@@ -12,7 +11,7 @@ import jakarta.jws.WebService;
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.SearchSOAPService")
 public class SearchSOAPServiceImpl implements SearchSOAPService {
 
-    private LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+    private LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
 
     @Override
     public Book[] booksByPartAuthorName(String partName) {

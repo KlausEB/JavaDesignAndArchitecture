@@ -1,7 +1,6 @@
 package com.epam.architecture.SOAPws.impl;
 
 import com.epam.architecture.SOAPws.UserSOAPService;
-import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.userinterface.LibraryService;
 import com.sun.xml.ws.server.AbstractWebServiceContext;
@@ -22,7 +21,7 @@ public class UserSOAPServiceImpl implements UserSOAPService {
     @Resource
     private WebServiceContext context;
 
-    private LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+    private LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
 
     @Override
     public boolean addBookmark(String isbn, int pageNumber) throws SOAPException {

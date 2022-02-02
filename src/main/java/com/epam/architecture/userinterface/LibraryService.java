@@ -4,6 +4,7 @@ import com.epam.architecture.account.AccountManager;
 import com.epam.architecture.entities.Book;
 import com.epam.architecture.exceptions.HistoryException;
 import com.epam.architecture.library.LiteratureManager;
+import com.epam.architecture.roles.RoleEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.SessionFactory;
@@ -23,6 +24,8 @@ public class LibraryService {
     public static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
     public static File historyFile;
 
+    private static volatile LibraryService libraryService;
+
     static {
         try (InputStreamReader reader = new InputStreamReader(new FileInputStream("src/main/resources/source.properties"))) {
             properties.load(reader);
@@ -41,6 +44,22 @@ public class LibraryService {
             stringObjects.append(currentObject.toString()).append('\n');
         }
         return stringObjects.toString();
+    }
+
+    public static LibraryService getInstanceWithDeserializeData() {
+        if (libraryService == null) {
+            synchronized (LibraryService.class) {
+                if (libraryService == null) {
+                    startWorking();
+                }
+            }
+        }
+        return libraryService;
+    }
+
+    private static void startWorking() {
+        libraryService = new LibraryService();
+        libraryService.requestDeserializeData();
     }
 
     public boolean signUpAccount(String login, String password) {
@@ -142,8 +161,8 @@ public class LibraryService {
         literatureManager.loadLiteratureData();
     }
 
-    public boolean userIsAdmin(String login) {
-        return accountManager.userIsAdmin(login);
+    public RoleEnum userRole(String login) {
+        return accountManager.getUserRole(login);
     }
 
     public void closeSourceService() {

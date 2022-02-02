@@ -1,7 +1,6 @@
 package com.epam.architecture.SOAPws.impl;
 
 import com.epam.architecture.SOAPws.AdminSOAPService;
-import com.epam.architecture.SOAPws.util.LibraryWebWorker;
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.annotation.PreDestroy;
 import jakarta.jws.HandlerChain;
@@ -11,7 +10,7 @@ import jakarta.jws.WebService;
 @WebService(endpointInterface = "com.epam.architecture.SOAPws.AdminSOAPService")
 public class AdminSOAPServiceImpl implements AdminSOAPService {
 
-    private LibraryService libraryService = LibraryWebWorker.takeLibraryService();
+    private LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
 
     @Override
     public boolean addNewUser(String login, String password) {

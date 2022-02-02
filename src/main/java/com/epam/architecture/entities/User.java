@@ -1,16 +1,16 @@
 package com.epam.architecture.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.epam.architecture.roles.RoleEnum;
+
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "USER", schema = "HOME_LIBRARY")
 public class User implements Serializable {
-    @Column(name = "ADMINRIGHTS")
-    boolean adminRights;
+    @Column(name = "ROLE")
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
     @Id
     @Column(name = "LOGIN")
     private String login;
@@ -20,12 +20,13 @@ public class User implements Serializable {
     public User(String login, String password) {
         this.login = login;
         this.password = password;
+        this.role = RoleEnum.USER;
     }
 
-    public User(String login, String password, boolean adminRights) {
+    public User(String login, String password, RoleEnum role) {
         this.login = login;
         this.password = password;
-        this.adminRights = adminRights;
+        this.role = role;
     }
 
     public User() {
@@ -34,7 +35,7 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "User{" +
-                "adminRights=" + adminRights +
+                "role=" + role +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';
@@ -74,11 +75,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public boolean isAdminRights() {
-        return adminRights;
+    public RoleEnum getRole() {
+        return role;
     }
 
-    public void setAdminRights(boolean adminRights) {
-        this.adminRights = adminRights;
+    public void setRole(RoleEnum role) {
+        this.role = role;
     }
 }

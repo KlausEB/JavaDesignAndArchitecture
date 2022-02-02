@@ -5,6 +5,7 @@ import com.epam.architecture.datasource.EntityTypes;
 import com.epam.architecture.datasource.HTwoDataSourceService;
 import com.epam.architecture.datasource.LibraryDAO;
 import com.epam.architecture.entities.User;
+import com.epam.architecture.roles.RoleEnum;
 import com.epam.architecture.userinterface.LibraryService;
 import com.epam.architecture.util.BookmarkService;
 
@@ -99,8 +100,8 @@ public class AccountManager {
         this.bookmarkService = bookmarkService;
     }
 
-    public boolean userIsAdmin(String login) {
-        return userMap.get(login).isAdminRights();
+    public RoleEnum getUserRole(String login) {
+        return userMap.get(login).getRole();
     }
 
     public Map<String, User> getUserMap() {
