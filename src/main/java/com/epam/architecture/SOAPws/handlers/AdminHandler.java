@@ -1,5 +1,6 @@
 package com.epam.architecture.SOAPws.handlers;
 
+import com.epam.architecture.roles.AuthorizationUtil;
 import com.epam.architecture.roles.RoleEnum;
 import com.epam.architecture.userinterface.LibraryService;
 import jakarta.xml.soap.SOAPException;
@@ -20,7 +21,7 @@ public class AdminHandler implements SOAPHandler<SOAPMessageContext> {
     public boolean handleMessage(SOAPMessageContext soapMessageContext) {
         if (!(boolean) soapMessageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY)) {
             try {
-                return RoleEnum.ADMIN.identifyUserRole(soapMessageContext);
+                return AuthorizationUtil.isAuthorizedRequest(soapMessageContext, RoleEnum.ADMIN);
             } catch (SOAPException e) {
                 LibraryService.logger.error("Not found header");
                 return false;

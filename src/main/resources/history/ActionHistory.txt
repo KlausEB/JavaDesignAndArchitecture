@@ -1,6 +1,0 @@
-2021-11-09 15:30:27 - Nikolai:  registration request
-2021-11-09 15:30:27 - DONE
-2021-11-09 15:32:11 - Try to append: Doppelganger book
-2021-11-09 15:32:11 - The addition was successful
-2021-11-10 01:30:23 - Nikolai:  registration request
-2021-11-10 01:30:23 - DONE
