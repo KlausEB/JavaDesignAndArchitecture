@@ -8,9 +8,10 @@ import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 import jakarta.xml.ws.soap.SOAPFaultException;
 
 import java.util.Iterator;
+import java.util.Set;
 
 public class AuthorizationUtil {
-    public static boolean isAuthorizedRequest(SOAPMessageContext messageContext, RoleEnum role) throws SOAPException {
+    public static boolean isAuthorizedRequest(SOAPMessageContext messageContext, Set<RoleEnum> roles) throws SOAPException {
         SOAPHeader soapHeader = messageContext.getMessage().getSOAPHeader();
         Iterator<SOAPHeaderElement> iterator = soapHeader.examineHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
         String login = null;
@@ -26,7 +27,7 @@ public class AuthorizationUtil {
         }
         if (login != null && password != null) {
             LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
-            return libraryService.logInAccount(login, password) && libraryService.userRole(login) == role;
+            return libraryService.logInAccount(login, password) && roles.contains(libraryService.userRole(login));
         }
         SOAPBody soapBody = messageContext.getMessage().getSOAPPart().getEnvelope().getBody();
         SOAPFault soapFault = soapBody.addFault();

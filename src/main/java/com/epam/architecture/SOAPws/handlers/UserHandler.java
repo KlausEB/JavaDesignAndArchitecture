@@ -22,7 +22,7 @@ public class UserHandler implements SOAPHandler<SOAPMessageContext> {
     public boolean handleMessage(SOAPMessageContext soapMessageContext) {
         if (!(boolean) soapMessageContext.get(MessageContext.MESSAGE_OUTBOUND_PROPERTY)) {
             try {
-                return AuthorizationUtil.isAuthorizedRequest(soapMessageContext, RoleEnum.USER);
+                return AuthorizationUtil.isAuthorizedRequest(soapMessageContext, Set.of(RoleEnum.USER, RoleEnum.ADMIN));
             } catch (SOAPException e) {
                 LibraryService.logger.error("Not found header");
                 return false;
