@@ -1,10 +1,10 @@
 package com.epam.architecture.util;
 
-import com.epam.architecture.App;
 import com.epam.architecture.datasource.EntityTypes;
 import com.epam.architecture.datasource.HTwoDataSourceService;
 import com.epam.architecture.datasource.LibraryDAO;
 import com.epam.architecture.entities.Bookmark;
+import com.epam.architecture.userinterface.LibraryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BookmarkService {
-    public static final String PATH_TO_JSON_FILE = App.properties.getProperty("bookmarkDataSource");
+    public static final String PATH_TO_JSON_FILE = LibraryService.properties.getProperty("bookmarkDataSource");
     private final LibraryDAO<Bookmark> dataSourceService = new HTwoDataSourceService<>(EntityTypes.BOOKMARK);
     private List<Bookmark> bookmarksList = new ArrayList<>();
 

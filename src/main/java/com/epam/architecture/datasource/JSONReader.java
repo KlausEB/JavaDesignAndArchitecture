@@ -1,11 +1,7 @@
 package com.epam.architecture.datasource;
 
-import com.epam.architecture.App;
-import com.epam.architecture.entities.Author;
-import com.epam.architecture.entities.Book;
-import com.epam.architecture.entities.Bookmark;
-import com.epam.architecture.entities.User;
 import com.epam.architecture.exceptions.RestoreFromDataSourceException;
+import com.epam.architecture.userinterface.LibraryService;
 import org.apache.logging.log4j.Logger;
 import org.nd4j.shade.jackson.databind.ObjectMapper;
 
@@ -15,7 +11,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class JSONReader<T extends Serializable> {
-    public static final Logger logger = App.logger;
+    public static final Logger logger = LibraryService.logger;
     protected final ObjectMapper mapper = new ObjectMapper();
     protected String pathForRead;
 
