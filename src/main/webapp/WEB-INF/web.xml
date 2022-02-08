@@ -4,57 +4,27 @@
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
          version="5.0">
     <display-name>LibrarySOAPService</display-name>
+
+    <context-param>
+        <param-name>resteasy.resources</param-name>
+        <param-value>com.epam.architecture.RESTws</param-value>
+    </context-param>
+
     <listener>
         <listener-class>
-            com.sun.xml.ws.transport.http.servlet.WSServletContextListener
+            org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
         </listener-class>
     </listener>
+
     <servlet>
-        <servlet-name>admin</servlet-name>
+        <servlet-name>resteasy-servlet</servlet-name>
         <servlet-class>
-            com.sun.xml.ws.transport.http.servlet.WSServlet
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
         </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>book</servlet-name>
-        <servlet-class>
-            com.sun.xml.ws.transport.http.servlet.WSServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>search</servlet-name>
-        <servlet-class>
-            com.sun.xml.ws.transport.http.servlet.WSServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>user</servlet-name>
-        <servlet-class>
-            com.sun.xml.ws.transport.http.servlet.WSServlet
-        </servlet-class>
-        <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>admin</servlet-name>
-        <url-pattern>/admin</url-pattern>
+        <servlet-name>resteasy-servlet</servlet-name>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>book</servlet-name>
-        <url-pattern>/book</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>search</servlet-name>
-        <url-pattern>/search</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>user</servlet-name>
-        <url-pattern>/user</url-pattern>
-    </servlet-mapping>
-    <session-config>
-        <session-timeout>120</session-timeout>
-    </session-config>
 </web-app>
