@@ -41,6 +41,7 @@ public class AuthorizationUtil {
 //            }
 //        }
 //        throw new NotAuthorizedException("Not found login");
+
         return "Nikolai";
     }
 }
