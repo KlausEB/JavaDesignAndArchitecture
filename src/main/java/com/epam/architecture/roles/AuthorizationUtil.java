@@ -1,32 +1,28 @@
 package com.epam.architecture.roles;
 
-import jakarta.xml.soap.SOAPException;
+import com.epam.architecture.RESTws.DTO.UserDTO;
+import com.epam.architecture.userinterface.LibraryService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import jakarta.xml.ws.WebServiceContext;
-import jakarta.xml.ws.handler.soap.SOAPMessageContext;
 
-import java.util.Set;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+import java.security.Key;
 
 public class AuthorizationUtil {
-    public static boolean isAuthorizedRequest(SOAPMessageContext messageContext, Set<RoleEnum> roles) throws SOAPException {
-//        SOAPHeader soapHeader = messageContext.getMessage().getSOAPHeader();
-//        Iterator<SOAPHeaderElement> iterator = soapHeader.examineHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
-//        String login = null;
-//        String password = null;
-//        while (iterator.hasNext()) {
-//            Node node = iterator.next();
-//            if (node.getNodeName().equals("login")) {
-//                login = node.getValue();
-//            }
-//            if (node.getNodeName().equals("password")) {
-//                password = node.getValue();
-//            }
-//        }
-//        if (login != null && password != null) {
-//            LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
-//            return libraryService.logInAccount(login, password) && roles.contains(libraryService.userRole(login));
-//        }
-//        throw new NotAuthorizedException("Not found login and password");
-        return true;
+    public static Response authorizationRequest(UserDTO user) {
+        LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
+        String login = user.getLogin();
+        String password = user.getPassword();
+        if (libraryService.logInAccount(login, password)) {
+            RoleEnum role = libraryService.userRole(login);
+            String jwtToken = generateJWTToken(login, role);
+            NewCookie cookie = new NewCookie("jwt", jwtToken);
+            return Response.status(Response.Status.OK).cookie(cookie).build();
+        }
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     public static String getLoginFromRequest(WebServiceContext context) {
@@ -43,5 +39,14 @@ public class AuthorizationUtil {
 //        throw new NotAuthorizedException("Not found login");
 
         return "Nikolai";
+    }
+
+    private static String generateJWTToken(String login, RoleEnum role) {
+        Key key = Keys.secretKeyFor(SignatureAlgorithm.ES256);
+        return Jwts.builder()
+                .claim("login", login)
+                .claim("role", role)
+                .signWith(key)
+                .compact();
     }
 }
