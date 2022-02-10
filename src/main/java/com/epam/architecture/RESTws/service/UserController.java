@@ -2,17 +2,21 @@ package com.epam.architecture.RESTws.service;
 
 import com.epam.architecture.RESTws.DTO.BookmarkDTO;
 import com.epam.architecture.RESTws.DTO.UserDTO;
-import com.epam.architecture.RESTws.filter.JWTTokenNeeded;
+import com.epam.architecture.RESTws.filter.UserStatusNeeded;
 import com.epam.architecture.roles.AuthorizationUtil;
 import com.epam.architecture.userinterface.LibraryService;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/user")
-@JWTTokenNeeded
+@UserStatusNeeded
 public class UserController {
+    @Context
+    private HttpHeaders context;
 
     private LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
 
@@ -21,7 +25,7 @@ public class UserController {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response authenticateUser(UserDTO user) {
-       return AuthorizationUtil.authorizationRequest(user);
+        return AuthorizationUtil.authorizationRequest(user);
     }
 
     @POST

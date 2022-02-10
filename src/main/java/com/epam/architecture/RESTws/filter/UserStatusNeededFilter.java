@@ -1,32 +1,25 @@
 package com.epam.architecture.RESTws.filter;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import com.epam.architecture.roles.AuthorizationUtil;
+import com.epam.architecture.roles.RoleEnum;
 import jakarta.annotation.Priority;
 
 import javax.ws.rs.Priorities;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
-import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import java.io.IOException;
-import java.security.Key;
+import java.util.Set;
 
 @Provider
-@JWTTokenNeeded
+@UserStatusNeeded
 @Priority(Priorities.AUTHENTICATION)
-public class JWTTokenNeededFilter implements ContainerRequestFilter {
+public class UserStatusNeededFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.ES256);
-        Cookie jwtCookie = requestContext.getCookies().get("jwt");
-        String jwtToken = jwtCookie.getValue();
-        try {
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwtToken);
-        } catch (Exception e) {
+        if (!AuthorizationUtil.isAuthorizeRequest(requestContext, Set.of(RoleEnum.ADMIN, RoleEnum.USER))) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }

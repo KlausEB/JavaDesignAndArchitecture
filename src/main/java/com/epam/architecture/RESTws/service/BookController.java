@@ -1,7 +1,7 @@
 package com.epam.architecture.RESTws.service;
 
 import com.epam.architecture.RESTws.DTO.BookDTO;
-import com.epam.architecture.RESTws.filter.JWTTokenNeeded;
+import com.epam.architecture.RESTws.filter.UserStatusNeeded;
 import com.epam.architecture.userinterface.LibraryService;
 
 import javax.ws.rs.*;
@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/book")
-@JWTTokenNeeded
+@UserStatusNeeded
 public class BookController {
 
     private LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();

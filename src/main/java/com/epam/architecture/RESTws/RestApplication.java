@@ -1,5 +1,7 @@
 package com.epam.architecture.RESTws;
 
+import com.epam.architecture.RESTws.filter.AdminStatusNeededFilter;
+import com.epam.architecture.RESTws.filter.UserStatusNeededFilter;
 import com.epam.architecture.RESTws.service.AdminController;
 import com.epam.architecture.RESTws.service.BookController;
 import com.epam.architecture.RESTws.service.SearchController;
@@ -20,6 +22,8 @@ public class RestApplication extends Application {
         set.add(new BookController());
         set.add(new SearchController());
         set.add(new UserController());
+        set.add(new UserStatusNeededFilter());
+        set.add(new AdminStatusNeededFilter());
         return set;
     }
 

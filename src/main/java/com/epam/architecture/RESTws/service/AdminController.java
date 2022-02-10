@@ -2,7 +2,6 @@ package com.epam.architecture.RESTws.service;
 
 import com.epam.architecture.RESTws.DTO.UserDTO;
 import com.epam.architecture.RESTws.filter.AdminStatusNeeded;
-import com.epam.architecture.RESTws.filter.JWTTokenNeeded;
 import com.epam.architecture.userinterface.LibraryService;
 
 import javax.ws.rs.*;
@@ -10,7 +9,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/admin")
-@JWTTokenNeeded
 @AdminStatusNeeded
 public class AdminController {
 
