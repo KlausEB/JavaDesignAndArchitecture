@@ -1,7 +1,7 @@
-package com.epam.architecture.RESTws.service;
+package com.epam.architecture.endpoint.service;
 
-import com.epam.architecture.RESTws.DTO.BookDTO;
-import com.epam.architecture.RESTws.filter.UserStatusNeeded;
+import com.epam.architecture.endpoint.dto.BookDTO;
+import com.epam.architecture.endpoint.filter.UserStatusNeeded;
 import com.epam.architecture.userinterface.LibraryService;
 
 import javax.ws.rs.*;

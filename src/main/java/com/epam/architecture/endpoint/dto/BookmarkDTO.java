@@ -1,4 +1,4 @@
-package com.epam.architecture.RESTws.DTO;
+package com.epam.architecture.endpoint.dto;
 
 import java.io.Serializable;
 

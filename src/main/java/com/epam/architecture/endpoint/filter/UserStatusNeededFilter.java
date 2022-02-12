@@ -1,4 +1,4 @@
-package com.epam.architecture.RESTws.filter;
+package com.epam.architecture.endpoint.filter;
 
 import com.epam.architecture.roles.AuthorizationUtil;
 import com.epam.architecture.roles.RoleEnum;
@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.util.Set;
 
 @Provider
-@AdminStatusNeeded
+@UserStatusNeeded
 @Priority(Priorities.AUTHENTICATION)
-public class AdminStatusNeededFilter implements ContainerRequestFilter {
+public class UserStatusNeededFilter implements ContainerRequestFilter {
 
     @Override
-    public void filter(ContainerRequestContext containerRequestContext) throws IOException {
-        if (!AuthorizationUtil.isAuthorizeRequest(containerRequestContext, Set.of(RoleEnum.ADMIN))) {
-            containerRequestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
+    public void filter(ContainerRequestContext requestContext) throws IOException {
+        if (!AuthorizationUtil.isAuthorizeRequest(requestContext, Set.of(RoleEnum.ADMIN, RoleEnum.USER))) {
+            requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }
 }

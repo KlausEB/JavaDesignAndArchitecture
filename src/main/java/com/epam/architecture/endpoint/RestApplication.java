@@ -1,11 +1,11 @@
-package com.epam.architecture.RESTws;
+package com.epam.architecture.endpoint;
 
-import com.epam.architecture.RESTws.filter.AdminStatusNeededFilter;
-import com.epam.architecture.RESTws.filter.UserStatusNeededFilter;
-import com.epam.architecture.RESTws.service.AdminController;
-import com.epam.architecture.RESTws.service.BookController;
-import com.epam.architecture.RESTws.service.SearchController;
-import com.epam.architecture.RESTws.service.UserController;
+import com.epam.architecture.endpoint.filter.AdminStatusNeededFilter;
+import com.epam.architecture.endpoint.filter.UserStatusNeededFilter;
+import com.epam.architecture.endpoint.service.AdminController;
+import com.epam.architecture.endpoint.service.BookController;
+import com.epam.architecture.endpoint.service.SearchController;
+import com.epam.architecture.endpoint.service.UserController;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

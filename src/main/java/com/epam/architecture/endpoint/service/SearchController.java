@@ -1,4 +1,4 @@
-package com.epam.architecture.RESTws.service;
+package com.epam.architecture.endpoint.service;
 
 import com.epam.architecture.userinterface.LibraryService;
 

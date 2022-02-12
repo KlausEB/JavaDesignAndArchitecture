@@ -1,6 +1,6 @@
 package com.epam.architecture.roles;
 
-import com.epam.architecture.RESTws.DTO.UserDTO;
+import com.epam.architecture.endpoint.dto.UserDTO;
 import com.epam.architecture.userinterface.LibraryService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;

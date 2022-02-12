@@ -1,8 +1,8 @@
-package com.epam.architecture.RESTws.service;
+package com.epam.architecture.endpoint.service;
 
-import com.epam.architecture.RESTws.DTO.BookmarkDTO;
-import com.epam.architecture.RESTws.DTO.UserDTO;
-import com.epam.architecture.RESTws.filter.UserStatusNeeded;
+import com.epam.architecture.endpoint.dto.BookmarkDTO;
+import com.epam.architecture.endpoint.dto.UserDTO;
+import com.epam.architecture.endpoint.filter.UserStatusNeeded;
 import com.epam.architecture.roles.AuthorizationUtil;
 import com.epam.architecture.userinterface.LibraryService;
 
@@ -46,5 +46,12 @@ public class UserController {
     @Produces({MediaType.APPLICATION_JSON})
     public Response booksWithUserBookmarks() {
         return Response.status(Response.Status.OK).entity(libraryService.booksWithUserBookmarks(AuthorizationUtil.getLoginFromRequest(context))).build();
+    }
+
+    @POST
+    @Path("/save")
+    public Response addBookmark() {
+        libraryService.requestSerializeData();
+        return Response.status(Response.Status.OK).build();
     }
 }

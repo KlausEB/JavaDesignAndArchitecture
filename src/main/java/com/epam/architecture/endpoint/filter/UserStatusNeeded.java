@@ -1,4 +1,4 @@
-package com.epam.architecture.RESTws.filter;
+package com.epam.architecture.endpoint.filter;
 
 import javax.ws.rs.NameBinding;
 import java.lang.annotation.Retention;
