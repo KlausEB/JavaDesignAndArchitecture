@@ -19,7 +19,7 @@ public class UserStatusNeededFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
-        if (!AuthorizationUtil.isAuthorizeRequest(requestContext, Set.of(RoleEnum.ADMIN, RoleEnum.USER))) {
+        if (!AuthorizationUtil.isAuthorizeRequest(requestContext, Set.of(RoleEnum.ADMIN.toString(), RoleEnum.USER.toString()))) {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
         }
     }

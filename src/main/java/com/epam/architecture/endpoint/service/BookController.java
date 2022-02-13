@@ -39,7 +39,7 @@ public class BookController {
     }
 
     @DELETE
-    @Path("/delete/{authorName}")
+    @Path("/deleteAuthor/{authorName}")
     public Response deleteAuthor(@PathParam("authorName") String authorName) {
         return Response.status(Response.Status.OK).entity(libraryService.deleteAuthor(authorName)).build();
     }

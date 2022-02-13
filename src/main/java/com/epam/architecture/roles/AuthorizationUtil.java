@@ -33,13 +33,13 @@ public class AuthorizationUtil {
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-    public static boolean isAuthorizeRequest(ContainerRequestContext containerRequestContext, Set<RoleEnum> roles) {
+    public static boolean isAuthorizeRequest(ContainerRequestContext containerRequestContext, Set<String> roles) {
         Cookie jwtCookie = containerRequestContext.getCookies().get("jwtToken");
         String jwtToken = jwtCookie.getValue();
-        RoleEnum role;
+        String role;
         try {
             Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(jwtToken);
-            role = claimsJws.getBody().get("role", RoleEnum.class);
+            role = claimsJws.getBody().get("role", String.class);
         } catch (Exception e) {
             return false;
         }
@@ -60,7 +60,7 @@ public class AuthorizationUtil {
     private static String generateJWTToken(String login, RoleEnum role) {
         return Jwts.builder()
                 .claim("login", login)
-                .claim("role", role.toString())
+                .claim("role", role)
                 .signWith(SECRET_KEY)
                 .compact();
     }

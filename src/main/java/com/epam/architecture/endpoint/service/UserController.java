@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Path("/user")
-@UserStatusNeeded
 public class UserController {
     @Context
     private HttpHeaders context;
@@ -31,12 +30,14 @@ public class UserController {
     @POST
     @Path("/add")
     @Consumes({MediaType.APPLICATION_JSON})
+    @UserStatusNeeded
     public Response addBookmark(BookmarkDTO bookmark) {
         return Response.status(Response.Status.CREATED).entity(libraryService.addBookmark(AuthorizationUtil.getLoginFromRequest(context), bookmark.getIsbn(), bookmark.getPageNumber())).build();
     }
 
     @DELETE
     @Path("/deleteBookmark")
+    @UserStatusNeeded
     public Response deleteBookmark(@QueryParam("isbn") String isbn, @QueryParam("pageNumber") int pageNumber) {
         return Response.status(Response.Status.OK).entity(libraryService.deleteBookmark(AuthorizationUtil.getLoginFromRequest(context), isbn, pageNumber)).build();
     }
@@ -44,12 +45,14 @@ public class UserController {
     @GET
     @Path("/bookmarks")
     @Produces({MediaType.APPLICATION_JSON})
+    @UserStatusNeeded
     public Response booksWithUserBookmarks() {
         return Response.status(Response.Status.OK).entity(libraryService.booksWithUserBookmarks(AuthorizationUtil.getLoginFromRequest(context))).build();
     }
 
     @POST
     @Path("/save")
+    @UserStatusNeeded
     public Response addBookmark() {
         libraryService.requestSerializeData();
         return Response.status(Response.Status.OK).build();
