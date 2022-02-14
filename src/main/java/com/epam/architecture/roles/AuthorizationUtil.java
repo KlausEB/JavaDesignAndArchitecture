@@ -33,13 +33,13 @@ public class AuthorizationUtil {
         return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-    public static boolean isAuthorizeRequest(ContainerRequestContext containerRequestContext, Set<String> roles) {
+    public static boolean isAuthorizeRequest(ContainerRequestContext containerRequestContext, Set<RoleEnum> roles) {
         Cookie jwtCookie = containerRequestContext.getCookies().get("jwtToken");
         String jwtToken = jwtCookie.getValue();
-        String role;
+        RoleEnum role;
         try {
             Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(jwtToken);
-            role = claimsJws.getBody().get("role", String.class);
+            role = RoleEnum.valueOf(claimsJws.getBody().get("role", String.class));
         } catch (Exception e) {
             return false;
         }
