@@ -12,6 +12,5 @@
 </head>
 <body>
 Web Service is work!
-<a href="rest/search/booksByIsbn/978-0-679734-51-2">HELLO</a>
 </body>
 </html>
