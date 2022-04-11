@@ -2,9 +2,10 @@ package com.epam.architecture.controllers.service;
 
 import com.epam.architecture.controllers.dto.BookmarkDTO;
 import com.epam.architecture.model.Book;
-import com.epam.architecture.security.JwtTokenProvider;
 import com.epam.architecture.service.BookmarkService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,23 +16,24 @@ import java.util.List;
 public class UserController {
 
     private final BookmarkService bookmarkService;
+    private final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     public UserController(BookmarkService bookmarkService) {
         this.bookmarkService = bookmarkService;
     }
 
     @PostMapping("/add")
-    public void addBookmark(@RequestBody BookmarkDTO bookmark, @RequestHeader String authorization) {
-        bookmarkService.addBookmark(JwtTokenProvider.getLoginFromJwtToken(authorization), bookmark.getIsbn(), bookmark.getPageNumber());
+    public void addBookmark(@RequestBody BookmarkDTO bookmark) {
+        bookmarkService.addBookmark(authentication.getName(), bookmark.getIsbn(), bookmark.getPageNumber());
     }
 
     @DeleteMapping("/deleteBookmark")
-    public void deleteBookmark(@RequestParam String isbn, @RequestParam int pageNumber, @RequestHeader String authorization) {
-        bookmarkService.deleteBookmark(JwtTokenProvider.getLoginFromJwtToken(authorization), isbn, pageNumber);
+    public void deleteBookmark(@RequestParam String isbn, @RequestParam int pageNumber) {
+        bookmarkService.deleteBookmark(authentication.getName(), isbn, pageNumber);
     }
 
     @GetMapping("/bookmarks")
-    public List<Book> booksWithUserBookmarks(@RequestHeader String authorization) {
-        return bookmarkService.takeBooksWithUserBookmarks(JwtTokenProvider.getLoginFromJwtToken(authorization));
+    public List<Book> booksWithUserBookmarks() {
+        return bookmarkService.takeBooksWithUserBookmarks(authentication.getName());
     }
 }
