@@ -9,6 +9,7 @@ import com.epam.architecture.service.AccountService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -21,12 +22,14 @@ import java.nio.file.Paths;
 @Service
 public class AccountServiceImpl implements AccountService {
     private final JpaUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     public File historyFile;
     @Value("${history}")
     private String historyPath;
 
-    public AccountServiceImpl(JpaUserRepository userRepository) {
+    public AccountServiceImpl(JpaUserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @PostConstruct
@@ -54,6 +57,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public boolean addAccount(String login, String password) {
+        password = passwordEncoder.encode(password);
         if (userRepository.existsById(login)) {
             return false;
         }

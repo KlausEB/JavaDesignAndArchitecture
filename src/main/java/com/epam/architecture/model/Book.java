@@ -2,6 +2,7 @@ package com.epam.architecture.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -50,16 +51,18 @@ public class Book implements Serializable {
 
         if (yearOfPublishing != book.yearOfPublishing) return false;
         if (numberOfPages != book.numberOfPages) return false;
-        if (!bookName.equals(book.bookName)) return false;
-        return bookIsbn.equals(book.bookIsbn);
+        if (!Objects.equals(bookIsbn, book.bookIsbn)) return false;
+        if (!Objects.equals(authorName, book.authorName)) return false;
+        return Objects.equals(bookName, book.bookName);
     }
 
     @Override
     public int hashCode() {
-        int result = bookName.hashCode();
+        int result = bookIsbn != null ? bookIsbn.hashCode() : 0;
+        result = 31 * result + (authorName != null ? authorName.hashCode() : 0);
+        result = 31 * result + (bookName != null ? bookName.hashCode() : 0);
         result = 31 * result + yearOfPublishing;
         result = 31 * result + numberOfPages;
-        result = 31 * result + bookIsbn.hashCode();
         return result;
     }
 
@@ -101,13 +104,5 @@ public class Book implements Serializable {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
-    }
-
-    public Set<Bookmark> getBookmarks() {
-        return bookmarks;
-    }
-
-    public void setBookmarks(Set<Bookmark> bookmarks) {
-        this.bookmarks = bookmarks;
     }
 }

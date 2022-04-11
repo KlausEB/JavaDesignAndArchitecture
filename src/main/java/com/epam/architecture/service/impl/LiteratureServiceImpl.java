@@ -8,9 +8,7 @@ import com.epam.architecture.repository.JpaBookRepository;
 import com.epam.architecture.service.LiteratureService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LiteratureServiceImpl implements LiteratureService {
@@ -63,10 +61,7 @@ public class LiteratureServiceImpl implements LiteratureService {
 
     @Override
     public List<Book> searchBooksByPartAuthorName(String partName) {
-        return authorRepository.findByAuthorNameLike('%' + partName + '%').stream()
-                .map(Author::getBooks)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        return bookRepository.findByAuthorName_AuthorNameLike('%' + partName + '%');
     }
 
     @Override
@@ -87,6 +82,6 @@ public class LiteratureServiceImpl implements LiteratureService {
 
     @Override
     public List<Book> searchBooksByYearPagesPartName(int yearOfPublishing, int numberOfPages, String partName) {
-        return bookRepository.findByYearOfPublishingAndNumberOfPagesAndBookName(yearOfPublishing, numberOfPages, '%' + partName + '%');
+        return bookRepository.findByYearOfPublishingAndNumberOfPagesAndBookNameLike(yearOfPublishing, numberOfPages, '%' + partName + '%');
     }
 }

@@ -1,5 +1,7 @@
 package com.epam.architecture.controllers.dto;
 
+import com.epam.architecture.model.Author;
+
 import java.io.Serializable;
 
 public class BookDTO implements Serializable {
@@ -30,6 +32,10 @@ public class BookDTO implements Serializable {
 
     public String getAuthorName() {
         return authorName;
+    }
+
+    public void setAuthorName(Author author) {
+        this.authorName = author.getAuthorName();
     }
 
     public void setAuthorName(String authorName) {

@@ -2,6 +2,7 @@ package com.epam.architecture.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -15,7 +16,7 @@ public class User implements Serializable {
     private RoleEnum role;
     @Column(name = "PASSWORD")
     private String password;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "USERLOGIN")
     private Set<Bookmark> bookmarks;
 
@@ -50,14 +51,16 @@ public class User implements Serializable {
 
         User user = (User) o;
 
-        if (!login.equals(user.login)) return false;
-        return password.equals(user.password);
+        if (!Objects.equals(login, user.login)) return false;
+        if (role != user.role) return false;
+        return Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        int result = login.hashCode();
-        result = 31 * result + password.hashCode();
+        int result = login != null ? login.hashCode() : 0;
+        result = 31 * result + (role != null ? role.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
 
@@ -83,13 +86,5 @@ public class User implements Serializable {
 
     public void setRole(RoleEnum role) {
         this.role = role;
-    }
-
-    public Set<Bookmark> getBookmarks() {
-        return bookmarks;
-    }
-
-    public void setBookmarks(Set<Bookmark> bookmarks) {
-        this.bookmarks = bookmarks;
     }
 }

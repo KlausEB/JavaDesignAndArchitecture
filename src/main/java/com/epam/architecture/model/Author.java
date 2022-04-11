@@ -2,6 +2,7 @@ package com.epam.architecture.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -10,7 +11,7 @@ public class Author implements Serializable {
     @Id
     @Column(name = "NAME")
     private String authorName;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "AUTHORNAME")
     private Set<Book> books;
 
@@ -22,25 +23,25 @@ public class Author implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "Author{" +
+                "authorName='" + authorName + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
         Author author = (Author) o;
 
-        return authorName.equals(author.authorName);
+        return Objects.equals(authorName, author.authorName);
     }
 
     @Override
     public int hashCode() {
-        return authorName.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return "Author{" +
-                "authorName='" + authorName + '\'' +
-                '}';
+        return authorName != null ? authorName.hashCode() : 0;
     }
 
     public String getAuthorName() {
@@ -49,13 +50,5 @@ public class Author implements Serializable {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
-    }
-
-    public Set<Book> getBooks() {
-        return books;
-    }
-
-    public void setBooks(Set<Book> books) {
-        this.books = books;
     }
 }

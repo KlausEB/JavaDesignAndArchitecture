@@ -1,10 +1,13 @@
 package com.epam.architecture.model;
 
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "BOOKMARK", schema = "HOME_LIBRARY")
+@EqualsAndHashCode
 public class Bookmark implements Serializable {
     @Id
     @GeneratedValue(generator = "auto_inc")
@@ -24,24 +27,6 @@ public class Bookmark implements Serializable {
     }
 
     public Bookmark() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Bookmark bookmark = (Bookmark) o;
-
-        if (pageNumber != bookmark.pageNumber) return false;
-        return book.equals(bookmark.book);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = book.hashCode();
-        result = 31 * result + pageNumber;
-        return result;
     }
 
     public long getBookmarkId() {

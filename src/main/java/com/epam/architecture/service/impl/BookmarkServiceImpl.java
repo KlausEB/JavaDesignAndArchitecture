@@ -10,7 +10,6 @@ import com.epam.architecture.service.BookmarkService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,8 +48,7 @@ public class BookmarkServiceImpl implements BookmarkService {
 
     @Override
     public List<Book> takeBooksWithUserBookmarks(String login) {
-        Set<Bookmark> bookmarksList = userRepository.findById(login).orElseThrow(() ->
-                new RestoreFromDataSourceException("User doesn't exist")).getBookmarks();
+        List<Bookmark> bookmarksList = bookmarkRepository.findByUserLogin_Login(login);
         return bookmarksList.stream()
                 .map(Bookmark::getBook)
                 .collect(Collectors.toList());
