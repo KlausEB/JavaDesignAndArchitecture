@@ -1,54 +1,67 @@
 package com.epam.architecture.roles;
 
+import com.epam.architecture.endpoint.dto.UserDTO;
 import com.epam.architecture.userinterface.LibraryService;
-import com.sun.xml.ws.server.AbstractWebServiceContext;
-import jakarta.xml.soap.*;
-import jakarta.xml.ws.WebServiceContext;
-import jakarta.xml.ws.handler.soap.SOAPMessageContext;
-import jakarta.xml.ws.soap.SOAPFaultException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 
-import java.util.Iterator;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.core.Response;
+import java.security.Key;
 import java.util.Set;
 
 public class AuthorizationUtil {
-    public static boolean isAuthorizedRequest(SOAPMessageContext messageContext, Set<RoleEnum> roles) throws SOAPException {
-        SOAPHeader soapHeader = messageContext.getMessage().getSOAPHeader();
-        Iterator<SOAPHeaderElement> iterator = soapHeader.examineHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
-        String login = null;
-        String password = null;
-        while (iterator.hasNext()) {
-            Node node = iterator.next();
-            if (node.getNodeName().equals("login")) {
-                login = node.getValue();
-            }
-            if (node.getNodeName().equals("password")) {
-                password = node.getValue();
-            }
+    public final static Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+
+    public static Response authorizationRequest(UserDTO user) {
+        LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
+        String login = user.getLogin();
+        String password = user.getPassword();
+        if (libraryService.logInAccount(login, password)) {
+            RoleEnum role = libraryService.userRole(login);
+            String jwtToken = generateJWTToken(login, role);
+            NewCookie cookie = new NewCookie("jwtToken", jwtToken);
+            return Response.status(Response.Status.OK).cookie(cookie).build();
         }
-        if (login != null && password != null) {
-            LibraryService libraryService = LibraryService.getInstanceWithDeserializeData();
-            return libraryService.logInAccount(login, password) && roles.contains(libraryService.userRole(login));
-        }
-        SOAPBody soapBody = messageContext.getMessage().getSOAPPart().getEnvelope().getBody();
-        SOAPFault soapFault = soapBody.addFault();
-        soapFault.setFaultString("Not correct login or password");
-        throw new SOAPFaultException(soapFault);
+        return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
-    public static String getLoginFromRequest(WebServiceContext context) throws SOAPException {
-        SOAPMessage soapMessage = ((AbstractWebServiceContext) context).getRequestPacket().getMessage().readAsSOAPMessage();
-        SOAPEnvelope soapEnv = soapMessage.getSOAPPart().getEnvelope();
-        SOAPHeader soapHeader = soapEnv.getHeader();
-        Iterator<SOAPHeaderElement> headerElements = soapHeader.examineHeaderElements(SOAPConstants.URI_SOAP_ACTOR_NEXT);
-        while (headerElements.hasNext()) {
-            Node node = headerElements.next();
-            if (node.getNodeName().equals("login")) {
-                return node.getValue();
-            }
+    public static boolean isAuthorizeRequest(ContainerRequestContext containerRequestContext, Set<RoleEnum> roles) {
+        Cookie jwtCookie = containerRequestContext.getCookies().get("jwtToken");
+        String jwtToken = jwtCookie.getValue();
+        RoleEnum role;
+        try {
+            Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(jwtToken);
+            role = RoleEnum.valueOf(claimsJws.getBody().get("role", String.class));
+        } catch (Exception e) {
+            return false;
         }
-        SOAPBody soapBody = soapMessage.getSOAPPart().getEnvelope().getBody();
-        SOAPFault soapFault = soapBody.addFault();
-        soapFault.setFaultString("Service does not work without a login");
-        throw new SOAPFaultException(soapFault);
+        return roles.contains(role);
+    }
+
+    public static String getLoginFromRequest(HttpHeaders context) {
+        Cookie jwtCookie = context.getCookies().get("jwtToken");
+        String jwtToken = jwtCookie.getValue();
+        Jws<Claims> claimsJws = Jwts.parserBuilder().setSigningKey(SECRET_KEY).build().parseClaimsJws(jwtToken);
+        String login = claimsJws.getBody().get("login", String.class);
+        if (login != null) {
+            return login;
+        }
+        throw new NotAuthorizedException("Not found login");
+    }
+
+    private static String generateJWTToken(String login, RoleEnum role) {
+        return Jwts.builder()
+                .claim("login", login)
+                .claim("role", role)
+                .signWith(SECRET_KEY)
+                .compact();
     }
 }
